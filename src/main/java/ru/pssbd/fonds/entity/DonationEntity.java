@@ -1,5 +1,7 @@
 package ru.pssbd.fonds.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -7,6 +9,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "donations")
+@Data
 public class DonationEntity {
 
     @Id
@@ -20,4 +23,8 @@ public class DonationEntity {
     @Column(name = "sum")
     private BigDecimal sum;
 
+    public DonationEntity(LocalDate date, BigDecimal sum) {
+        this.date = date;
+        this.sum = sum;
+    }
 }
