@@ -8,6 +8,6 @@ import java.math.BigInteger;
 @Data
 public class CityInput {
     private BigInteger id;
-    private String phone;
+    private String name;
     private CountryEntity country;
 }

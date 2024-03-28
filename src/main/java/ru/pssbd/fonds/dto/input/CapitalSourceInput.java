@@ -13,5 +13,5 @@ public class CapitalSourceInput {
     private BigDecimal sum;
     private CurrencyTypeEntity currencyType;
     private String phone;
-    private LocalDate donation_date;
+    private LocalDate donationDate;
 }
