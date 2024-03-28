@@ -1,10 +1,13 @@
 package ru.pssbd.fonds.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
 @Table(name = "cities")
+@Data
 public class CityEntity {
 
     @Id
@@ -19,4 +22,8 @@ public class CityEntity {
     @JoinColumn(name = "id_country")
     private CountryEntity country;
 
+    public CityEntity(String name, CountryEntity country) {
+        this.name = name;
+        this.country = country;
+    }
 }

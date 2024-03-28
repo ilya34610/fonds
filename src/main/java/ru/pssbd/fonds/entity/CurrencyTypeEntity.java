@@ -1,9 +1,12 @@
 package ru.pssbd.fonds.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "currency_type")
+@Data
 public class CurrencyTypeEntity {
 
     @Id
@@ -14,4 +17,7 @@ public class CurrencyTypeEntity {
     @Column(name = "name")
     private String name;
 
+    public CurrencyTypeEntity(String name) {
+        this.name = name;
+    }
 }

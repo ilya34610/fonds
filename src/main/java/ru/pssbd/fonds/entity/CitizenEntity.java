@@ -1,5 +1,7 @@
 package ru.pssbd.fonds.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.time.LocalDate;
@@ -7,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "citizens")
+@Data
 public class CitizenEntity {
 
     @Id
@@ -42,4 +45,10 @@ public class CitizenEntity {
             joinColumns = @JoinColumn(name = "id_citizen"),
             inverseJoinColumns = @JoinColumn(name = "id_fonds"))
     private List<FondEntity> fonds;
+
+    public CitizenEntity(String fio, CityEntity city, LocalDate birthDate) {
+        this.fio = fio;
+        this.city = city;
+        this.birth_date = birthDate;
+    }
 }
