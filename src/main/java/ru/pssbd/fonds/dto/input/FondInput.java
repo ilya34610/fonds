@@ -8,7 +8,8 @@ import java.time.LocalDate;
 @Data
 public class FondInput {
     private Integer id;
+    private String name;
     private CityEntity city;
-    private LocalDate creation_date;
+    private LocalDate creationDate;
     private String phone;
 }

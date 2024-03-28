@@ -11,5 +11,5 @@ public class CitizenInput {
     private BigInteger id;
     private String fio;
     private CityEntity city;
-    private LocalDate birth_date;
+    private LocalDate birthDate;
 }
