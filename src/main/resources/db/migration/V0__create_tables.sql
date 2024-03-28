@@ -56,6 +56,7 @@ CREATE TABLE public.citizens_donations (
 
 CREATE TABLE public.fonds (
 	id serial NOT NULL,
+	name varchar NOT NULL,
 	id_city bigint NOT NULL,
 	creation_date date NOT NULL,
 	phone varchar NOT NULL,
