@@ -1,12 +1,14 @@
 package ru.pssbd.fonds.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "countries")
 @Data
+@NoArgsConstructor
 public class CountryEntity {
 
     @Id

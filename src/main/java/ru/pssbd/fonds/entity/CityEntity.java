@@ -1,6 +1,7 @@
 package ru.pssbd.fonds.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -8,6 +9,7 @@ import java.math.BigInteger;
 @Entity
 @Table(name = "cities")
 @Data
+@NoArgsConstructor
 public class CityEntity {
 
     @Id

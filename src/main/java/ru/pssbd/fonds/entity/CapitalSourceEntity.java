@@ -1,6 +1,7 @@
 package ru.pssbd.fonds.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "capital_sources")
 @Data
+@NoArgsConstructor
 public class CapitalSourceEntity {
 
     @Id

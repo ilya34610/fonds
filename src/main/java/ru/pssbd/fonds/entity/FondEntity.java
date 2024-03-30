@@ -1,6 +1,7 @@
 package ru.pssbd.fonds.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -8,6 +9,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "fonds")
 @Data
+@NoArgsConstructor
 public class FondEntity {
 
     @Id

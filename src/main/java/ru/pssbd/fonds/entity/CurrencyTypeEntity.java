@@ -1,12 +1,14 @@
 package ru.pssbd.fonds.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "currency_type")
 @Data
+@NoArgsConstructor
 public class CurrencyTypeEntity {
 
     @Id

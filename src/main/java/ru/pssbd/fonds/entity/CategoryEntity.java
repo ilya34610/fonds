@@ -1,12 +1,14 @@
 package ru.pssbd.fonds.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "catigories")
+@Table(name = "categories")
 @Data
+@NoArgsConstructor
 public class CategoryEntity {
 
     @Id
