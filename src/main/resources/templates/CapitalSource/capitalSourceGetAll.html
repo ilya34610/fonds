@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список источников капитала</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Сумма</th>
+        <th>Тип валюты</th>
+        <th>Телефон</th>
+        <th>Дата пожертвования</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="source : ${capitalSources}">
+        <td th:text="${source.id}"></td>
+        <td th:text="${source.sum}"></td>
+        <td th:text="${source.currencyType.name}"></td>
+        <td th:text="${source.phone}"></td>
+        <td th:text="${source.donationDate}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
