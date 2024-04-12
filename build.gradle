@@ -28,6 +28,7 @@ dependencies {
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.springframework.cloud:spring-cloud-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.webjars:bootstrap:5.3.0'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
