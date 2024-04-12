@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-hidden="true"
+     th:fragment="successModalFragment">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-sm-11">
+                        <h5 id="successHead" class="modal-title"></h5>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <div class="alert alert-success" id="successText">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="success-close" onclick="refreshPage()" type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

@@ -13,7 +13,10 @@ public class DonationTypeMapper {
     }
 
     public DonationTypeOutput toOutput(DonationTypeEntity entity) {
-        return new DonationTypeOutput(entity.getId(), entity.getName());
+        DonationTypeOutput output = new DonationTypeOutput();
+        output.setId(entity.getId());
+        output.setName(entity.getName());
+        return output;
     }
 
     public DonationTypeEntity fromInput(DonationTypeInput input) {
