@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="headFragment(headTitle)">
+    <title class="title" th:text="${headTitle}"></title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--    <link rel="stylesheet" type="text/css" th:href="@{/static/css/all.css}"/>-->
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/select2/4.0.5/dist/css/select2.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/font-awesome/5.13.0/css/all.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}"/>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/webjars/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.css}"/>
+
+    <script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+    <script th:src="@{/webjars/inputmask/4.0.0-beta.9/dist/jquery.inputmask.bundle.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.bundle.js}"></script>
+    <script th:src="@{/static/js/util/masked-input-util.js}"></script>
+    <script th:src="@{/webjars/momentjs/2.24.0/moment.js}"></script>
+    <script th:src="@{/webjars/momentjs/2.24.0/locale/ru.js}"></script>
+    <script th:src="@{/webjars/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.js}"></script>
+</head>
+
+</html>
