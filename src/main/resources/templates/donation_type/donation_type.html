@@ -3,7 +3,9 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
+
     <title>Fonds | Тип пожертвования</title>
+
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -90,8 +92,10 @@
 
     <div class="row">
         <div class="col-md-8 offset-md-2">
+
             <h2 th:if="${donation_type.id == null}" class="text-center">Добавление типа пожертвования</h2>
             <h2 th:if="${donation_type.id != null}" class="text-center">Редактирование типа пожертвования</h2>
+
         </div>
     </div>
 
@@ -104,7 +108,9 @@
                        th:value="${donation_type.id}"/>
 
                 <div class="form-group">
+
                     <label for="nameInput">Тип пожертвования</label>
+
                     <input id="nameInput" class="form-control" type="text" pattern=".*[^ ].*"
                            name="name"
                            minlength="3"
