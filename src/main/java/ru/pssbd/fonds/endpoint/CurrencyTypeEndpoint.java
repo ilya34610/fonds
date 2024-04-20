@@ -1,31 +1,67 @@
 package ru.pssbd.fonds.endpoint;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import ru.pssbd.fonds.dto.input.CurrencyTypeInput;
 import ru.pssbd.fonds.dto.output.CurrencyTypeOutput;
+import ru.pssbd.fonds.mappers.CurrencyTypeMapper;
 import ru.pssbd.fonds.service.CurrencyTypeService;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/currencyType")
+@RequestMapping("/currency_types")
 @RequiredArgsConstructor
 public class CurrencyTypeEndpoint {
 
     private final CurrencyTypeService service;
+    private final CurrencyTypeMapper mapper;
 
+    //Открытие справочника
     @GetMapping
-    public List<CurrencyTypeOutput> getAllEntity() {
-        return service.getAllElem();
+    @ResponseBody
+    public ModelAndView donationTypes() {
+        ModelAndView mav = new ModelAndView("currency_type/currency_types");
+        mav.addObject("currency_types", service.getAllElem());
+        return mav;
     }
 
+    //переход на страницу добавление
+    @GetMapping("/add")
+    public ModelAndView add() {
+        ModelAndView mav = new ModelAndView("currency_type/currency_type");
+        mav.addObject("currency_type", new CurrencyTypeOutput());
+        return mav;
+    }
+
+    //переход на страницу редактирования
     @GetMapping("/{id}")
-    public CurrencyTypeOutput getEntityById(@PathVariable int id) {
-        return service.getElemById(id);
+    public ModelAndView edit(@PathVariable short id) {
+        ModelAndView mav = new ModelAndView("currency_type/currency_type");
+        mav.addObject("currency_type", service.getElemById(id));
+        return mav;
     }
 
+    //сохранение
+    @PostMapping
+    public String add(@RequestBody CurrencyTypeInput input) {
+        service.save(mapper.fromInput(input));
+        return "redirect:/currency_types";
+    }
+
+    //удаление
+    @DeleteMapping("{id}")
+    @ResponseBody
+    public String remove(@PathVariable short id) {
+        service.deleteById(id);
+        return "redirect:/currency_types";
+    }
+
+    //изменить
+    @PutMapping("{id}")
+    @ResponseBody
+    public void edit(@PathVariable Short id, @Validated @RequestBody CurrencyTypeInput input) {
+        service.putById(id, input);
+    }
 
 }
