@@ -14,7 +14,10 @@ public class CurrencyTypeMapper {
     }
 
     public CurrencyTypeOutput toOutput(CurrencyTypeEntity entity) {
-        return new CurrencyTypeOutput(entity.getId(), entity.getName());
+        CurrencyTypeOutput output = new CurrencyTypeOutput();
+        output.setId(entity.getId());
+        output.setName(entity.getName());
+        return output;
     }
 
     public CurrencyTypeEntity fromInput(CurrencyTypeInput input) {

@@ -27,11 +27,6 @@ public class DonationTypeEndpoint {
         return mav;
     }
 
-//    @GetMapping("/{id}")
-//    public DonationTypeOutput getEntityById(@PathVariable Short id) {
-//        return service.getElemById(id);
-//    }
-
     //переход на страницу добавление
     @GetMapping("/add")
     public ModelAndView add() {

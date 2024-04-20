@@ -4,7 +4,7 @@
 
 <head>
 
-    <title>Fonds | Тип пожертвования</title>
+    <title>Fonds | Тип валюты</title>
 
 
     <meta charset="utf-8">
@@ -20,7 +20,7 @@
         function deleteItem(id, name) {
             var confirmation = confirm('Вы уверены, что хотите удалить эту запись? ID: ' + id + ', Название: ' + name);
             if (confirmation) {
-                fetch('/donation_types/' + id, {
+                fetch('/currency_types/' + id, {
                     method: 'DELETE',
                 })
                 .then(response => {
@@ -46,7 +46,7 @@
 
     <div align="center" class="col-md-12">
 
-        <h2>Тип пожертвования</h2>
+        <h2>Тип валюты</h2>
 
     </div>
 
@@ -55,7 +55,7 @@
             <div class="col-md-6"></div>
             <div class="col-md-6">
                 <div class="text-md-end">
-                    <a role="button" class="btn btn-primary" th:href="@{/donation_types/add}">Добавить</a>
+                    <a role="button" class="btn btn-primary" th:href="@{/currency_types/add}">Добавить</a>
                 </div>
             </div>
         </div>
@@ -71,12 +71,12 @@
             </thead>
             <tbody>
 
-            <tr th:each="donationType : ${donation_types}">
+            <tr th:each="currencyType : ${currency_types}">
                 <!--                <td th:text="${donationType.id}">ID</td>-->
                 <td>
-                    <span th:text="${donationType.id}"></span>
+                    <span th:text="${currencyType.id}"></span>
                 </td>
-                <td th:text="${donationType.name}"></td>
+                <td th:text="${currencyType.name}"></td>
                 <!--                <td class="text-center">-->
                 <!--                    <a th:href="@{'/donation_types/'+${donationType.id}}">-->
                 <!--                        <i class="table-icon fas fa-edit action-icon-left"></i>-->
@@ -92,15 +92,15 @@
 
                     <!--                    <div style="display: inline-block; vertical-align: middle;">-->
 
-                    <form th:action="@{'/donation_types/'+${donationType.id}}" method="get">
+                    <form th:action="@{'/currency_types/'+${currencyType.id}}" method="get">
                         <button type="submit">Изменить</button>
                     </form>
 
                     <span style="margin: 0 5px;">|</span>
 
                     <button
-                            th:data-id="${donationType.id}"
-                            th:data-name="${donationType.name}"
+                            th:data-id="${currencyType.id}"
+                            th:data-name="${currencyType.name}"
                             onclick="deleteItem(this.getAttribute('data-id'),this.getAttribute('data-name'))">
                         Удалить
                     </button>
@@ -134,7 +134,7 @@
             </div>
             <div class="modal-footer">
 
-                <button id="delete-button" type="button" onclick="deleteRequest(this, '/donation_types/')"
+                <button id="delete-button" type="button" onclick="deleteRequest(this, '/currency_types/')"
                         class="btn btn-danger">
                     Удалить
                 </button>
