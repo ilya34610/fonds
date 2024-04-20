@@ -1,22 +1,7 @@
  body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+
+            background-color: #efe5ff;
             color: #333;
             margin: 0;
             padding: 0;
-        }
-        h1 {
-            color: #007bff;
-            text-align: center;
-            margin-top: 50px;
-        }
-        a {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-            text-decoration: none;
-            color: #007bff;
-        }
-        a:hover {
-            text-decoration: underline;
         }
