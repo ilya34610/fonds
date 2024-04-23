@@ -351,3 +351,28 @@ ul#select2-keySelect-results {
     max-height: 600px;
     overflow: auto;
 }
+
+
+/* Общий стиль для выпадающего списка */
+select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Учитывает границы и отступы при вычислении размера элемента */
+    font-size: 16px;
+    background-color: #fff;
+}
+
+/* Стили для опций выпадающего списка */
+option {
+    padding: 8px;
+    font-size: 16px;
+    background-color: #fff;
+    color: #000;
+}
+
+/* При наведении курсора на опцию */
+option:hover {
+    background-color: #f2f2f2;
+}

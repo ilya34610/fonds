@@ -1,10 +1,14 @@
 package ru.pssbd.fonds.service;
 
 import org.springframework.stereotype.Service;
+import ru.pssbd.fonds.dto.input.CityInput;
 import ru.pssbd.fonds.dto.output.CityOutput;
+import ru.pssbd.fonds.dto.output.CountryOutput;
+import ru.pssbd.fonds.entity.CityEntity;
 import ru.pssbd.fonds.mappers.CityMapper;
 import ru.pssbd.fonds.repository.CityRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -33,4 +37,26 @@ public class CityService {
                 .orElseThrow(() -> new NoSuchElementException("Элемент с id " + id + " не найден"));
     }
 
+    public CityEntity save(CityEntity entity) {
+        return repository.save(entity);
+    }
+
+
+    public void deleteById(BigInteger id) {
+        repository.deleteById(id);
+    }
+
+    public void putById(BigInteger id, CityInput input) {
+        CityEntity entity = repository.findById(id)
+                .map(existngEntity -> mapper.fromInput(input, existngEntity))
+                .orElseThrow(() -> new EntityNotFoundException("Entity not found with id: " + id));
+        repository.save(entity);
+    }
+
+    public List<CountryOutput> getAllCountries() {
+        return repository.findAllCountries().stream()
+                .map(mapper::toOutput)
+                .collect(Collectors.toList());
+
+    }
 }
