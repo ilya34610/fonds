@@ -14,7 +14,10 @@ public class CountryMapper {
     }
 
     public CountryOutput toOutput(CountryEntity entity) {
-        return new CountryOutput(entity.getId(), entity.getName());
+        CountryOutput output = new CountryOutput();
+        output.setId(entity.getId());
+        output.setName(entity.getName());
+        return output;
     }
 
     public CountryEntity fromInput(CountryInput input) {
