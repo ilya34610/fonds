@@ -15,7 +15,11 @@ public class CityMapper {
     }
 
     public CityOutput toOutput(CityEntity entity) {
-        return new CityOutput(entity.getId(), entity.getName(), entity.getCountry());
+        CityOutput output = new CityOutput();
+        output.setId(entity.getId());
+        output.setName(entity.getName());
+        output.setCountry(entity.getCountry());
+        return output;
     }
 
     public CityEntity fromInput(CityInput input) {
