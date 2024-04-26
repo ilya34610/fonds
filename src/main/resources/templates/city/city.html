@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-
+<link rel="stylesheet" type="text/css" th:href="@{/static/css/all.css}"/>
 <head>
 
     <title>Fonds | Тип пожертвования</title>
@@ -26,8 +26,8 @@
     <div class="row">
         <div class="col-md-8 offset-md-2">
 
-            <h2 th:if="${donation_type.id == null}" class="text-center">Добавление типа пожертвования</h2>
-            <h2 th:if="${donation_type.id != null}" class="text-center">Редактирование типа пожертвования</h2>
+            <h2 th:if="${city.id == null}" class="text-center">Добавление города</h2>
+            <h2 th:if="${city.id != null}" class="text-center">Редактирование города</h2>
 
         </div>
     </div>
@@ -35,14 +35,14 @@
 
     <div class="row">
         <div class="col-md-8 offset-md-2">
-            <form id="donationTypeForm" class="form" th:object="${donation_type}">
+            <form id="cityForm" class="form" th:object="${city}">
 
-                <input th:if="${donation_type.id != null}" type="hidden" id="donationTypeIdInput" name="id"
-                       th:value="${donation_type.id}"/>
+                <input th:if="${city.id != null}" type="hidden" id="cityIdInput" name="id"
+                       th:value="${city.id}"/>
 
                 <div class="form-group">
 
-                    <label for="nameInput">Тип пожертвования</label>
+                    <label for="nameInput">Город</label>
 
                     <input id="nameInput" class="form-control" type="text" pattern=".*[^ ].*"
                            name="name"
@@ -52,19 +52,25 @@
                            required>
                 </div>
 
+                <div class="form-group" style="margin-top: 20px;">
+
+                    <label>Страна</label>
+
+                    <select id="countryInput" th:field="*{country}">
+                        <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}"
+                                th:selected="${selectedCountry != null && country.id == selectedCountry.id}"></option>
+                    </select>
+                </div>
+
                 <div class="form-group text-center">
-                    <button th:if="${donation_type.id == null}" id="submit" class="btn btn-primary" type="submit">
+                    <button th:if="${city.id == null}" id="submit" class="btn btn-primary" type="submit">
                         <!--                            onclick="saveItem()"-->
                         Добавить
                     </button>
-                    <button th:if="${donation_type.id != null}" id="submit" class="btn btn-primary" type="submit">
-                        <!--                            onclick="updateItem()"-->
-
+                    <button th:if="${city.id != null}" id="submit" class="btn btn-primary" type="submit">
                         Изменить
                     </button>
-                    <!--                    <button th:if="${donation_type.id != null}" id="submit" class="btn btn-primary" type="submit">-->
-                    <!--                        Изменить-->
-                    <!--                    </button>-->
+
                 </div>
             </form>
         </div>
@@ -86,11 +92,11 @@
 
 
 <div th:replace="fragments/error-modal :: errorModalFragment"></div>
-<script th:src="@{/static/js/controller/donation-type-controller.js}" type="text/javascript"></script>
+<script th:src="@{/static/js/controller/city-controller.js}" type="text/javascript"></script>
 
 <script th:inline="javascript">
     /*<![CDATA[*/
-    const donationTypeId = /*[[${donation_type.id}]]*/'default';
+    const cityId = /*[[${city.id}]]*/'default';
     /*]]>*/
 </script>
 

@@ -3,7 +3,9 @@ package ru.pssbd.fonds.mappers;
 import org.springframework.stereotype.Service;
 import ru.pssbd.fonds.dto.input.CityInput;
 import ru.pssbd.fonds.dto.output.CityOutput;
+import ru.pssbd.fonds.dto.output.CountryOutput;
 import ru.pssbd.fonds.entity.CityEntity;
+import ru.pssbd.fonds.entity.CountryEntity;
 
 @Service
 public class CityMapper {
@@ -24,6 +26,14 @@ public class CityMapper {
 
     public CityEntity fromInput(CityInput input) {
         return new CityEntity(input.getName(), input.getCountry());
+    }
+
+
+    public CountryOutput toOutput(CountryEntity entity) {
+        CountryOutput output = new CountryOutput();
+        output.setId(entity.getId());
+        output.setName(entity.getName());
+        return output;
     }
 
 }

@@ -3,6 +3,7 @@ package ru.pssbd.fonds.service;
 import org.springframework.stereotype.Service;
 import ru.pssbd.fonds.dto.input.CityInput;
 import ru.pssbd.fonds.dto.output.CityOutput;
+import ru.pssbd.fonds.dto.output.CountryOutput;
 import ru.pssbd.fonds.entity.CityEntity;
 import ru.pssbd.fonds.mappers.CityMapper;
 import ru.pssbd.fonds.repository.CityRepository;
@@ -52,4 +53,10 @@ public class CityService {
         repository.save(entity);
     }
 
+    public List<CountryOutput> getAllCountries() {
+        return repository.findAllCountries().stream()
+                .map(mapper::toOutput)
+                .collect(Collectors.toList());
+
+    }
 }

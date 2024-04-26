@@ -6,13 +6,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.pssbd.fonds.dto.input.CityInput;
 import ru.pssbd.fonds.dto.output.CityOutput;
+import ru.pssbd.fonds.dto.output.CountryOutput;
 import ru.pssbd.fonds.mappers.CityMapper;
 import ru.pssbd.fonds.service.CityService;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @RestController
-@RequestMapping("/city")
+@RequestMapping("/cities")
 @RequiredArgsConstructor
 public class CityEndpoint {
 
@@ -34,6 +36,8 @@ public class CityEndpoint {
     public ModelAndView add() {
         ModelAndView mav = new ModelAndView("city/city");
         mav.addObject("city", new CityOutput());
+        List<CountryOutput> countryList = service.getAllCountries();
+        mav.addObject("countries", countryList);
         return mav;
     }
 
@@ -42,6 +46,10 @@ public class CityEndpoint {
     public ModelAndView edit(@PathVariable short id) {
         ModelAndView mav = new ModelAndView("city/city");
         mav.addObject("city", service.getElemById(id));
+        List<CountryOutput> countryList = service.getAllCountries();
+        mav.addObject("countries", countryList);
+
+        mav.addObject("selectedCountry", service.getElemById(id).getCountry());
         return mav;
     }
 
