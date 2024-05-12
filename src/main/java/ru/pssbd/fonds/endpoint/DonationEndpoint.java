@@ -11,7 +11,7 @@ import ru.pssbd.fonds.service.DonationService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/donation")
+@RequestMapping("/donations")
 @RequiredArgsConstructor
 public class DonationEndpoint {
 

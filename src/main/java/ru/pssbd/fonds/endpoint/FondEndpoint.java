@@ -11,7 +11,7 @@ import ru.pssbd.fonds.service.FondService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/fond")
+@RequestMapping("/fonds")
 @RequiredArgsConstructor
 public class FondEndpoint {
 

@@ -14,7 +14,10 @@ public class CategoryMapper {
     }
 
     public CategoryOutput toOutput(CategoryEntity entity) {
-        return new CategoryOutput(entity.getId(), entity.getName());
+        CategoryOutput output = new CategoryOutput();
+        output.setId(entity.getId());
+        output.setName(entity.getName());
+        return output;
     }
 
     public CategoryEntity fromInput(CategoryInput input) {
