@@ -12,7 +12,7 @@ import ru.pssbd.fonds.service.CapitalSourceService;
 import java.util.List;
 
 @Controller
-@RequestMapping("/capital_source")
+@RequestMapping("/capital_sources")
 @RequiredArgsConstructor
 public class CapitalSourceEndpoint {
 

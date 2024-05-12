@@ -11,7 +11,7 @@ import ru.pssbd.fonds.service.CitizenService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/citizen")
+@RequestMapping("/citizens")
 @RequiredArgsConstructor
 public class CitizenEndpoint {
 

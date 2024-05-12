@@ -1,10 +1,13 @@
 package ru.pssbd.fonds.service;
 
 import org.springframework.stereotype.Service;
+import ru.pssbd.fonds.dto.input.CategoryInput;
 import ru.pssbd.fonds.dto.output.CategoryOutput;
+import ru.pssbd.fonds.entity.CategoryEntity;
 import ru.pssbd.fonds.mappers.CategoryMapper;
 import ru.pssbd.fonds.repository.CategoryRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -32,5 +35,20 @@ public class CategoryService {
                 .orElseThrow(() -> new NoSuchElementException("Элемент с id " + id + " не найден"));
     }
 
+    public CategoryEntity save(CategoryEntity entity) {
+        return repository.save(entity);
+    }
+
+
+    public void deleteById(Short id) {
+        repository.deleteById(id);
+    }
+
+    public void putById(Short id, CategoryInput input) {
+        CategoryEntity entity = repository.findById(id)
+                .map(existngEntity -> mapper.fromInput(input, existngEntity))
+                .orElseThrow(() -> new EntityNotFoundException("Entity not found with id: " + id));
+        repository.save(entity);
+    }
 
 }
