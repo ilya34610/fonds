@@ -2,6 +2,7 @@ package ru.pssbd.fonds.service;
 
 import org.springframework.stereotype.Service;
 import ru.pssbd.fonds.dto.output.FondOutput;
+import ru.pssbd.fonds.entity.FondEntity;
 import ru.pssbd.fonds.mappers.FondMapper;
 import ru.pssbd.fonds.repository.FondRepository;
 
@@ -30,6 +31,10 @@ public class FondService {
         return repository.findById(id)
                 .map(mapper::toOutput)
                 .orElseThrow(() -> new NoSuchElementException("Элемент с id " + id + " не найден"));
+    }
+
+    public FondEntity get(int id) {
+        return repository.getById(id);
     }
 
 }

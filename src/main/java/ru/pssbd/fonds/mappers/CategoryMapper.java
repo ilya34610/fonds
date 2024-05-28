@@ -21,6 +21,6 @@ public class CategoryMapper {
     }
 
     public CategoryEntity fromInput(CategoryInput input) {
-        return new CategoryEntity(input.getName());
+        return fromInput(input, new CategoryEntity());
     }
 }

@@ -45,7 +45,8 @@ public class DonationTypeEndpoint {
 
     //сохранение
     @PostMapping
-    public String add(@RequestBody DonationTypeInput input) {
+    @ResponseBody
+    public String add(@Validated @RequestBody DonationTypeInput input) {
         service.save(mapper.fromInput(input));
         return "redirect:/donation_types";
     }
@@ -53,7 +54,7 @@ public class DonationTypeEndpoint {
     //удаление
     @DeleteMapping("{id}")
     @ResponseBody
-    public String remove(@PathVariable short id) {
+    public String remove(@PathVariable Short id) {
         service.deleteById(id);
         return "redirect:/donation_types";
     }

@@ -2,6 +2,7 @@ package ru.pssbd.fonds.service;
 
 import org.springframework.stereotype.Service;
 import ru.pssbd.fonds.dto.output.CitizenOutput;
+import ru.pssbd.fonds.entity.CitizenEntity;
 import ru.pssbd.fonds.mappers.CitizenMapper;
 import ru.pssbd.fonds.repository.CitizenRepository;
 
@@ -27,10 +28,14 @@ public class CitizenService {
                 .collect(Collectors.toList());
     }
 
-    public CitizenOutput getElemById(int id) {
-        return repository.findById(BigInteger.valueOf(id))
+    public CitizenOutput getElemById(BigInteger id) {
+        return repository.findById(id)
                 .map(mapper::toOutput)
                 .orElseThrow(() -> new NoSuchElementException("Элемент с id " + id + " не найден"));
+    }
+
+    public CitizenEntity get(BigInteger id) {
+        return repository.getById(id);
     }
 
 }

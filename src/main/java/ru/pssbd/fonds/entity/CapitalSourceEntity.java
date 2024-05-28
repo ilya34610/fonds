@@ -27,22 +27,35 @@ public class CapitalSourceEntity {
     @JoinColumn(name = "id_currency_type")
     private CurrencyTypeEntity currencyType;
 
-    @Column(name = "phone")
-    private String phone;
-
     @Column(name = "donation_date")
     private LocalDate donationDate;
+
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private UserEntity user;
 
     @ManyToMany
     @JoinTable(name = "capital_sources_donation_types",
             joinColumns = @JoinColumn(name = "id_capital_source"),
             inverseJoinColumns = @JoinColumn(name = "id_donation_type"))
-    private List<DonationTypeEntity> donationType;
+    private List<DonationTypeEntity> donationTypes;
 
-    public CapitalSourceEntity(BigDecimal sum, CurrencyTypeEntity currencyType, String phone, LocalDate donationDate) {
+    @ManyToMany
+    @JoinTable(name = "capital_sources_receipts",
+            joinColumns = @JoinColumn(name = "id_capital_source"),
+            inverseJoinColumns = @JoinColumn(name = "id_receipt"))
+    private List<ReceiptEntity> receipts;
+
+    @ManyToMany
+    @JoinTable(name = "capital_sources_fonds",
+            joinColumns = @JoinColumn(name = "id_capital_source"),
+            inverseJoinColumns = @JoinColumn(name = "id_fond"))
+    private List<FondEntity> fonds;
+
+    public CapitalSourceEntity(BigDecimal sum, CurrencyTypeEntity currencyType, LocalDate donationDate) {
         this.sum = sum;
         this.currencyType = currencyType;
-        this.phone = phone;
+
         this.donationDate = donationDate;
     }
 }

@@ -1,16 +1,16 @@
 package ru.pssbd.fonds.entity;
 
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
-@Table(name = "categories")
+@Table(name = "roles")
 @Data
 @NoArgsConstructor
-public class CategoryEntity {
+public class RoleEntity {
 
     @Id
     @Column(name = "id")
@@ -19,11 +19,4 @@ public class CategoryEntity {
 
     @Column(name = "name")
     private String name;
-
-    @ManyToMany(mappedBy = "categories")
-    private List<CitizenEntity> citizens;
-
-    public CategoryEntity(String name) {
-        this.name = name;
-    }
 }

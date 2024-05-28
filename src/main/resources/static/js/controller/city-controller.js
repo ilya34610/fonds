@@ -24,7 +24,7 @@ const CityController = {
                 url = url + '/' + cityId;
                 type = "put";
             }
-            var selectedCountryId = $("#countryInput").val();
+            /*var selectedCountryId = $("#countryInput").val();
             var selectedCountryName = $("#countryInput option:selected").text();
 
             // Создаем объект страны
@@ -32,13 +32,14 @@ const CityController = {
                 id: selectedCountryId,
                 name: selectedCountryName
             };
+            */
             $.ajax({
                 type: type,
                 url: url,
                 data: JSON.stringify({
                     id: $("#cityIdInput").val(),
                     name: $("#nameInput").val(),
-                    country: countryObj,
+                    country: Number($("#countryInput").val())
                 }),
                 contentType: "application/json",
                 success: function(response) {

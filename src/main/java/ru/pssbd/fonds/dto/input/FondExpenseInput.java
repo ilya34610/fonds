@@ -4,14 +4,17 @@ import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 @Data
 @NoArgsConstructor
-public class CityInput {
+public class FondExpenseInput {
 
     @NotNull
-    private String name;
+    private BigDecimal sum;
 
     @NotNull
-    private Integer country;
+    private BigInteger citizen;
 
 }

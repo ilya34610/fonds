@@ -21,7 +21,7 @@ public class CurrencyTypeMapper {
     }
 
     public CurrencyTypeEntity fromInput(CurrencyTypeInput input) {
-        return new CurrencyTypeEntity(input.getName());
+        return fromInput(input, new CurrencyTypeEntity());
     }
 
 }

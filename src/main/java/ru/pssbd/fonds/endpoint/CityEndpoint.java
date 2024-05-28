@@ -55,7 +55,7 @@ public class CityEndpoint {
 
     //сохранение
     @PostMapping
-    public String add(@RequestBody CityInput input) {
+    public String add(@Validated @RequestBody CityInput input) {
         service.save(mapper.fromInput(input));
         return "redirect:/cities";
     }

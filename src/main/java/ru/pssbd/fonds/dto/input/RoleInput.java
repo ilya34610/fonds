@@ -6,12 +6,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CityInput {
+public class RoleInput {
 
     @NotNull
     private String name;
-
-    @NotNull
-    private Integer country;
 
 }

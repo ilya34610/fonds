@@ -5,12 +5,11 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
-public class DonationOutput {
+public class FondExpenseOutput {
     private BigInteger id;
-    private LocalDate date;
     private BigDecimal sum;
+    private CitizenOutput citizen;
 }

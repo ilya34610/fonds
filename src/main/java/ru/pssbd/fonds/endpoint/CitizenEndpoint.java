@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.pssbd.fonds.dto.output.CitizenOutput;
 import ru.pssbd.fonds.service.CitizenService;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @RestController
@@ -23,7 +24,7 @@ public class CitizenEndpoint {
     }
 
     @GetMapping("/{id}")
-    public CitizenOutput getEntityById(@PathVariable int id) {
+    public CitizenOutput getEntityById(@PathVariable BigInteger id) {
         return service.getElemById(id);
     }
 

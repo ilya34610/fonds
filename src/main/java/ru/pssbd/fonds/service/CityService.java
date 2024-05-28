@@ -20,6 +20,7 @@ public class CityService {
     private final CityRepository repository;
     private final CityMapper mapper;
 
+
     public CityService(CityRepository repository, CityMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;
@@ -58,5 +59,9 @@ public class CityService {
                 .map(mapper::toOutput)
                 .collect(Collectors.toList());
 
+    }
+
+    public CityEntity get(BigInteger id) {
+        return repository.getById(id);
     }
 }
