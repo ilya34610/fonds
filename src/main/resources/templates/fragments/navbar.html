@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="utf-8">
@@ -39,9 +39,27 @@
 
                 <span class="navbar-text mx-2">&#124;</span>
 
-                <a class="nav-link" href="#" role="button" aria-expanded="false">
+                <a class="nav-link" href="/users" role="button" aria-expanded="false">
                     Пользователи
                 </a>
+
+
+                <!--                <li class="nav-item dropdown">-->
+                <!--                    <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown"-->
+                <!--                       aria-expanded="false">-->
+                <!--                        Пользователи/роли-->
+                <!--                    </a>-->
+                <!--                    <ul class="dropdown-menu">-->
+
+                <!--                        <li><a class="dropdown-item" href="/users">Пользователи</a></li>-->
+                <!--                        <li>-->
+                <!--                            <hr class="dropdown-divider">-->
+                <!--                        </li>-->
+                <!--                        <li><a class="dropdown-item" href="#">Роли</a></li>-->
+
+                <!--                    </ul>-->
+                <!--                </li>-->
+
 
                 <span class="navbar-text mx-2">&#124;</span>
 
@@ -60,7 +78,8 @@
                     </a>
                     <ul class="dropdown-menu">
 
-                        <li><a class="dropdown-item" href="/donation_types">Тип пожертвования</a></li>
+                        <li sec:authorize="hasAuthority('ADMIN')"><a class="dropdown-item" href="/donation_types">Тип
+                            пожертвования</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>

@@ -24,5 +24,8 @@ public class UserInput {
     @NotNull
     private String phone;
 
+    @NotNull
+    private Boolean canLogin;
+
 
 }

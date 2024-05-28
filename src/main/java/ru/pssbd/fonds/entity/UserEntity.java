@@ -32,4 +32,7 @@ public class UserEntity {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "can_login")
+    private Boolean canLogin;
+
 }

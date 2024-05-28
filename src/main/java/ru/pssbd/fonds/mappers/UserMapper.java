@@ -20,6 +20,7 @@ public class UserMapper {
         entity.setLogin(input.getLogin());
         entity.setPassword(input.getPassword());
         entity.setPhone(input.getPhone());
+        entity.setCanLogin(input.getCanLogin());
         return entity;
     }
 
@@ -29,7 +30,8 @@ public class UserMapper {
                 entity.getFio(),
                 entity.getLogin(),
                 entity.getPassword(),
-                entity.getPhone());
+                entity.getPhone(),
+                entity.getCanLogin());
     }
 
     public UserEntity fromInput(UserInput input) {
