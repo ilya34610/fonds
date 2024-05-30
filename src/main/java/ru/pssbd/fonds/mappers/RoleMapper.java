@@ -1,12 +1,12 @@
 package ru.pssbd.fonds.mappers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import ru.pssbd.fonds.dto.input.RoleInput;
 import ru.pssbd.fonds.dto.output.RoleOutput;
 import ru.pssbd.fonds.entity.RoleEntity;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class RoleMapper {
 

@@ -17,7 +17,7 @@ public class UserEntity {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "id_role")
+    @JoinColumn(name = "id_roles")
     private RoleEntity role;
 
     @Column(name = "fio")

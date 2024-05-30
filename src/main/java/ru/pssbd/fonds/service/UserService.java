@@ -1,5 +1,6 @@
 package ru.pssbd.fonds.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.pssbd.fonds.dto.input.UserInput;
 import ru.pssbd.fonds.dto.output.UserOutput;
@@ -18,6 +19,7 @@ public class UserService {
     private final UserRepository repository;
     private final UserMapper mapper;
 
+    @Autowired
     public UserService(UserRepository repository, UserMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;
@@ -36,7 +38,8 @@ public class UserService {
     }
 
     public UserEntity get(Integer id) {
-        return repository.getById(id);
+        return repository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found with id " + id));
     }
 
     public UserEntity save(UserEntity entity) {
@@ -55,5 +58,9 @@ public class UserService {
         repository.save(entity);
     }
 
+    public UserOutput getRoleByLogin(String login) {
+        return repository.findByLogin(login).stream().findFirst().map(mapper::toOutput)
+                .orElseThrow(() -> new NoSuchElementException("Элемент с login " + login + " не найден"));
+    }
 
 }

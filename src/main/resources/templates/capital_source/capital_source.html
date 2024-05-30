@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css" th:href="@{/static/css/all.css}"/>
+<head>
+
+    <title>Fonds | Источник формирования капитала</title>
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+
+            <h2 th:if="${capitalSource.id == null}" class="text-center">Добавление источника формирования капитала</h2>
+            <h2 th:if="${capitalSource.id != null}" class="text-center">Редактирование источника формирования
+                капитала</h2>
+
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <form id="capitalSourceForm" class="form" th:object="${capitalSource}">
+
+                <input th:if="${capitalSource.id != null}" type="hidden" id="capitalSourceIdInput" name="id"
+                       th:value="${capitalSource.id}"/>
+
+                <div class="form-group" style="margin-top: 20px;">
+                    <label for="sumInput">Сумма</label>
+                    <input id="sumInput" class="form-control" type="number"
+                           name="sum"
+                           minlength="1"
+                           maxlength="50"
+                           th:field="*{sum}"
+                           required>
+                </div>
+
+                <div class="form-group" style="margin-top: 20px;">
+
+                    <label>Тип валюты</label>
+
+                    <select id="currencyTypeInput" th:field="*{currencyType}">
+                        <option th:each="currencyType : ${currencyTypes}"
+                                th:value="${currencyType.id}"
+                                th:text="${currencyType.name}"
+                                th:selected="${selectedCurrencyType != null && currencyType.id == selectedCurrencyType.id}"></option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-top: 20px;">
+                    <label for="donationDateInput">Дата пожертвования</label>
+                    <input id="donationDateInput" class="form-control" type="text"
+                           name="donationDate"
+                           minlength="1"
+                           maxlength="50"
+                           th:value="${#temporals.format(capitalSource.donationDate, 'yyyy-MM-dd')}" required
+                           readonly>
+                    <!--                    <input id="donationDateInput" class="form-control" type="text" name="donationDate"  minlength="1" maxlength="50" required readonly>-->
+
+                </div>
+
+                <!--                <div class="form-group" style="margin-top: 20px;" sec:authorize="hasAuthority('ADMIN')">-->
+
+                <!--                    <label>Пользователь</label>-->
+
+                <!--                    <select id="userInput" th:field="*{user}">-->
+                <!--                        <option th:each="user : ${users}"-->
+                <!--                                th:value="${user.id}"-->
+                <!--                                th:text="${user.fio}"-->
+                <!--                                th:selected="${selectedUser != null && user.id == selectedUser.id}"></option>-->
+                <!--                    </select>-->
+                <!--                </div>-->
+
+
+                <div class="form-group" style="margin-top: 20px;">
+
+                    <label>Пользователь</label>
+                    <input id="userInput" class="form-control" type="text"
+                           name="userInput"
+                           minlength="1"
+                           maxlength="50"
+                           th:value="${currentUser.fio}"
+                           required
+                           readonly>
+                </div>
+                <input type="hidden" id="userInputId" name="user" th:value="${currentUser.id}">
+
+
+                <div class="form-group" style="margin-top: 20px;">
+                    <label for="fondInput">Фонды</label>
+                    <select id="fondInput" th:field="*{fonds}">
+                        <option th:each="fond : ${fonds}"
+                                th:value="${fond.id}"
+                                th:text="${fond.name}"
+                                th:selected="${selectedFond != null && fond.id == selectedFond.id}"></option>
+                    </select>
+                </div>
+
+                <div class="form-group text-center">
+                    <button th:if="${capitalSource.id == null}" id="submit" class="btn btn-primary" type="submit">
+                        Добавить
+                    </button>
+                    <button th:if="${capitalSource.id != null}" id="submit" class="btn btn-primary" type="submit">
+                        Изменить
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
+
+
+<div th:replace="fragments/error-modal :: errorModalFragment"></div>
+<script th:src="@{/static/js/controller/capital-source-controller.js}" type="text/javascript"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const capitalSourceId = /*[[${capitalSource.id}]]*/'default';
+    /*]]>*/
+</script>
+
+</body>
+
+</html>

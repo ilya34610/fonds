@@ -1,13 +1,13 @@
 package ru.pssbd.fonds.mappers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import ru.pssbd.fonds.dto.input.FondExpenseInput;
 import ru.pssbd.fonds.dto.output.FondExpenseOutput;
 import ru.pssbd.fonds.entity.FondExpenseEntity;
 import ru.pssbd.fonds.service.CitizenService;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class FondExpenseMapper {
 

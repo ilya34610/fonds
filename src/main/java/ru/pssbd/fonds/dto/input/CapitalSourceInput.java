@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -18,10 +19,14 @@ public class CapitalSourceInput {
     @NotNull
     private Short currencyType;
 
-    @DateTimeFormat(pattern = "dd.MM.yyyy")
+    @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate donationDate;
 
     @NotNull
     private Integer user;
+
+    @NotNull
+    private List<Integer> fonds;
 
 }

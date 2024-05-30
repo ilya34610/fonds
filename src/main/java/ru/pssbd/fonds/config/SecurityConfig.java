@@ -35,6 +35,9 @@ public class SecurityConfig {
 //        return http.build();
 
         http
+                .csrf().disable()
+//                .csrfTokenRepository(csrfTokenRepository())
+//                .and()
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()  // Разрешаем доступ к странице логина и публичным страницам
                 .anyRequest().authenticated()  // Все остальные страницы требуют аутентификации
@@ -45,7 +48,10 @@ public class SecurityConfig {
                 .permitAll()
                 .and()
                 .logout()
+                .logoutUrl("/logout")  // Маршрут для logout
+                .logoutSuccessUrl("/login")  // Перенаправление после успешного выхода
                 .permitAll();
+//                .and().csrf().disable();
         return http.build();
 
     }
@@ -66,9 +72,18 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // Use NoOpPasswordEncoder for testing only
         // For production, use BCryptPasswordEncoder or another strong encoder
         return NoOpPasswordEncoder.getInstance();
     }
+
+//    // Configure the CSRF token repository
+//    private CsrfTokenRepository csrfTokenRepository() {
+//        // Create a new HttpSessionCsrfTokenRepository
+//        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+//        // Set the session attribute name for the CSRF token
+//        repository.setSessionAttributeName("_csrf");
+//        // Return the repository
+//        return repository;
+//    }
 
 }

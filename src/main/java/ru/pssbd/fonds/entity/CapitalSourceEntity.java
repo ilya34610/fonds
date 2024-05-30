@@ -52,10 +52,5 @@ public class CapitalSourceEntity {
             inverseJoinColumns = @JoinColumn(name = "id_fond"))
     private List<FondEntity> fonds;
 
-    public CapitalSourceEntity(BigDecimal sum, CurrencyTypeEntity currencyType, LocalDate donationDate) {
-        this.sum = sum;
-        this.currencyType = currencyType;
 
-        this.donationDate = donationDate;
-    }
 }

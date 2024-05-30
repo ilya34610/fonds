@@ -1,14 +1,14 @@
 package ru.pssbd.fonds.mappers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import ru.pssbd.fonds.dto.input.FondInput;
 import ru.pssbd.fonds.dto.output.FondOutput;
 import ru.pssbd.fonds.entity.FondEntity;
 import ru.pssbd.fonds.service.CityService;
 import ru.pssbd.fonds.service.UserService;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class FondMapper {
 
@@ -38,6 +38,17 @@ public class FondMapper {
                 entity.getSum()
         );
     }
+
+//    public Map<FondOutput, CapitalSourceOutput> toOutput(Map<FondEntity fondEntity, CapitalSourceEntity capitalSourceEntity) {
+//        return new FondOutput(entity.getId(),
+//                entity.getName(),
+//                cityMapper.toOutput(entity.getCity()),
+//                entity.getCreationDate(),
+//                entity.getPhone(),
+//                userMapper.toOutput(entity.getUser()),
+//                entity.getSum()
+//        );
+//    }
 
     public FondEntity fromInput(FondInput input) {
         return fromInput(input, new FondEntity());

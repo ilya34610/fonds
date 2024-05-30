@@ -1,7 +1,7 @@
 package ru.pssbd.fonds.mappers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import ru.pssbd.fonds.dto.input.CityInput;
 import ru.pssbd.fonds.dto.output.CityOutput;
 import ru.pssbd.fonds.dto.output.CountryOutput;
@@ -9,7 +9,7 @@ import ru.pssbd.fonds.entity.CityEntity;
 import ru.pssbd.fonds.entity.CountryEntity;
 import ru.pssbd.fonds.service.CountryService;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class CityMapper {
 

@@ -1,11 +1,11 @@
 package ru.pssbd.fonds.mappers;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import ru.pssbd.fonds.dto.input.CategoryInput;
 import ru.pssbd.fonds.dto.output.CategoryOutput;
 import ru.pssbd.fonds.entity.CategoryEntity;
 
-@Service
+@Component
 public class CategoryMapper {
 
     public CategoryEntity fromInput(CategoryInput input, CategoryEntity entity) {

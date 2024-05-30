@@ -43,3 +43,13 @@ const DonationTypeController = {
         });
     }
 };
+
+           // Получение CSRF токена из мета-тегов
+//        let csrfToken = $("meta[name='_csrf']").attr("content");
+//        let csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+
+//                beforeSend: function (xhr) {
+//                    // Добавляем CSRF токен в заголовок
+//                    xhr.setRequestHeader(csrfHeader, csrfToken);
+//                },
