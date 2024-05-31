@@ -1,18 +1,25 @@
 package ru.pssbd.fonds.mappers;
 
-import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import ru.pssbd.fonds.dto.input.CityInput;
 import ru.pssbd.fonds.dto.output.CityOutput;
 import ru.pssbd.fonds.dto.output.CountryOutput;
 import ru.pssbd.fonds.entity.CityEntity;
 import ru.pssbd.fonds.entity.CountryEntity;
+import ru.pssbd.fonds.service.CountryService;
 
-@Service
+@Component
+@RequiredArgsConstructor
 public class CityMapper {
+
+    private final CountryService countryService;
+
+    private final CountryMapper countryMapper;
 
     public CityEntity fromInput(CityInput input, CityEntity entity) {
         entity.setName(input.getName());
-        entity.setCountry(input.getCountry());
+        entity.setCountry(countryService.get(input.getCountry()));
         return entity;
     }
 
@@ -20,20 +27,17 @@ public class CityMapper {
         CityOutput output = new CityOutput();
         output.setId(entity.getId());
         output.setName(entity.getName());
-        output.setCountry(entity.getCountry());
+        output.setCountry(countryMapper.toOutput(entity.getCountry()));
         return output;
     }
 
     public CityEntity fromInput(CityInput input) {
-        return new CityEntity(input.getName(), input.getCountry());
+        return fromInput(input, new CityEntity());
     }
-
 
     public CountryOutput toOutput(CountryEntity entity) {
-        CountryOutput output = new CountryOutput();
-        output.setId(entity.getId());
-        output.setName(entity.getName());
-        return output;
+        return countryMapper.toOutput(entity);
     }
+
 
 }

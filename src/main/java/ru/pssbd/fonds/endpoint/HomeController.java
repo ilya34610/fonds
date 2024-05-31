@@ -14,7 +14,7 @@ public class HomeController {
         this.service = service;
     }
 
-    @GetMapping("/")
+    @GetMapping("/index")
     public String index() {
         return "index";
     }

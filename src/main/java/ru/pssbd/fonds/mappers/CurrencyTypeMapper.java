@@ -1,11 +1,11 @@
 package ru.pssbd.fonds.mappers;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import ru.pssbd.fonds.dto.input.CurrencyTypeInput;
 import ru.pssbd.fonds.dto.output.CurrencyTypeOutput;
 import ru.pssbd.fonds.entity.CurrencyTypeEntity;
 
-@Service
+@Component
 public class CurrencyTypeMapper {
 
     public CurrencyTypeEntity fromInput(CurrencyTypeInput input, CurrencyTypeEntity entity) {
@@ -21,7 +21,7 @@ public class CurrencyTypeMapper {
     }
 
     public CurrencyTypeEntity fromInput(CurrencyTypeInput input) {
-        return new CurrencyTypeEntity(input.getName());
+        return fromInput(input, new CurrencyTypeEntity());
     }
 
 }

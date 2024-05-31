@@ -35,6 +35,11 @@ public class CountryService {
                 .orElseThrow(() -> new NoSuchElementException("Элемент с id " + id + " не найден"));
     }
 
+    public CountryEntity get(int id) {
+        return repository.getById(id);
+
+    }
+
     public CountryEntity save(CountryEntity entity) {
         return repository.save(entity);
     }

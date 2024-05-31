@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
@@ -19,22 +20,22 @@ public class CitizenEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigInteger id;
 
-    @Column(name = "fio")
-    private String fio;
-
     @ManyToOne
     @JoinColumn(name = "id_city")
     private CityEntity city;
 
     @Column(name = "birth_date")
-    private LocalDate birth_date;
+    private LocalDate birthDate;
 
-    @ManyToMany
-    @JoinTable(name = "citizens_donations",
-            joinColumns = @JoinColumn(name = "id_citizen"),
-            inverseJoinColumns = @JoinColumn(name = "id_donation")
-    )
-    private List<DonationEntity> donations;
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private UserEntity user;
+
+    @Column(name = "sum")
+    private BigDecimal sum;
+
+    @ManyToMany(mappedBy = "citizens")
+    private List<FondEntity> fonds;
 
     @ManyToMany
     @JoinTable(name = "citizens_categories",
@@ -42,15 +43,8 @@ public class CitizenEntity {
             inverseJoinColumns = @JoinColumn(name = "id_category"))
     private List<CategoryEntity> categories;
 
-    @ManyToMany
-    @JoinTable(name = "citizens_fonds",
-            joinColumns = @JoinColumn(name = "id_citizen"),
-            inverseJoinColumns = @JoinColumn(name = "id_fonds"))
-    private List<FondEntity> fonds;
-
-    public CitizenEntity(String fio, CityEntity city, LocalDate birthDate) {
-        this.fio = fio;
+    public CitizenEntity(CityEntity city, LocalDate birthDate) {
         this.city = city;
-        this.birth_date = birthDate;
+        this.birthDate = birthDate;
     }
 }

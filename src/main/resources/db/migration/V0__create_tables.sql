@@ -50,7 +50,7 @@ CREATE TABLE public.cities (
 
 CREATE TABLE public.citizens (
 	id bigserial NOT NULL,
-	id_city int4 NOT NULL,
+	id_city int8 NOT NULL,
 	birth_date date NOT NULL,
 	id_user int4 NOT NULL,
 	sum numeric(12, 2) NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE public.citizens (
 );
 
 CREATE TABLE public.fond_expenses (
-	id serial NOT NULL,
+	id serial8 NOT NULL,
 	sum numeric(12, 2) NOT NULL,
 	id_citizen int2 NOT NULL,
 	CONSTRAINT fond_expenses_pk PRIMARY KEY (id),
@@ -93,16 +93,16 @@ CREATE TABLE public.capital_sources (
 	sum numeric(12, 2) NOT NULL,
 	id_currency_type smallint NOT NULL,
 	donation_date date NOT NULL,
-	id_user int2 NOT NULL,
+	id_user int4 NOT NULL,
 	CONSTRAINT capital_sources_pk PRIMARY KEY (id),
 	CONSTRAINT capital_sources_currency_type_fk FOREIGN KEY (id_currency_type) REFERENCES public.currency_type(id),
 	CONSTRAINT capital_sources_users_fk FOREIGN KEY (id_user) REFERENCES public.users(id)
 );
 
 CREATE TABLE public.receipts (
-	id serial NOT NULL,
+	id serial8 NOT NULL,
 	sum numeric(12, 2) NOT NULL,
-	id_fond int2 NOT NULL,
+	id_fond int4 NOT NULL,
 	CONSTRAINT receipts_pk PRIMARY KEY (id),
 	CONSTRAINT receipts_fonds_fk FOREIGN KEY (id_fond) REFERENCES public.fonds(id)
 );

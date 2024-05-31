@@ -2,8 +2,8 @@ package ru.pssbd.fonds.dto.output;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import ru.pssbd.fonds.entity.CityEntity;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
 
@@ -11,7 +11,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class CitizenOutput {
     private BigInteger id;
-    private String fio;
-    private CityEntity city;
+    private CityOutput city;
     private LocalDate birthDate;
+    private UserOutput user;
+    private BigDecimal sum;
+
 }

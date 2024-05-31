@@ -1,13 +1,17 @@
 package ru.pssbd.fonds.dto.input;
 
+import com.sun.istack.NotNull;
 import lombok.Data;
-import ru.pssbd.fonds.entity.CountryEntity;
-
-import java.math.BigInteger;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class CityInput {
-    private BigInteger id;
+
+    @NotNull
     private String name;
-    private CountryEntity country;
+
+    @NotNull
+    private Integer country;
+
 }

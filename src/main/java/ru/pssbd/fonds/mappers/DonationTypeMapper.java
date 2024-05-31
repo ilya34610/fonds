@@ -1,11 +1,13 @@
 package ru.pssbd.fonds.mappers;
 
-import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import ru.pssbd.fonds.dto.input.DonationTypeInput;
 import ru.pssbd.fonds.dto.output.DonationTypeOutput;
 import ru.pssbd.fonds.entity.DonationTypeEntity;
 
-@Service
+@Component
+@RequiredArgsConstructor
 public class DonationTypeMapper {
     public DonationTypeEntity fromInput(DonationTypeInput input, DonationTypeEntity entity) {
         entity.setName(input.getName());
@@ -20,6 +22,6 @@ public class DonationTypeMapper {
     }
 
     public DonationTypeEntity fromInput(DonationTypeInput input) {
-        return new DonationTypeEntity(input.getName());
+        return fromInput(input, new DonationTypeEntity());
     }
 }

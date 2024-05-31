@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Fonds | Пользователь</title>
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+          integrity="sha384-undefined" crossorigin="anonymous">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <script>
+        function deleteItem(id, name) {
+            var confirmation = confirm('Вы уверены, что хотите удалить эту запись? ID: ' + id + ', Название: ' + name);
+            if (confirmation) {
+                fetch('/cities/' + id, {
+                    method: 'DELETE',
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    console.log('Item ' + id + ' was deleted successfully');
+                    window.location.reload();
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            }
+        }
+    </script>
+
+
+</head>
+
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<div class="container-fluid">
+
+    <div align="center" class="col-md-12">
+
+        <h2>Пользователи</h2>
+
+    </div>
+
+    <div class="col-xs-12 col-md-12">
+        <div class="row" style="margin-bottom: 10px">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+                <div class="text-md-end">
+                    <a role="button" class="btn btn-primary" th:href="@{/cities/add}">Добавить</a>
+                </div>
+            </div>
+        </div>
+
+
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr align="center">
+                <th width="100px">ID</th>
+                <th>Роль</th>
+                <th>ФИО</th>
+                <th>Логин</th>
+                <th>Телефон</th>
+                <th width="400px">Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="city : ${cities}">
+                <td>
+                    <span th:text="${city.id}"></span>
+                </td>
+                <td th:text="${city.name}"></td>
+
+                <td th:text="${city.country.name}"></td>
+
+                <td class="text-center" style="display: flex; align-items: center;">
+
+                    <form th:action="@{'/cities/'+${city.id}}" method="get">
+                        <button type="submit">Изменить</button>
+                    </form>
+
+                    <span style="margin: 0 5px;">|</span>
+
+                    <button
+                            th:data-id="${city.id}"
+                            th:data-name="${city.name}"
+                            onclick="deleteItem(this.getAttribute('data-id'),this.getAttribute('data-name'))">
+                        Удалить
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div th:replace="fragments/error-modal :: errorModalFragment"></div>
+<div th:replace="fragments/success-modal :: successModalFragment"></div>
+<div class="modal fade" id="deleteAlertModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-sm-11">
+                        <h4 class="modal-title">Подтвердите действие</h4>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите удалить эту запись?</p>
+            </div>
+            <div class="modal-footer">
+
+                <button id="delete-button" type="button" onclick="deleteRequest(this, '/cities/')"
+                        class="btn btn-danger">
+                    Удалить
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+<script th:src="@{/static/js/controller/delete-controller.js}" type="text/javascript"></script>
+<script th:src="@{/static/js/util/button-util.js}" type="text/javascript"></script>
+
+
+</html>

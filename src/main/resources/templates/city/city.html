@@ -57,7 +57,9 @@
                     <label>Страна</label>
 
                     <select id="countryInput" th:field="*{country}">
-                        <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}"
+                        <option th:each="country : ${countries}"
+                                th:value="${country.id}"
+                                th:text="${country.name}"
                                 th:selected="${selectedCountry != null && country.id == selectedCountry.id}"></option>
                     </select>
                 </div>

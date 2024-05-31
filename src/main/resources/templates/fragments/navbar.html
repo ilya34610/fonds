@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="utf-8">
@@ -22,7 +22,7 @@
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary" th:fragment="navbar">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">Fonds</a>
+        <a class="navbar-brand" href="/index">Fonds</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -31,36 +31,58 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                <span class="navbar-text mx-2">&#124;</span>
+                <span class="navbar-text mx-2" sec:authorize="hasAnyAuthority('ADMIN', 'STAFF')">&#124;</span>
 
-                <a class="nav-link" href="" role="button" aria-expanded="false">
+                <a class="nav-link" href="" role="button" aria-expanded="false"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'STAFF')">
                     Фонды
                 </a>
 
-                <span class="navbar-text mx-2">&#124;</span>
+                <span class="navbar-text mx-2" sec:authorize="hasAuthority('ADMIN')">&#124;</span>
 
-                <a class="nav-link" href="#" role="button" aria-expanded="false">
+                <a class="nav-link" href="/users" role="button" aria-expanded="false"
+                   sec:authorize="hasAuthority('ADMIN')">
                     Пользователи
                 </a>
 
-                <span class="navbar-text mx-2">&#124;</span>
 
-                <a class="nav-link" href="#" role="button" aria-expanded="false">
+                <!--                <li class="nav-item dropdown">-->
+                <!--                    <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown"-->
+                <!--                       aria-expanded="false">-->
+                <!--                        Пользователи/роли-->
+                <!--                    </a>-->
+                <!--                    <ul class="dropdown-menu">-->
+
+                <!--                        <li><a class="dropdown-item" href="/users">Пользователи</a></li>-->
+                <!--                        <li>-->
+                <!--                            <hr class="dropdown-divider">-->
+                <!--                        </li>-->
+                <!--                        <li><a class="dropdown-item" href="#">Роли</a></li>-->
+
+                <!--                    </ul>-->
+                <!--                </li>-->
+
+
+                <span class="navbar-text mx-2" sec:authorize="hasAnyAuthority('ADMIN', 'DONATER')">&#124;</span>
+
+                <a class="nav-link" href="/capital_sources" role="button" aria-expanded="false"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'DONATER')">
                     Источник формирования капитала
                 </a>
 
-                <span class="navbar-text mx-2">&#124;</span>
+                <span class="navbar-text mx-2" sec:authorize="hasAuthority('ADMIN')">&#124;</span>
 
                 <li class="nav-item dropdown">
 
 
                     <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown"
-                       aria-expanded="false">
+                       aria-expanded="false" sec:authorize="hasAuthority('ADMIN')">
                         Справочники
                     </a>
                     <ul class="dropdown-menu">
 
-                        <li><a class="dropdown-item" href="/donation_types">Тип пожертвования</a></li>
+                        <li><a class="dropdown-item" href="/donation_types">Тип
+                            пожертвования</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -80,6 +102,17 @@
                         <li><a class="dropdown-item" href="/categories">Категория</a></li>
                     </ul>
                 </li>
+
+                <span class="navbar-text mx-2">&#124;</span>
+
+                <div>
+                    <form id="logoutForm" th:action="@{/logout}" method="post" style="display: none;">
+                        <!--                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+                        <input type="hidden"/>
+                    </form>
+                    <a href="/login" class="nav-link"
+                       onclick="document.getElementById('logoutForm').submit(); return false;">Выйти</a>
+                </div>
 
             </ul>
         </div>

@@ -35,6 +35,10 @@ public class CurrencyTypeService {
                 .orElseThrow(() -> new NoSuchElementException("Элемент с id " + id + " не найден"));
     }
 
+    public CurrencyTypeEntity get(short id) {
+        return repository.getById(id);
+    }
+
     public CurrencyTypeEntity save(CurrencyTypeEntity entity) {
         return repository.save(entity);
     }
