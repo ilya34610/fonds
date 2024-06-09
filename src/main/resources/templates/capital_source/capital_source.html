@@ -53,7 +53,19 @@
 
                 <div class="form-group" style="margin-top: 20px;">
 
-                    <label>Тип валюты</label>
+                    <label>Тип тип пожертвования</label>
+
+                    <select id="donationTypeInput" th:field="*{donationTypes}">
+                        <option th:each="donationType : ${donationTypes}"
+                                th:value="${donationType.id}"
+                                th:text="${donationType.name}"
+                                th:selected="${selectedDonationType != null && donationType.id == selectedDonationType.id}"></option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-top: 20px;">
+
+                <label>Тип валюты</label>
 
                     <select id="currencyTypeInput" th:field="*{currencyType}">
                         <option th:each="currencyType : ${currencyTypes}"

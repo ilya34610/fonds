@@ -33,7 +33,7 @@
 
                 <span class="navbar-text mx-2" sec:authorize="hasAnyAuthority('ADMIN', 'STAFF')">&#124;</span>
 
-                <a class="nav-link" href="" role="button" aria-expanded="false"
+                <a class="nav-link" href="/fonds" role="button" aria-expanded="false"
                    sec:authorize="hasAnyAuthority('ADMIN', 'STAFF')">
                     Фонды
                 </a>
@@ -43,6 +43,20 @@
                 <a class="nav-link" href="/users" role="button" aria-expanded="false"
                    sec:authorize="hasAuthority('ADMIN')">
                     Пользователи
+                </a>
+
+                <span class="navbar-text mx-2" sec:authorize="hasAuthority('FOUNDER')">&#124;</span>
+
+                <a class="nav-link" href="/receiptAndFond_expenses" role="button" aria-expanded="false"
+                   sec:authorize="hasAuthority('FOUNDER')">
+                    Поступления/траты фондов
+                </a>
+
+                <span class="navbar-text mx-2" sec:authorize="hasAuthority('USER')">&#124;</span>
+
+                <a class="nav-link" href="/citizens/citizen_user" role="button" aria-expanded="false"
+                   sec:authorize="hasAuthority('USER')">
+                    Личный кабинет
                 </a>
 
 
@@ -63,10 +77,10 @@
                 <!--                </li>-->
 
 
-                <span class="navbar-text mx-2" sec:authorize="hasAnyAuthority('ADMIN', 'DONATER')">&#124;</span>
+                <span class="navbar-text mx-2" sec:authorize="hasAnyAuthority('DONATER', 'ADMIN')">&#124;</span>
 
                 <a class="nav-link" href="/capital_sources" role="button" aria-expanded="false"
-                   sec:authorize="hasAnyAuthority('ADMIN', 'DONATER')">
+                   sec:authorize="hasAnyAuthority('DONATER', 'ADMIN')">
                     Источник формирования капитала
                 </a>
 

@@ -19,7 +19,8 @@ public class FondInput {
     @NotNull
     private BigInteger city;
 
-    @DateTimeFormat(pattern = "dd.MM.yyyy")
+    @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate creationDate;
 
     @NotNull

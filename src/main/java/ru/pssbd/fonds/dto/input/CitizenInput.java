@@ -16,7 +16,7 @@ public class CitizenInput {
     @NotNull
     private BigInteger city;
 
-    @DateTimeFormat(pattern = "dd.MM.yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 
     @NotNull

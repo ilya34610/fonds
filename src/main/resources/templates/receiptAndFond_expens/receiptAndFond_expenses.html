@@ -4,7 +4,7 @@
 
 <head>
 
-    <title>Fonds | Города</title>
+    <title>Fonds | Поступления и траты фонда</title>
 
 
     <meta charset="utf-8">
@@ -46,28 +46,88 @@
 
     <div align="center" class="col-md-12">
 
-        <h2>Города</h2>
+        <h2>Поступления</h2>
 
     </div>
 
     <div class="col-xs-12 col-md-12">
+
         <div class="row" style="margin-bottom: 10px">
             <div class="col-md-6"></div>
             <div class="col-md-6">
                 <div class="text-md-end">
-                    <a role="button" class="btn btn-primary" th:href="@{/cities/add}">Добавить</a>
+                    <a role="button" class="btn btn-primary" th:href="@{/fonds/excel}">Преобразовать в Excel</a>
                 </div>
             </div>
         </div>
+
+    </div>
+
+    <div class="col-xs-12 col-md-12">
+        <!--        <div class="row" style="margin-bottom: 10px">-->
+        <!--            <div class="col-md-6"></div>-->
+        <!--            <div class="col-md-6">-->
+        <!--                <div class="text-md-end">-->
+        <!--                    <a role="button" class="btn btn-primary" th:href="@{/cities/add}">Добавить</a>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
 
 
         <table class="table table-bordered table-hover">
             <thead>
             <tr align="center">
                 <th width="100px">ID</th>
-                <th>Название</th>
-                <th>Страна</th>
-                <th width="400px">Действия</th>
+                <th>Источник формирования капитала</th>
+                <th>Фонд</th>
+                <th>Поступления</th>
+                <!--                <th width="400px">Действия</th>-->
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="receiptCapitalSource : ${receiptsCapitalSources}">
+                <td>
+                    <span th:text="${receiptCapitalSource.capitalSource.id}"></span>
+                </td>
+                <td th:text="${receiptCapitalSource.capitalSource.user.fio}"></td>
+
+                <td th:text="${receiptCapitalSource.capitalSource.fonds[0].name}"></td>
+                <td th:text="${receiptCapitalSource.capitalSource.sum}"></td>
+
+                <!--                <td class="text-center" style="display: flex; align-items: center;">-->
+
+                <!--                    <form th:action="@{'/cities/'+${city.id}}" method="get">-->
+                <!--                        <button type="submit">Изменить</button>-->
+                <!--                    </form>-->
+
+                <!--                    <span style="margin: 0 5px;">|</span>-->
+
+                <!--                    <button-->
+                <!--                            th:data-id="${city.id}"-->
+                <!--                            th:data-name="${city.name}"-->
+                <!--                            onclick="deleteItem(this.getAttribute('data-id'),this.getAttribute('data-name'))">-->
+                <!--                        Удалить-->
+                <!--                    </button>-->
+                <!--                </td>-->
+            </tr>
+            </tbody>
+        </table>
+
+        <div align="center" class="col-md-12">
+
+            <h2>Траты</h2>
+
+        </div>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr align="center">
+                <th width="100px">ID</th>
+                <th>Фонд</th>
+                <th>Гражданин</th>
+                <th>Траты</th>
+                <!--                <th width="400px">Действия</th>-->
             </tr>
             </thead>
 
@@ -80,24 +140,26 @@
 
                 <td th:text="${city.country.name}"></td>
 
-                <td class="text-center" style="display: flex; align-items: center;">
+                <!--                <td class="text-center" style="display: flex; align-items: center;">-->
 
-                    <form th:action="@{'/cities/'+${city.id}}" method="get">
-                        <button type="submit">Изменить</button>
-                    </form>
+                <!--                    <form th:action="@{'/cities/'+${city.id}}" method="get">-->
+                <!--                        <button type="submit">Изменить</button>-->
+                <!--                    </form>-->
 
-                    <span style="margin: 0 5px;">|</span>
+                <!--                    <span style="margin: 0 5px;">|</span>-->
 
-                    <button
-                            th:data-id="${city.id}"
-                            th:data-name="${city.name}"
-                            onclick="deleteItem(this.getAttribute('data-id'),this.getAttribute('data-name'))">
-                        Удалить
-                    </button>
-                </td>
+                <!--                    <button-->
+                <!--                            th:data-id="${city.id}"-->
+                <!--                            th:data-name="${city.name}"-->
+                <!--                            onclick="deleteItem(this.getAttribute('data-id'),this.getAttribute('data-name'))">-->
+                <!--                        Удалить-->
+                <!--                    </button>-->
+                <!--                </td>-->
             </tr>
             </tbody>
         </table>
+
+
     </div>
 </div>
 
