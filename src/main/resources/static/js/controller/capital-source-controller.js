@@ -48,6 +48,7 @@ const CapitalSourceController = {
             var currencyTypeIn = Number($("#currencyTypeInput").val());
             var donationDateIn = $("#donationDateInput").val();
             var userIn = Number($("#userInputId").val());
+            var donationTypeIn = Number($("#donationTypeInput").val());
             $.ajax({
                 type: type,
                 url: url,
@@ -57,7 +58,8 @@ const CapitalSourceController = {
                     currencyType: currencyTypeIn,
                     donationDate: donationDateIn,
                     user: userIn,
-                    fonds: [Number(fondIn)]
+                    fonds: [Number(fondIn)],
+                    donationTypes: [Number(donationTypeIn)]
                 }),
                 contentType: "application/json",
                 success: function(response) {

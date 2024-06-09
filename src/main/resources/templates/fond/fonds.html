@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
 
-    <title>Fonds | Города</title>
+    <title>Fonds | Фонды</title>
 
 
     <meta charset="utf-8">
@@ -20,7 +20,7 @@
         function deleteItem(id, name) {
             var confirmation = confirm('Вы уверены, что хотите удалить эту запись? ID: ' + id + ', Название: ' + name);
             if (confirmation) {
-                fetch('/cities/' + id, {
+                fetch('/fonds/' + id, {
                     method: 'DELETE',
                 })
                 .then(response => {
@@ -46,52 +46,91 @@
 
     <div align="center" class="col-md-12">
 
-        <h2>Города</h2>
+        <h2>Фонды</h2>
 
     </div>
 
+
     <div class="col-xs-12 col-md-12">
+
         <div class="row" style="margin-bottom: 10px">
-            <div class="col-md-6"></div>
-            <div class="col-md-6">
+            <div class="col-md-6" sec:authorize="hasAuthority('ADMIN')"></div>
+            <div class="col-md-6" sec:authorize="hasAuthority('ADMIN')">
                 <div class="text-md-end">
-                    <a role="button" class="btn btn-primary" th:href="@{/cities/add}">Добавить</a>
+                    <a role="button" class="btn btn-primary" th:href="@{/fonds/add}">Добавить</a>
                 </div>
             </div>
+
+            <div class="col-md-6" sec:authorize="hasAuthority('STAFF')"></div>
+            <div class="col-md-6" sec:authorize="hasAuthority('STAFF')">
+                <div class="text-md-end">
+                    <a role="button" class="btn btn-primary" th:href="@{/fonds/distribution}">Распределение средств</a>
+                </div>
+            </div>
+
         </div>
 
 
         <table class="table table-bordered table-hover">
+
+            <!--            <form method="get">-->
+
+            <div class="form-group col-xs-5 col-md-5">
+                <label for="idFond">Название</label>
+                <input type="text" id="idFond" class="form-control"
+                       placeholder="Введите название фонда">
+                <!--                    th:field="${filter.name}"-->
+            </div>
+            <div class="col-xs-1 col-md-1 marginTopFilterButton">
+                <div class="form-group">
+                    <button id="searchButtonFond" class="btn btn-light button-width" type="submit">Поиск</button>
+                </div>
+            </div>
+            <!--            </form>-->
             <thead>
             <tr align="center">
                 <th width="100px">ID</th>
                 <th>Название</th>
+                <th>Город</th>
                 <th>Страна</th>
-                <th width="400px">Действия</th>
+                <th>Дата создания</th>
+                <th>Телефон</th>
+                <th>Персонал</th>
+                <th>Баланс</th>
+                <th width="400px" sec:authorize="hasAuthority('ADMIN')">Действия</th>
             </tr>
             </thead>
 
             <tbody>
-            <tr th:each="city : ${cities}">
+            <tr th:each="fond : ${fonds}">
                 <td>
-                    <span th:text="${city.id}"></span>
+                    <span th:text="${fond.id}"></span>
                 </td>
-                <td th:text="${city.name}"></td>
+                <td th:text="${fond.name}"></td>
+                <td th:text="${fond.city.name}"></td>
+                <td th:text="${fond.city.country.name}"></td>
+                <td th:text="${fond.creationDate}"></td>
+                <td th:text="${fond.phone}"></td>
+                <td th:text="${fond.user.fio}"></td>
+                <td th:text="${fond.sum}"></td>
+                <!--                <td>-->
+                <!--                    <span th:text="${capitalSource_fonds.fond.name}"></span>-->
+                <!--                </td>-->
 
-                <td th:text="${city.country.name}"></td>
 
-                <td class="text-center" style="display: flex; align-items: center;">
+                <td class="text-center" style="display: flex; align-items: center;"
+                    sec:authorize="hasAuthority('ADMIN')">
 
-                    <form th:action="@{'/cities/'+${city.id}}" method="get">
+                    <form th:action="@{'/fonds/'+${fond.id}}" method="get">
                         <button type="submit">Изменить</button>
                     </form>
 
                     <span style="margin: 0 5px;">|</span>
 
                     <button
-                            th:data-id="${city.id}"
-                            th:data-name="${city.name}"
-                            onclick="deleteItem(this.getAttribute('data-id'),this.getAttribute('data-name'))">
+                            th:data-id="${fond.id}"
+                            th:data-name="${fond.name}"
+                            onclick="deleteItem(this.getAttribute('data-id'),this.getAttribute('data-sum'))">
                         Удалить
                     </button>
                 </td>
@@ -123,7 +162,7 @@
             </div>
             <div class="modal-footer">
 
-                <button id="delete-button" type="button" onclick="deleteRequest(this, '/cities/')"
+                <button id="delete-button" type="button" onclick="deleteRequest(this, '/fonds/')"
                         class="btn btn-danger">
                     Удалить
                 </button>

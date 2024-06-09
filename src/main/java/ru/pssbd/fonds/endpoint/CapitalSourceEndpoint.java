@@ -30,6 +30,7 @@ public class CapitalSourceEndpoint {
     private final FondService fondService;
     private final RoleService roleService;
 
+
     private final CapitalSourceMapper mapper;
     private final UserMapper userMapper;
 

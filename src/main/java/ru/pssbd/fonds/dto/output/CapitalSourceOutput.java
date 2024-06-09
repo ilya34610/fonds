@@ -19,4 +19,5 @@ public class CapitalSourceOutput {
     private LocalDate donationDate;
     private UserOutput user;
     private List<FondOutput> fonds;
+    private List<DonationTypeOutput> donationTypes;
 }

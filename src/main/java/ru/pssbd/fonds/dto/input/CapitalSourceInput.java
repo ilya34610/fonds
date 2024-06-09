@@ -29,4 +29,7 @@ public class CapitalSourceInput {
     @NotNull
     private List<Integer> fonds;
 
+    @NotNull
+    private List<Integer> donationTypes;
+
 }

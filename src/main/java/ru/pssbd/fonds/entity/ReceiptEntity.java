@@ -29,4 +29,10 @@ public class ReceiptEntity {
     @ManyToMany(mappedBy = "receipts")
     private List<CapitalSourceEntity> capitalSources;
 
+    public ReceiptEntity(BigDecimal sum, FondEntity fond) {
+
+        this.sum = sum;
+        this.fond = fond;
+
+    }
 }

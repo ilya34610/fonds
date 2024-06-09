@@ -2,17 +2,20 @@ package ru.pssbd.fonds.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.pssbd.fonds.dto.input.CapitalSourceInput;
 import ru.pssbd.fonds.dto.output.CapitalSourceOutput;
 import ru.pssbd.fonds.dto.output.FondCapitalSourceOutput;
 import ru.pssbd.fonds.dto.output.UserOutput;
 import ru.pssbd.fonds.entity.CapitalSourceEntity;
 import ru.pssbd.fonds.entity.FondEntity;
+import ru.pssbd.fonds.entity.ReceiptEntity;
 import ru.pssbd.fonds.entity.UserEntity;
 import ru.pssbd.fonds.mappers.CapitalSourceMapper;
 import ru.pssbd.fonds.mappers.FondMapper;
 import ru.pssbd.fonds.repository.CapitalSourceRepository;
 import ru.pssbd.fonds.repository.FondRepository;
+import ru.pssbd.fonds.repository.ReceiptRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.math.BigInteger;
@@ -27,16 +30,18 @@ public class CapitalSourceService {
     private final CapitalSourceRepository repository;
     private final CapitalSourceMapper mapper;
 
-//    private final FondRepository fondRepository;
+    private final FondRepository fondRepository;
+    private final ReceiptRepository receiptRepository;
 //    private final FondMapper fondMapper;
 
     private final UserService userService;
 
     @Autowired
-    public CapitalSourceService(CapitalSourceRepository repository, CapitalSourceMapper mapper, FondRepository fondRepository, FondMapper fondMapper, UserService userService) {
+    public CapitalSourceService(CapitalSourceRepository repository, CapitalSourceMapper mapper, FondRepository fondRepository, FondMapper fondMapper, ReceiptRepository receiptRepository, UserService userService) {
         this.repository = repository;
         this.mapper = mapper;
-//        this.fondRepository = fondRepository;
+        this.fondRepository = fondRepository;
+        this.receiptRepository = receiptRepository;
 //        this.fondMapper = fondMapper;
         this.userService = userService;
     }
@@ -60,7 +65,19 @@ public class CapitalSourceService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public CapitalSourceEntity save(CapitalSourceEntity entity) {
+
+        fondRepository.plusBalance(entity.getSum(), entity.getFonds().get(0).getId());
+
+//        receiptRepository.plusNewReceipt(entity.getSum(), entity.getFonds().get(0).getId());
+
+        List<ReceiptEntity> recieptList = new ArrayList<>();
+        ReceiptEntity receiptEntity = new ReceiptEntity(entity.getSum(), entity.getFonds().get(0));
+        receiptRepository.save(receiptEntity);
+        recieptList.add(receiptEntity);
+        entity.setReceipts(recieptList);
+
         return repository.save(entity);
     }
 

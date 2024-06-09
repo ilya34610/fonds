@@ -7,7 +7,9 @@ import org.springframework.stereotype.Component;
 import ru.pssbd.fonds.dto.input.CapitalSourceInput;
 import ru.pssbd.fonds.dto.output.CapitalSourceOutput;
 import ru.pssbd.fonds.entity.CapitalSourceEntity;
+import ru.pssbd.fonds.entity.DonationTypeEntity;
 import ru.pssbd.fonds.entity.FondEntity;
+import ru.pssbd.fonds.repository.DonationTypeRepository;
 import ru.pssbd.fonds.repository.FondRepository;
 import ru.pssbd.fonds.service.CurrencyTypeService;
 import ru.pssbd.fonds.service.FondService;
@@ -33,7 +35,9 @@ public class CapitalSourceMapper {
     private final UserMapper userMapper;
     @Autowired
     private final FondMapper fondMapper;
+    private final DonationTypeRepository donationTypeRepository;
 
+    private final DonationTypeMapper donationTypeMapper;
     @Autowired
     private FondRepository fondRepository;
 
@@ -47,11 +51,18 @@ public class CapitalSourceMapper {
         entity.setCurrencyType(currencyTypeService.get(input.getCurrencyType()));
         entity.setDonationDate(input.getDonationDate());
         entity.setUser(userService.get(input.getUser()));
+
         Integer fondsId = input.getFonds().get(0);
         FondEntity fondTemp = fondRepository.getById(fondsId.intValue());
         List<FondEntity> fondList = new ArrayList<>();
         fondList.add(fondTemp);
         entity.setFonds(fondList);
+
+        Integer donationTypeId = input.getDonationTypes().get(0);
+        DonationTypeEntity donationTypeTemp = donationTypeRepository.getById(donationTypeId.shortValue());
+        List<DonationTypeEntity> donationTypeList = new ArrayList<>();
+        donationTypeList.add(donationTypeTemp);
+        entity.setDonationTypes(donationTypeList);
         return entity;
     }
 
@@ -61,7 +72,8 @@ public class CapitalSourceMapper {
                 currencyTypeMapper.toOutput(entity.getCurrencyType()),
                 entity.getDonationDate(),
                 userMapper.toOutput(entity.getUser()),
-                entity.getFonds().stream().map(fondMapper::toOutput).collect(Collectors.toList()));
+                entity.getFonds().stream().map(fondMapper::toOutput).collect(Collectors.toList()),
+                entity.getDonationTypes().stream().map(donationTypeMapper::toOutput).collect(Collectors.toList()));
     }
 
 }

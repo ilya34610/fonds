@@ -1,11 +1,13 @@
 package ru.pssbd.fonds.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.pssbd.fonds.dto.output.CitizenOutput;
 import ru.pssbd.fonds.entity.CitizenEntity;
 import ru.pssbd.fonds.mappers.CitizenMapper;
 import ru.pssbd.fonds.repository.CitizenRepository;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -36,6 +38,16 @@ public class CitizenService {
 
     public CitizenEntity get(BigInteger id) {
         return repository.getById(id);
+    }
+
+
+    public CitizenOutput getCitizenByUser(Integer id) {
+        return mapper.toOutput(repository.getByIdUser(id));
+    }
+
+    @Transactional
+    public void minusBalance(BigDecimal sum, BigInteger id) {
+        repository.minusBalance(sum, id);
     }
 
 }

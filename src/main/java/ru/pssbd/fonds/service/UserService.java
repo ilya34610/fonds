@@ -63,4 +63,9 @@ public class UserService {
                 .orElseThrow(() -> new NoSuchElementException("Элемент с login " + login + " не найден"));
     }
 
+    public List<UserOutput> getAllElemByRoleStaff() {
+        return repository.getStaffs().stream().map(mapper::toOutput).collect(Collectors.toList());
+
+    }
+
 }

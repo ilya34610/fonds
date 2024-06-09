@@ -27,4 +27,12 @@ public class HomeController {
 
     }
 
+    @GetMapping("/forTableInKP")
+    public ModelAndView tableInKP() {
+        ModelAndView mav = new ModelAndView("/forTableInKP");
+//        mav.addObject("capitalSources", service.getAllElem());
+        return mav;
+
+    }
+
 }

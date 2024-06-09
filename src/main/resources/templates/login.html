@@ -36,9 +36,10 @@
     <div class="row justify-content-center align-items-center" style="height: 50vh;">
         <div class="table-form col-md-4">
             <form th:action="@{/login}" method="post" autocomplete="off">
-                <h2 class="text-center">Вход</h2>
-                <h5 class="text-center">Фонды</h5>
-                <p th:if="${param.error}" align="center" class="error text-danger">Неправильный логин или пароль</p>
+                <h2 class="text-center" style="margin-top:20px">Вход</h2>
+                <h5 class="text-center" style="margin-top:20px">Учет деятельности благотворительных фондов</h5>
+                <p th:if="${param.error}" align="center" class="error text-danger" style="margin-top:20px">Неправильный
+                    логин или пароль</p>
 
                 <div class="form-group">
                     <label for="login">Логин</label>
@@ -48,7 +49,7 @@
                            pattern="^[a-zA-Z0-9_,!?-]+$">
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" style="margin-top:20px">
                     <label for="password">Пароль</label>
                     <input id="password" type="password" name="password" class="form-control"
                            title="Не состоящая из одних пробелов строка, минимум 4 символа, максимум - 30"
