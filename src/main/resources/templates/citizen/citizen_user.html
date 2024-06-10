@@ -75,7 +75,7 @@
                 <table class="table table-striped">
                     <thead>
                     <tr align="center">
-                        <th width="100px">ID</th>
+                        <!--                        <th width="100px">ID</th>-->
                         <th>Название</th>
                         <th>Город</th>
                         <th>Страна</th>
@@ -87,7 +87,17 @@
                     </thead>
 
                     <tbody>
-                    <!--                заполнение таблицы-->
+                    <tr th:each="currentFond : ${currentFonds}">
+                        <!--                        <td>-->
+                        <!--                            <span th:text="${currentFond.fond.id}"></span>-->
+                        <!--                        </td>-->
+                        <td th:text="${currentFond.fond.name}"></td>
+                        <td th:text="${currentFond.fond.city.name}"></td>
+                        <td th:text="${currentFond.fond.city.country.name}"></td>
+                        <td th:text="${currentFond.fond.creationDate}"></td>
+                        <td th:text="${currentFond.fond.phone}"></td>
+                        <td th:text="${currentFond.fondExpense.sum}"></td>
+                    </tr>
                     </tbody>
 
                 </table>

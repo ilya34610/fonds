@@ -28,4 +28,10 @@ public class CityEntity {
         this.name = name;
         this.country = country;
     }
+
+    public CityEntity(BigInteger id) {
+
+        this.id = id;
+
+    }
 }

@@ -35,4 +35,10 @@ public class UserEntity {
     @Column(name = "can_login")
     private Boolean canLogin;
 
+    public UserEntity(Integer id) {
+
+        this.id = id;
+
+    }
+
 }

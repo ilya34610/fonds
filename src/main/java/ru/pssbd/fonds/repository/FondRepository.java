@@ -34,6 +34,46 @@ public interface FondRepository extends JpaRepository<FondEntity, Integer> {
     @Query("UPDATE FondEntity f SET f.sum = f.sum - :sum WHERE f.id = :id ")
     void minusBalance(@Param("sum") BigDecimal sum, @Param("id") Integer id);
 
-//
-//    findAllElemByCurrentDonater
+
+//    List<FondEntity> findAllElemByCurrentCitizen(@Param("idUser") Integer idUser);
+
+//    @Query("SELECT f AS fond, fe AS fondExpenses FROM FondEntity f JOIN f.fondExpenses fe WHERE fe.citizen.id = :idUser")
+//    List<Object[]> findAllElemByCurrentCitizen(@Param("idUser") BigInteger idUser);
+
+//    @Query("SELECT f, fe FROM FondEntity f JOIN f.fondExpenses fe WHERE fe.citizen.id = :idUser")
+//    List<Object[]> findAllElemByCurrentCitizen(@Param("idUser") BigInteger idUser);
+
+
+    @Query("SELECT f, fe FROM FondEntity f " +
+            "JOIN f.fondExpenses fe " +
+            "JOIN fe.citizen c " +
+            "JOIN c.user u " +
+            "WHERE u.id = :idUser")
+    List<Object[]> findAllElemByCurrentCitizen(@Param("idUser") Integer idUser);
+
+
+//    @Query(value = "SELECT f.id AS fonds_id, f.name AS fonds_name, f.id_city AS fonds_city, f.creation_date AS fonds_creation_date, f.phone AS fonds_phone, f.id_user AS fonds_user, f.sum AS fonds_sum, fe.id AS fond_expenses_id, fe.sum AS fond_expenses_sum, fe.id_citizen AS fond_expenses_citizen FROM public.fonds f JOIN public.fonds_fond_expenses ffe ON f.id = ffe.id_fonds JOIN public.fond_expenses fe ON ffe.id_fond_expenses = fe.id WHERE fe.id_citizen = :idUser", nativeQuery = true)
+//    List<Object[]> findAllElemByCurrentCitizen(@Param("idUser") BigInteger idUser);
+
+//    SELECT
+//    f.id AS fonds_id,
+//    f.name AS fonds_name,
+//    f.id_city AS fonds_city,
+//    f.creation_date AS fonds_creation_date,
+//    f.phone AS fonds_phone,
+//    f.id_user AS fonds_user,
+//    f.sum AS fonds_sum,
+//    fe.id AS fond_expenses_id,
+//    fe.sum AS fond_expenses_sum,
+//    fe.id_citizen AS fond_expenses_citizen
+//            FROM
+//    public.fonds f
+//    JOIN
+//    public.fonds_fond_expenses ffe ON f.id = ffe.id_fonds
+//            JOIN
+//    public.fond_expenses fe ON ffe.id_fond_expenses = fe.id
+//            WHERE
+//    fe.id_citizen = <id_citizen>;
+
+
 }
