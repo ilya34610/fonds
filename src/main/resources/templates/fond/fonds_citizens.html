@@ -92,6 +92,9 @@
                 .then(response => response.json())
             .then(data => {
                 alert(data.message);
+                if (data.redirectUrl) {
+                    window.location.href = data.redirectUrl;
+                }
             })
             .catch(error => {
                 console.error("Error:", error);

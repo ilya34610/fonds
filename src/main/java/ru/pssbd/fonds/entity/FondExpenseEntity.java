@@ -29,4 +29,39 @@ public class FondExpenseEntity {
     @ManyToMany(mappedBy = "fondExpenses")
     private List<FondEntity> fonds;
 
+    public FondExpenseEntity(BigDecimal sum, CitizenEntity citizen) {
+        this.sum = sum;
+        this.citizen = citizen;
+    }
+
+
 }
+
+//@Entity
+//@Table(name = "receipts")
+//@Data
+//@NoArgsConstructor
+//public class ReceiptEntity {
+//
+//    @Id
+//    @Column(name = "id")
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private BigInteger id;
+//
+//    @Column(name = "sum")
+//    private BigDecimal sum;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "id_fond")
+//    private FondEntity fond;
+//
+//    @ManyToMany(mappedBy = "receipts")
+//    private List<CapitalSourceEntity> capitalSources;
+//
+//    public ReceiptEntity(BigDecimal sum, FondEntity fond) {
+//
+//        this.sum = sum;
+//        this.fond = fond;
+//
+//    }
+//}

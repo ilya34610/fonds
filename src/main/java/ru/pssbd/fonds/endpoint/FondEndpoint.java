@@ -13,8 +13,10 @@ import ru.pssbd.fonds.dto.input.FondInput;
 import ru.pssbd.fonds.dto.output.CitizenOutput;
 import ru.pssbd.fonds.dto.output.FondOutput;
 import ru.pssbd.fonds.dto.output.UserOutput;
+import ru.pssbd.fonds.entity.FondExpenseEntity;
 import ru.pssbd.fonds.mappers.FondMapper;
 import ru.pssbd.fonds.repository.CitizensFondsRepository;
+import ru.pssbd.fonds.repository.FondExpenseRepository;
 import ru.pssbd.fonds.service.CitizenService;
 import ru.pssbd.fonds.service.CityService;
 import ru.pssbd.fonds.service.FondService;
@@ -37,6 +39,7 @@ public class FondEndpoint {
     private final UserService userService;
 
     private final CitizensFondsRepository citizensFondsRepository;
+    private final FondExpenseRepository fondExpenseRepository;
 
     //Открытие справочника
     @GetMapping
@@ -150,11 +153,15 @@ public class FondEndpoint {
 
             citizensFondsRepository.saveTransaction(citizenOutput.getId(), BigInteger.valueOf(fondOutput.getId()));
 
+            FondExpenseEntity newEntity = new FondExpenseEntity(sumDonat, citizenService.get(citizenOutput.getId()));
+            fondExpenseRepository.save(newEntity);
+
+            fondExpenseRepository.saveTransaction(fondOutput.getId(), newEntity.getId().intValue());
 
             responseBody.put("message", "Сумма успешно переведена");
+            responseBody.put("redirectUrl", "/fonds");
             return ResponseEntity.ok().headers(headers).body(responseBody);
-//            доделать чтобы переводило куда то на другую страницу или обновляло эту же
-//            citizenService.minusBalance(sumDonat);
+
         }
 
 //        service.save(mapper.fromInput(input));
