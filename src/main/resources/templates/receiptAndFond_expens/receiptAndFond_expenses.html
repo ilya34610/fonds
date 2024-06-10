@@ -95,21 +95,7 @@
                 <td th:text="${receiptCapitalSource.capitalSource.fonds[0].name}"></td>
                 <td th:text="${receiptCapitalSource.capitalSource.sum}"></td>
 
-                <!--                <td class="text-center" style="display: flex; align-items: center;">-->
 
-                <!--                    <form th:action="@{'/cities/'+${city.id}}" method="get">-->
-                <!--                        <button type="submit">Изменить</button>-->
-                <!--                    </form>-->
-
-                <!--                    <span style="margin: 0 5px;">|</span>-->
-
-                <!--                    <button-->
-                <!--                            th:data-id="${city.id}"-->
-                <!--                            th:data-name="${city.name}"-->
-                <!--                            onclick="deleteItem(this.getAttribute('data-id'),this.getAttribute('data-name'))">-->
-                <!--                        Удалить-->
-                <!--                    </button>-->
-                <!--                </td>-->
             </tr>
             </tbody>
         </table>
@@ -132,13 +118,16 @@
             </thead>
 
             <tbody>
-            <tr th:each="city : ${cities}">
+            <tr th:each="fondExpenseFond : ${fondExpensesFonds}">
                 <td>
-                    <span th:text="${city.id}"></span>
+                    <span th:text="${fondExpenseFond.fondExpense.id}"></span>
                 </td>
-                <td th:text="${city.name}"></td>
+                <td>
+                    <span th:text="${fondExpenseFond.fond.name}"></span>
+                </td>
+                <td th:text="${fondExpenseFond.fondExpense.citizen.user.fio}"></td>
 
-                <td th:text="${city.country.name}"></td>
+                <td th:text="${fondExpenseFond.fondExpense.sum}"></td>
 
                 <!--                <td class="text-center" style="display: flex; align-items: center;">-->
 

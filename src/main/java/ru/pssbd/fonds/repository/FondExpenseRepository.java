@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.pssbd.fonds.entity.FondExpenseEntity;
 
 import java.math.BigInteger;
+import java.util.List;
 
 
 public interface FondExpenseRepository extends JpaRepository<FondExpenseEntity, BigInteger> {
@@ -17,7 +18,8 @@ public interface FondExpenseRepository extends JpaRepository<FondExpenseEntity, 
     @Query(value = "INSERT INTO fonds_fond_expenses (id_fonds, id_fond_expenses) VALUES (:idFond, :idFondExpenses)", nativeQuery = true)
     void saveTransaction(@Param("idFond") Integer idFond, @Param("idFondExpenses") Integer idFondExpenses);
 
-
+    @Query("SELECT fe AS fondExpense, f AS fond FROM FondEntity f JOIN f.fondExpenses fe")
+    List<Object[]> getAll();
 
 
 }

@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import ru.pssbd.fonds.repository.FondExpenseRepository;
 import ru.pssbd.fonds.repository.ReceiptRepository;
+import ru.pssbd.fonds.service.FondExpenseService;
 import ru.pssbd.fonds.service.ReceiptService;
 
 @RestController
@@ -18,6 +20,9 @@ public class ReceiptAndFondExpensEndpoint {
     private final ReceiptRepository receiptRepository;
     private final ReceiptService receiptService;
 
+    private final FondExpenseRepository fondExpenseRepository;
+    private final FondExpenseService fondExpenseService;
+
     //Открытие справочника
     @GetMapping
     @ResponseBody
@@ -25,6 +30,9 @@ public class ReceiptAndFondExpensEndpoint {
         ModelAndView mav = new ModelAndView("receiptAndFond_expens/receiptAndFond_expenses");
 //передаем данные из двух таблиц СОЕДИНЯЯ ИХ по таблицам пересечения
         mav.addObject("receiptsCapitalSources", receiptService.getAllElem());
+
+        mav.addObject("fondExpensesFonds", fondExpenseService.getAllElem());
+
 
 
         return mav;

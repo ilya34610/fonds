@@ -47,4 +47,9 @@ public class CitizenEntity {
         this.city = city;
         this.birthDate = birthDate;
     }
+
+    public CitizenEntity(BigInteger id) {
+        this.id = id;
+    }
+
 }

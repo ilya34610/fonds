@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ru.pssbd.fonds.dto.output.CitizenOutput;
 import ru.pssbd.fonds.dto.output.UserOutput;
 import ru.pssbd.fonds.service.CitizenService;
+import ru.pssbd.fonds.service.FondService;
 import ru.pssbd.fonds.service.UserService;
 
 import java.math.BigInteger;
@@ -20,6 +21,7 @@ public class CitizenEndpoint {
     private final CitizenService service;
     private final UserService userService;
     private final CitizenService citizenService;
+    private final FondService fondService;
 
     @GetMapping
     public List<CitizenOutput> getAllEntity() {
@@ -40,6 +42,8 @@ public class CitizenEndpoint {
         mav.addObject("currentUser", userService.getElemById(currentRoleOutput.getId()));
 
         mav.addObject("currentCitizen", citizenService.getCitizenByUser(currentRoleOutput.getId()));
+
+        mav.addObject("currentFonds", fondService.getFondsByUser(currentRoleOutput.getId()));
 
 
         return mav;
