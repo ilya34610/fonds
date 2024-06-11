@@ -1,6 +1,6 @@
 package ru.pssbd.fonds.endpoint;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +29,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/fonds")
-@RequiredArgsConstructor
+
 public class FondEndpoint {
 
     private final FondService service;
@@ -40,6 +40,17 @@ public class FondEndpoint {
 
     private final CitizensFondsRepository citizensFondsRepository;
     private final FondExpenseRepository fondExpenseRepository;
+
+    @Autowired
+    public FondEndpoint(FondService service, CitizenService citizenService, FondMapper mapper, CityService cityService, UserService userService, CitizensFondsRepository citizensFondsRepository, FondExpenseRepository fondExpenseRepository) {
+        this.service = service;
+        this.citizenService = citizenService;
+        this.mapper = mapper;
+        this.cityService = cityService;
+        this.userService = userService;
+        this.citizensFondsRepository = citizensFondsRepository;
+        this.fondExpenseRepository = fondExpenseRepository;
+    }
 
     //Открытие справочника
     @GetMapping

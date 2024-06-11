@@ -1,5 +1,7 @@
 package ru.pssbd.fonds.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.pssbd.fonds.dto.output.FondCapitalSourceOutput;
@@ -26,19 +28,20 @@ import java.util.stream.Collectors;
 public class FondService {
 
     private final UserService userService;
-    private final UserMapper userMapper;
 
     private final FondRepository repository;
     private final FondMapper mapper;
 
     private final FondExpenseMapper fondExpenseMapper;
 
-    public FondService(UserService userService, CitizensFondsRepository citizensFondsRepository, UserMapper userMapper, FondRepository repository, FondMapper mapper, FondExpenseMapper fondExpenseMapper) {
+    @Autowired
+    @Lazy
+    public FondService(UserService userService, CitizensFondsRepository citizensFondsRepository, ReceiptService receiptService, FondExpenseService fondExpenseService, UserMapper userMapper, FondRepository repository, FondMapper mapper, FondExpenseMapper fondExpenseMapper) {
         this.userService = userService;
-        this.userMapper = userMapper;
         this.repository = repository;
         this.mapper = mapper;
         this.fondExpenseMapper = fondExpenseMapper;
+
     }
 
     public List<FondOutput> getAllElem() {
@@ -138,6 +141,13 @@ public class FondService {
     }
 
 
+    //для генерации excel
+//    @GetMapping("/fonds/excel")
+//    public void exportToExcel(HttpServletResponse response) throws IOException {
+//        List<ReceiptCapitalSourceOutput> receipts = receiptService.getAllElem(); // Замените на ваш метод получения данных
+//        List<FondFondExpensesOutput> expenses = fondExpenseService.getAllElem(); // Замените на ваш метод получения данных
+//        excelExportService.exportToExcel(response, receipts, expenses);
+//    }
 
 
 }

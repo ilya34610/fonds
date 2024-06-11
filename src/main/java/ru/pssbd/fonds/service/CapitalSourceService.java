@@ -1,24 +1,27 @@
 package ru.pssbd.fonds.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.pssbd.fonds.dto.input.CapitalSourceInput;
-import ru.pssbd.fonds.dto.output.CapitalSourceOutput;
-import ru.pssbd.fonds.dto.output.FondCapitalSourceOutput;
-import ru.pssbd.fonds.dto.output.UserOutput;
+import ru.pssbd.fonds.dto.output.*;
 import ru.pssbd.fonds.entity.CapitalSourceEntity;
 import ru.pssbd.fonds.entity.FondEntity;
 import ru.pssbd.fonds.entity.ReceiptEntity;
 import ru.pssbd.fonds.entity.UserEntity;
 import ru.pssbd.fonds.mappers.CapitalSourceMapper;
+import ru.pssbd.fonds.mappers.CurrencyTypeMapper;
 import ru.pssbd.fonds.mappers.FondMapper;
 import ru.pssbd.fonds.repository.CapitalSourceRepository;
 import ru.pssbd.fonds.repository.FondRepository;
 import ru.pssbd.fonds.repository.ReceiptRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -32,17 +35,15 @@ public class CapitalSourceService {
 
     private final FondRepository fondRepository;
     private final ReceiptRepository receiptRepository;
-//    private final FondMapper fondMapper;
 
     private final UserService userService;
 
     @Autowired
-    public CapitalSourceService(CapitalSourceRepository repository, CapitalSourceMapper mapper, FondRepository fondRepository, FondMapper fondMapper, ReceiptRepository receiptRepository, UserService userService) {
+    public CapitalSourceService(CapitalSourceRepository repository, CapitalSourceMapper mapper, FondRepository fondRepository, FondMapper fondMapper, CurrencyTypeMapper currencyTypeMapper, ReceiptRepository receiptRepository, UserService userService) {
         this.repository = repository;
         this.mapper = mapper;
         this.fondRepository = fondRepository;
         this.receiptRepository = receiptRepository;
-//        this.fondMapper = fondMapper;
         this.userService = userService;
     }
 
@@ -108,6 +109,99 @@ public class CapitalSourceService {
         } else {
             return result;
         }
+    }
+
+    public List<CurrencyTypeCapitalSourcesOutput> getElemForLeftJoin() {
+//        return mapper.toOutput(repository.getAllCapitalSourcesLeftJoin());
+
+        List<CurrencyTypeCapitalSourcesOutput> result = new ArrayList<>();
+//
+        List<Object[]> data = repository.getAllCapitalSourcesLeftJoin();
+        if (!data.isEmpty()) {
+            for (Object[] row : data) {
+                CurrencyTypeOutput currencyType = new CurrencyTypeOutput();
+                currencyType.setId((Short) row[0]);
+                currencyType.setName((String) row[1]);
+
+                CapitalSourceOutput capitalSource = new CapitalSourceOutput();
+
+
+                if (row[3] != null) {
+                    capitalSource.setSum((BigDecimal) row[2]);
+
+                    java.sql.Date sqlDate = (java.sql.Date) row[3];
+                    LocalDate localDate = sqlDate.toLocalDate();
+                    capitalSource.setDonationDate(localDate);
+
+                    capitalSource.setUser(userService.getElemById((Integer) row[4]));
+                }
+
+                result.add(new CurrencyTypeCapitalSourcesOutput(currencyType, capitalSource));
+            }
+            return result;
+        } else {
+            return result;
+        }
+
+
+//        List<Object[]> data = repository.getAllCapitalSourcesLeftJoin();
+//        if (!data.isEmpty()) {
+//            for (Object[] row : data) {
+//                CurrencyTypeEntity currencyType = (CurrencyTypeEntity) row[0];
+//                CapitalSourceEntity capitalSource = (CapitalSourceEntity) row[1];
+//                result.add(new CurrencyTypeCapitalSourcesOutput(currencyTypeMapper.toOutput(currencyType), mapper.toOutput(capitalSource)));
+//            }
+//            return result;
+//        } else {
+//            return result;
+//        }
+
+
+    }
+
+    public List<DonationTypeCapitalSourcesOutput> getElemForRightJoin() {
+//        return mapper.toOutput(repository.getAllCapitalSourcesLeftJoin());
+
+        List<DonationTypeCapitalSourcesOutput> result = new ArrayList<>();
+//
+        List<Object[]> data = repository.getAllCapitalSourcesRightJoin();
+        if (!data.isEmpty()) {
+            for (Object[] row : data) {
+                DonationTypeOutput donationType = new DonationTypeOutput();
+                donationType.setId((Short) row[0]);
+                donationType.setName((String) row[1]);
+
+                CapitalSourceOutput capitalSource = new CapitalSourceOutput();
+
+
+                if (row[3] != null) {
+                    capitalSource.setSum((BigDecimal) row[2]);
+
+                    java.sql.Date sqlDate = (java.sql.Date) row[3];
+                    LocalDate localDate = sqlDate.toLocalDate();
+                    capitalSource.setDonationDate(localDate);
+
+                    capitalSource.setUser(userService.getElemById((Integer) row[4]));
+                }
+
+                result.add(new DonationTypeCapitalSourcesOutput(donationType, capitalSource));
+            }
+            return result;
+        } else {
+            return result;
+        }
+    }
+
+    public List<CapitalSourceOutput> getTopThreeDonator() {
+
+//        return repository.getTopThreeDonator().stream()
+//                .map(mapper::toOutput)
+//                .collect(Collectors.toList());
+
+        Pageable topThree = PageRequest.of(0, 3);
+        return repository.getTopThreeDonator(topThree)
+                .stream().map(mapper::toOutput)
+                .collect(Collectors.toList());
     }
 
 

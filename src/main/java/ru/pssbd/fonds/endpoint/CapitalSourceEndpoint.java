@@ -1,6 +1,7 @@
 package ru.pssbd.fonds.endpoint;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,6 @@ import ru.pssbd.fonds.dto.output.CurrencyTypeOutput;
 import ru.pssbd.fonds.dto.output.DonationTypeOutput;
 import ru.pssbd.fonds.dto.output.UserOutput;
 import ru.pssbd.fonds.mappers.CapitalSourceMapper;
-import ru.pssbd.fonds.mappers.UserMapper;
 import ru.pssbd.fonds.service.*;
 
 import java.math.BigInteger;
@@ -20,7 +20,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/capital_sources")
-@RequiredArgsConstructor
 public class CapitalSourceEndpoint {
 
     private final CapitalSourceService service;
@@ -28,11 +27,20 @@ public class CapitalSourceEndpoint {
     private final CurrencyTypeService currencyTypeService;
     private final DonationTypeService donationTypeService;
     private final FondService fondService;
-    private final RoleService roleService;
 
 
     private final CapitalSourceMapper mapper;
-    private final UserMapper userMapper;
+
+    @Autowired
+    @Lazy
+    public CapitalSourceEndpoint(CapitalSourceService service, UserService userService, CurrencyTypeService currencyTypeService, DonationTypeService donationTypeService, FondService fondService, CapitalSourceMapper mapper) {
+        this.service = service;
+        this.userService = userService;
+        this.currencyTypeService = currencyTypeService;
+        this.donationTypeService = donationTypeService;
+        this.fondService = fondService;
+        this.mapper = mapper;
+    }
 
 
     //Открытие справочника
@@ -71,7 +79,7 @@ public class CapitalSourceEndpoint {
         UserOutput currentRoleOutput = userService.getRoleByLogin(username);
 
 //        if (currentRoleOutput.getRole().getName().equals("DONATER")) {
-            mav.addObject("currentUser", userService.getElemById(currentRoleOutput.getId()));
+        mav.addObject("currentUser", userService.getElemById(currentRoleOutput.getId()));
 //            newOutput.setUser(userService.getElemById(currentRoleOutput.getId()));
 
 
@@ -118,5 +126,22 @@ public class CapitalSourceEndpoint {
     public void edit(@PathVariable BigInteger id, @Validated @RequestBody CapitalSourceInput input) {
 //        service.putById(id, input);
     }
+
+//для запросов
+
+    @GetMapping("/capital_source_for_requests")
+    @ResponseBody
+    public ModelAndView capitalSources() {
+        ModelAndView mav = new ModelAndView("capital_source/capital_source_for_requests");
+
+        mav.addObject("forLeftJoin", service.getElemForLeftJoin());
+
+        mav.addObject("forRightJoin", service.getElemForRightJoin());
+
+
+        return mav;
+    }
+
+
 
 }

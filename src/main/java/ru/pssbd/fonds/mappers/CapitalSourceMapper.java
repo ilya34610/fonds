@@ -1,7 +1,6 @@
 package ru.pssbd.fonds.mappers;
 
 import com.sun.istack.NotNull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.pssbd.fonds.dto.input.CapitalSourceInput;
@@ -12,7 +11,6 @@ import ru.pssbd.fonds.entity.FondEntity;
 import ru.pssbd.fonds.repository.DonationTypeRepository;
 import ru.pssbd.fonds.repository.FondRepository;
 import ru.pssbd.fonds.service.CurrencyTypeService;
-import ru.pssbd.fonds.service.FondService;
 import ru.pssbd.fonds.service.UserService;
 
 import java.util.ArrayList;
@@ -20,26 +18,31 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-@RequiredArgsConstructor
 public class CapitalSourceMapper {
-
-    @Autowired
     private final CurrencyTypeService currencyTypeService;
-    @Autowired
     private final UserService userService;
-    @Autowired
-    private final FondService fondService;
-    @Autowired
+
     private final CurrencyTypeMapper currencyTypeMapper;
-    @Autowired
+
     private final UserMapper userMapper;
-    @Autowired
+
     private final FondMapper fondMapper;
     private final DonationTypeRepository donationTypeRepository;
 
     private final DonationTypeMapper donationTypeMapper;
-    @Autowired
+
     private FondRepository fondRepository;
+
+    @Autowired
+    public CapitalSourceMapper(CurrencyTypeService currencyTypeService, UserService userService, CurrencyTypeMapper currencyTypeMapper, UserMapper userMapper, FondMapper fondMapper, DonationTypeRepository donationTypeRepository, DonationTypeMapper donationTypeMapper) {
+        this.currencyTypeService = currencyTypeService;
+        this.userService = userService;
+        this.currencyTypeMapper = currencyTypeMapper;
+        this.userMapper = userMapper;
+        this.fondMapper = fondMapper;
+        this.donationTypeRepository = donationTypeRepository;
+        this.donationTypeMapper = donationTypeMapper;
+    }
 
 
     public CapitalSourceEntity fromInput(@NotNull CapitalSourceInput input) {
@@ -53,7 +56,7 @@ public class CapitalSourceMapper {
         entity.setUser(userService.get(input.getUser()));
 
         Integer fondsId = input.getFonds().get(0);
-        FondEntity fondTemp = fondRepository.getById(fondsId.intValue());
+        FondEntity fondTemp = fondRepository.getById(fondsId);
         List<FondEntity> fondList = new ArrayList<>();
         fondList.add(fondTemp);
         entity.setFonds(fondList);

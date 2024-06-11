@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
@@ -46,114 +46,93 @@
 
     <div align="center" class="col-md-12">
 
-        <h2>Источники формирования капитала</h2>
+        <h2>Справочная информация по источникам формирования капитала</h2>
 
     </div>
 
     <div class="col-xs-12 col-md-12">
 
-        <div class="row" style="margin-bottom: 10px" sec:authorize="hasAuthority('ADMIN')">
-            <div class="col-md-6"></div>
-            <div class="col-md-6">
-                <div class="text-md-end">
-                    <a role="button" class="btn btn-primary" th:href="@{/capital_sources/capital_source_for_requests}">Справочная
-                        информация</a>
-                </div>
+
+        <!--            <form method="get">-->
+
+        <div class="form-group col-xs-5 col-md-5">
+            <label for="idFond">Название</label>
+            <input type="text" id="idFond" class="form-control"
+                   placeholder="Введите название типа валюты">
+            <!--                    th:field="${filter.name}"-->
+        </div>
+        <div class="col-xs-1 col-md-1 marginTopFilterButton">
+            <div class="form-group">
+                <button id="searchButtonFond" class="btn btn-light button-width" type="submit">Поиск</button>
             </div>
         </div>
 
-        <div class="row" style="margin-bottom: 10px">
-            <div class="col-md-6"></div>
-            <div class="col-md-6">
-                <div class="text-md-end">
-                    <a role="button" class="btn btn-primary" th:href="@{/capital_sources/add}">Добавить</a>
-                </div>
-            </div>
-        </div>
 
+        <div class="form-group col-xs-5 col-md-5" style="margin-top:30px; margin-bottom:30px">
+            <label>Типы валют , которые не определены в источнике формирования капитала</label>
+        </div>
 
         <table class="table table-bordered table-hover">
-
-            <!--            <form method="get">-->
-
-            <div class="form-group col-xs-5 col-md-5">
-                <label for="idFond">Название</label>
-                <input type="text" id="idFond" class="form-control"
-                       placeholder="Введите название фонда">
-                <!--                    th:field="${filter.name}"-->
-            </div>
-            <div class="col-xs-1 col-md-1 marginTopFilterButton">
-                <div class="form-group">
-                    <button id="searchButtonFond" class="btn btn-light button-width" type="submit">Поиск</button>
-                </div>
-            </div>
-            <!--            </form>-->
-
             <thead>
             <tr align="center">
                 <th width="100px">ID</th>
+                <th>Валюта</th>
                 <th>Сумма</th>
-                <th>Тип валюты</th>
                 <th>Дата пожертвования</th>
                 <th>Пользователь</th>
-                <th>Фонд</th>
-                <th width="400px" sec:authorize="hasAuthority('ADMIN')">Действия</th>
             </tr>
             </thead>
             <tbody>
 
-            <!--            <tr th:each="capital_source : ${capital_sources}" sec:authorize="hasAuthority('ADMIN')">-->
-            <!--                <td>-->
-            <!--                    <span th:text="${capital_source.id}"></span>-->
-            <!--                </td>-->
-            <!--                <td th:text="${capital_source.sum}"></td>-->
 
-            <!--                <td th:text="${capital_source.currencyType.name}"></td>-->
-
-            <!--                <td th:text="${capital_source.donationDate}"></td>-->
-
-            <!--                <td th:text="${capital_source.user.fio}"></td>-->
-
-            <!--                <td>-->
-            <!--                     <span th:each="fond, iterStat : ${fonds}">-->
-            <!--                         <span th:text="${fond.name}"></span>-->
-            <!--                         <span th:if="${!iterStat.last}">, </span>-->
-            <!--                     </span>-->
-            <!--                </td>-->
-
-            <tr th:each="capitalSource_fonds : ${capitalSource_fonds}">
-                <td th:text="${capitalSource_fonds.capitalSource.id}"></td>
-                <td th:text="${capitalSource_fonds.capitalSource.sum}"></td>
-                <td th:text="${capitalSource_fonds.capitalSource.currencyType.name}"></td>
-                <td th:text="${capitalSource_fonds.capitalSource.donationDate}"></td>
-                <td th:text="${capitalSource_fonds.capitalSource.user.fio}"></td>
-                <td>
-                    <span th:text="${capitalSource_fonds.fond.name}"></span>
-                </td>
-
-
-                <td class="text-center" style="display: flex; align-items: center;"
-                    sec:authorize="hasAuthority('ADMIN')">
-
-                    <form th:action="@{'/capital_sources/'+${capitalSource_fonds.capitalSource.id}}" method="get">
-                        <button type="submit">Изменить</button>
-                    </form>
-
-                    <span style="margin: 0 5px;">|</span>
-
-                    <button
-                            th:data-id="${capitalSource_fonds.capitalSource.id}"
-                            th:data-name="${capitalSource_fonds.capitalSource.sum}"
-                            onclick="deleteItem(this.getAttribute('data-id'),this.getAttribute('data-sum'))">
-                        Удалить
-                    </button>
-                </td>
+            <tr th:each="currencyTypesCapitalSource : ${forLeftJoin}">
+                <td th:text="${currencyTypesCapitalSource.currencyType.id}"></td>
+                <td th:text="${currencyTypesCapitalSource.currencyType.name}"></td>
+                <td th:text="${currencyTypesCapitalSource.capitalSource.sum != null ? currencyTypesCapitalSource.capitalSource.sum : 'Нет данных'}"></td>
+                <td th:text="${currencyTypesCapitalSource.capitalSource.donationDate != null ? currencyTypesCapitalSource.capitalSource.donationDate : 'Нет данных'}"></td>
+                <td th:if="${currencyTypesCapitalSource.capitalSource.user != null}"
+                    th:text="${currencyTypesCapitalSource.capitalSource.user.fio != null ? currencyTypesCapitalSource.capitalSource.user.fio : 'Нет данных'}"></td>
+                <td th:if="${currencyTypesCapitalSource.capitalSource.user == null}">Нет данных</td>
             </tr>
             </tbody>
         </table>
+
+
+        <div class="form-group col-xs-5 col-md-5" style="margin-top:30px; margin-bottom:30px">
+            <label>Типы пожертвования, которые не определены в источнике формирования капитала</label>
+        </div>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr align="center">
+                <th width="100px">ID</th>
+                <th>Тип пожертвования</th>
+                <th>Сумма</th>
+                <th>Дата пожертвования</th>
+                <th>Пользователь</th>
+            </tr>
+            </thead>
+            <tbody>
+
+
+            <tr th:each="donationTypesCapitalSource : ${forRightJoin}">
+                <td th:text="${donationTypesCapitalSource.donationType.id}"></td>
+                <td th:text="${donationTypesCapitalSource.donationType.name}"></td>
+                <td th:text="${donationTypesCapitalSource.capitalSource.sum != null ? donationTypesCapitalSource.capitalSource.sum : 'Нет данных'}"></td>
+                <td th:text="${donationTypesCapitalSource.capitalSource.donationDate != null ? donationTypesCapitalSource.capitalSource.donationDate : 'Нет данных'}"></td>
+                <td th:if="${donationTypesCapitalSource.capitalSource.user != null}"
+                    th:text="${donationTypesCapitalSource.capitalSource.user.fio != null ? donationTypesCapitalSource.capitalSource.user.fio : 'Нет данных'}"></td>
+                <td th:if="${donationTypesCapitalSource.capitalSource.user == null}">Нет данных</td>
+            </tr>
+            </tbody>
+        </table>
+
+
+        <!--        <label th:text="Количество уникальных типов валют:"></label>-->
+        <!--    <label th:text="${currencyTypesCount}"></label>-->
+
     </div>
 </div>
-
 
 <div th:replace="fragments/error-modal :: errorModalFragment"></div>
 <div th:replace="fragments/success-modal :: successModalFragment"></div>

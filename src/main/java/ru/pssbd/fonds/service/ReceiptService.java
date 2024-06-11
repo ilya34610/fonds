@@ -1,5 +1,7 @@
 package ru.pssbd.fonds.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import ru.pssbd.fonds.dto.input.ReceiptInput;
 import ru.pssbd.fonds.dto.output.CapitalSourceOutput;
@@ -24,6 +26,8 @@ public class ReceiptService {
     private final ReceiptMapper mapper;
     private final CapitalSourceMapper capitalSourceMapper;
 
+    @Autowired
+    @Lazy
     public ReceiptService(ReceiptRepository repository, ReceiptMapper mapper, CapitalSourceMapper capitalSourceMapper) {
         this.repository = repository;
         this.mapper = mapper;
@@ -82,8 +86,6 @@ public class ReceiptService {
         }
 
     }
-
-
 
 
 }
