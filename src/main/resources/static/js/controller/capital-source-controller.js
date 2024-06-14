@@ -1,15 +1,5 @@
 $(document).ready(function () {
     CapitalSourceController.load();
-
-//    // Получаем CSRF токен и заголовок из мета-тегов
-//    var token = $("meta[name='_csrf']").attr("content");
-//    var header = $("meta[name='_csrf_header']").attr("content");
-//
-//    $.ajaxSetup({
-//        beforeSend: function(xhr) {
-//            xhr.setRequestHeader(header, token);
-//        }
-//    });
 });
 
 const CapitalSourceController = {
@@ -48,7 +38,8 @@ const CapitalSourceController = {
             var currencyTypeIn = Number($("#currencyTypeInput").val());
             var donationDateIn = $("#donationDateInput").val();
             var userIn = Number($("#userInputId").val());
-            var donationTypeIn = Number($("#donationTypeInput").val());
+//            var donationTypeIn = [Number($("#donationTypeInput").val())];
+            var donationTypeIn = $("#donationTypeInput").val().map(Number);
             $.ajax({
                 type: type,
                 url: url,
@@ -59,7 +50,7 @@ const CapitalSourceController = {
                     donationDate: donationDateIn,
                     user: userIn,
                     fonds: [Number(fondIn)],
-                    donationTypes: [Number(donationTypeIn)]
+                    donationTypes: donationTypeIn
                 }),
                 contentType: "application/json",
                 success: function(response) {

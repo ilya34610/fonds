@@ -1,4 +1,34 @@
 $(document).ready(function () {
+
+//        fetch("/currency_types/count_of_currency_types", {
+//            method: "GET",
+//            headers: {
+//                "Content-Type": "application/json"
+//            }
+//        })
+//        .then(response => response.json())
+//        .then(data => {
+//            console.log("Response from server:", data);
+//            document.getElementById('countOfCurrencyType').value = Number(data);
+//        })
+//        .catch(error => {
+//            console.error("Error:", error);
+//        });
+
+        $.ajax({
+              type: "GET",
+              url: "/currency_types/count_of_currency_types",
+              contentType: "application/json",
+              success: function(response) {
+                  console.log("Success:", response);
+                  document.getElementById('countOfCurrencyType').value = Number(response);
+              },
+              error: function(error) {
+                  console.error("Error:", error);
+              }
+        });
+
+
     CurrencyTypeController.load();
 });
 

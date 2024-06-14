@@ -15,8 +15,11 @@ public class HomeController {
     }
 
     @GetMapping("/index")
-    public String index() {
-        return "index";
+    public ModelAndView index() {
+        ModelAndView mav = new ModelAndView("/index");
+
+        mav.addObject("TopThreeDonators", service.getTopThreeDonator());
+        return mav;
     }
 
     @GetMapping("/capitalSourceGetAll")

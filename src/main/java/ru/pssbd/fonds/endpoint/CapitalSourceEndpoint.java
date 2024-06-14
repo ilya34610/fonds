@@ -38,7 +38,7 @@ public class CapitalSourceEndpoint {
     //Открытие справочника
     @GetMapping
     @ResponseBody
-    public ModelAndView capitalSources(Authentication authentication) {
+    public ModelAndView capitalSources(Authentication authentication, @RequestParam(value = "fondName", required = false) String fondName) {
         ModelAndView mav = new ModelAndView("capital_source/capital_sources");
         String username = authentication.getName();
         UserOutput currentRoleOutput = userService.getRoleByLogin(username);
@@ -48,8 +48,13 @@ public class CapitalSourceEndpoint {
 
             mav.addObject("capitalSource_fonds", fondService.getAllFondsForCurrentDonater(currentRoleOutput));
         } else {
-            mav.addObject("capitalSource_fonds", service.getAllCapitalSource());
+//            mav.addObject("capitalSource_fonds", service.getAllCapitalSource());
+            mav.addObject("capitalSource_fonds", service.searchCapitalSources(fondName));
         }
+
+        mav.addObject("sum_capitalSource_for_query", service.sumOnDonationType());
+
+
         return mav;
     }
 
@@ -118,5 +123,25 @@ public class CapitalSourceEndpoint {
     public void edit(@PathVariable BigInteger id, @Validated @RequestBody CapitalSourceInput input) {
 //        service.putById(id, input);
     }
+
+    //для запросов
+    @GetMapping("/capital_source_for_requests")
+    @ResponseBody
+    public ModelAndView capitalSources() {
+        ModelAndView mav = new ModelAndView("capital_source/capital_source_for_requests");
+
+        mav.addObject("forLeftJoin", service.getElemForLeftJoin());
+
+        mav.addObject("forRightJoin", service.getElemForRightJoin());
+
+
+        return mav;
+    }
+
+    @GetMapping("/searchByFond")
+    public List<CapitalSourceOutput> searchCapitalSources(@RequestParam(value = "fondName", required = false) String fondName) {
+        return service.searchCapitalSources(fondName);
+    }
+
 
 }

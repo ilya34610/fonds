@@ -58,11 +58,21 @@ public class CapitalSourceMapper {
         fondList.add(fondTemp);
         entity.setFonds(fondList);
 
-        Integer donationTypeId = input.getDonationTypes().get(0);
-        DonationTypeEntity donationTypeTemp = donationTypeRepository.getById(donationTypeId.shortValue());
-        List<DonationTypeEntity> donationTypeList = new ArrayList<>();
-        donationTypeList.add(donationTypeTemp);
-        entity.setDonationTypes(donationTypeList);
+
+//        Integer donationTypeId = input.getDonationTypes().get(0);
+
+
+        for (Integer donationTypeId : input.getDonationTypes()) {
+
+            DonationTypeEntity donationTypeTemp = donationTypeRepository.getById(donationTypeId.shortValue());
+            List<DonationTypeEntity> donationTypeList = new ArrayList<>();
+            donationTypeList.add(donationTypeTemp);
+            entity.setDonationTypes(donationTypeList);
+
+        }
+
+
+
         return entity;
     }
 

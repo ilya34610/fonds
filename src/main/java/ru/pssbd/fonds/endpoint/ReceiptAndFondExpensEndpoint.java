@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ru.pssbd.fonds.repository.FondExpenseRepository;
 import ru.pssbd.fonds.repository.ReceiptRepository;
 import ru.pssbd.fonds.service.FondExpenseService;
+import ru.pssbd.fonds.service.FondService;
 import ru.pssbd.fonds.service.ReceiptService;
 
 @RestController
@@ -23,6 +24,8 @@ public class ReceiptAndFondExpensEndpoint {
     private final FondExpenseRepository fondExpenseRepository;
     private final FondExpenseService fondExpenseService;
 
+    private final FondService fondService;
+
     //Открытие справочника
     @GetMapping
     @ResponseBody
@@ -33,6 +36,7 @@ public class ReceiptAndFondExpensEndpoint {
 
         mav.addObject("fondExpensesFonds", fondExpenseService.getAllElem());
 
+        mav.addObject("fondExpensesFondsQuery", fondService.getElemQueryNotIn());
 
 
         return mav;

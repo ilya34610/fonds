@@ -29,8 +29,8 @@ public class CurrencyTypeService {
                 .collect(Collectors.toList());
     }
 
-    public CurrencyTypeOutput getElemById(int id) {
-        return repository.findById((short) id)
+    public CurrencyTypeOutput getElemById(Short id) {
+        return repository.findById(id)
                 .map(mapper::toOutput)
                 .orElseThrow(() -> new NoSuchElementException("Элемент с id " + id + " не найден"));
     }
@@ -54,5 +54,23 @@ public class CurrencyTypeService {
                 .orElseThrow(() -> new EntityNotFoundException("Entity not found with id: " + id));
         repository.save(entity);
     }
+
+//    public List<GroupByRequestOutput> getElemForGroupBy() {
+//        List<GroupByRequestOutput> result = new ArrayList<>();
+//
+//        LocalDate date = LocalDate.of(2000, 1, 5);
+//        List<Object[]> data = repository.getElemForGroupBy(date);
+//        if (!data.isEmpty()) {
+//            for (Object[] row : data) {
+//
+//                result.add(new GroupByRequestOutput((BigDecimal) row[0], (String) row[1]));
+//            }
+//            return result;
+//        } else {
+//            return result;
+//        }
+//
+//    }
+
 
 }

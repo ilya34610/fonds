@@ -76,4 +76,29 @@ public interface FondRepository extends JpaRepository<FondEntity, Integer> {
 //    fe.id_citizen = <id_citizen>;
 
 
+    @Query(value = "SELECT f.*, " +
+            "CASE " +
+            "WHEN f.id IN ( " +
+            "  SELECT cf.id_fond " +
+            "  FROM public.citizens_fonds cf " +
+            ") THEN 'Да' " +
+            "ELSE 'Нет' " +
+            "END AS has_citizens " +
+            "FROM public.fonds f",
+            nativeQuery = true)
+    List<Object[]> getElemRequestWithCase();
+
+
+    @Query(value = "SELECT * " +
+            "FROM public.fonds f " +
+            "WHERE f.id NOT IN (" +
+            "  SELECT cf.id_fond " +
+            "  FROM public.citizens_fonds cf" +
+            ")", nativeQuery = true)
+    List<Object[]> getElemQueryNotIn();
+
+
+
+
+
 }
