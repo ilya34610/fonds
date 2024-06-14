@@ -50,6 +50,43 @@
 
     </div>
 
+
+    <!--    <div class="form-group col-xs-5 col-md-5" style="margin-top:30px; margin-bottom:30px">-->
+    <!--        <label>Общая сумма денежных средств для фондов, дата создания которых начинается после 2020-01-01</label>-->
+    <!--    </div>-->
+
+    <!--    <table id="requestWithGroupBy" class="table table-bordered table-hover">-->
+    <!--        <thead>-->
+    <!--        <tr align="center">-->
+    <!--            &lt;!&ndash;                <th width="100px">ID</th>&ndash;&gt;-->
+    <!--            <th>Кол-во денежных средств</th>-->
+    <!--            <th>Тип валюты</th>-->
+    <!--            &lt;!&ndash;                <th>Дата пожертвования</th>&ndash;&gt;-->
+    <!--            &lt;!&ndash;                <th>Пользователь</th>&ndash;&gt;-->
+    <!--        </tr>-->
+    <!--        </thead>-->
+    <!--        <tbody>-->
+
+
+    <!--        <tr th:each="requestWithGB : ${requestWithGroupBy}">-->
+    <!--            <td th:text="${requestWithGB.sum}"></td>-->
+    <!--            <td th:text="${requestWithGB.currencyType}"></td>-->
+    <!--        </tr>-->
+    <!--        </tbody>-->
+    <!--    </table>-->
+
+
+    <div class="col-xs-2 col-md-2">
+
+        <label for="countOfCurrencyType">Количество уникальных типов валют</label>
+
+
+        <input id="countOfCurrencyType" class="form-control" type="text"
+               required
+               readonly>
+    </div>
+
+
     <div class="col-xs-12 col-md-12">
         <div class="row" style="margin-bottom: 10px">
             <div class="col-md-6"></div>
@@ -164,6 +201,7 @@
 
 <script th:src="@{/static/js/controller/delete-controller.js}" type="text/javascript"></script>
 <script th:src="@{/static/js/util/button-util.js}" type="text/javascript"></script>
+<script th:src="@{/static/js/controller/currency-type-controller.js}" type="text/javascript"></script>
 
 
 </html>

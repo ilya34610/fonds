@@ -45,11 +45,11 @@ public class CityEndpoint {
     @GetMapping("/{id}")
     public ModelAndView edit(@PathVariable short id) {
         ModelAndView mav = new ModelAndView("city/city");
-        mav.addObject("city", service.getElemById(id));
+        mav.addObject("city", service.getElemById((int) id));
         List<CountryOutput> countryList = service.getAllCountries();
         mav.addObject("countries", countryList);
 
-        mav.addObject("selectedCountry", service.getElemById(id).getCountry());
+        mav.addObject("selectedCountry", service.getElemById((int) id).getCountry());
         return mav;
     }
 
@@ -74,5 +74,19 @@ public class CityEndpoint {
     public void edit(@PathVariable BigInteger id, @Validated @RequestBody CityInput input) {
         service.putById(id, input);
     }
+
+    //для запросов
+    @GetMapping("/cities_for_requests")
+    @ResponseBody
+    public ModelAndView cities_for_requests() {
+        ModelAndView mav = new ModelAndView("city/cities_for_requests");
+
+        mav.addObject("requestWithHaving", service.getElemForHaving());
+
+        mav.addObject("requestWithHavingCount", service.getElemForHavingCount());
+
+        return mav;
+    }
+
 
 }

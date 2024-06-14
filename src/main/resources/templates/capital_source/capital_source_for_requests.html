@@ -4,7 +4,7 @@
 
 <head>
 
-    <title>Fonds | Города</title>
+    <title>Fonds | Справочная информация</title>
 
 
     <meta charset="utf-8">
@@ -20,7 +20,7 @@
         function deleteItem(id, name) {
             var confirmation = confirm('Вы уверены, что хотите удалить эту запись? ID: ' + id + ', Название: ' + name);
             if (confirmation) {
-                fetch('/cities/' + id, {
+                fetch('/capital_sources/' + id, {
                     method: 'DELETE',
                 })
                 .then(response => {
@@ -46,69 +46,91 @@
 
     <div align="center" class="col-md-12">
 
-        <h2>Города</h2>
+        <h2>Справочная информация по источникам формирования капитала</h2>
 
     </div>
 
     <div class="col-xs-12 col-md-12">
 
-        <div class="row" style="margin-bottom: 10px">
-            <div class="col-md-6"></div>
-            <div class="col-md-6">
-                <div class="text-md-end">
-                    <a role="button" class="btn btn-primary" th:href="@{/cities/cities_for_requests}">Справочная
-                        информация</a>
-                </div>
+
+        <!--            <form method="get">-->
+
+        <div class="form-group col-xs-5 col-md-5">
+            <label for="idFond">Название</label>
+            <input type="text" id="idFond" class="form-control"
+                   placeholder="Введите название типа валюты">
+            <!--                    th:field="${filter.name}"-->
+        </div>
+        <div class="col-xs-1 col-md-1 marginTopFilterButton">
+            <div class="form-group">
+                <button id="searchButtonFond" class="btn btn-light button-width" type="submit">Поиск</button>
             </div>
         </div>
 
-        <div class="row" style="margin-bottom: 10px">
-            <div class="col-md-6"></div>
-            <div class="col-md-6">
-                <div class="text-md-end">
-                    <a role="button" class="btn btn-primary" th:href="@{/cities/add}">Добавить</a>
-                </div>
-            </div>
-        </div>
 
+        <div class="form-group col-xs-5 col-md-5" style="margin-top:30px; margin-bottom:30px">
+            <label>Типы валют , которые не определены в источнике формирования капитала</label>
+        </div>
 
         <table class="table table-bordered table-hover">
             <thead>
             <tr align="center">
                 <th width="100px">ID</th>
-                <th>Название</th>
-                <th>Страна</th>
-                <th width="400px">Действия</th>
+                <th>Валюта</th>
+                <th>Сумма</th>
+                <th>Дата пожертвования</th>
+                <th>Пользователь</th>
             </tr>
             </thead>
-
             <tbody>
-            <tr th:each="city : ${cities}">
-                <td>
-                    <span th:text="${city.id}"></span>
-                </td>
-                <td th:text="${city.name}"></td>
 
-                <td th:text="${city.country.name}"></td>
 
-                <td class="text-center" style="display: flex; align-items: center;">
-
-                    <form th:action="@{'/cities/'+${city.id}}" method="get">
-                        <button type="submit">Изменить</button>
-                    </form>
-
-                    <span style="margin: 0 5px;">|</span>
-
-                    <button
-                            th:data-id="${city.id}"
-                            th:data-name="${city.name}"
-                            onclick="deleteItem(this.getAttribute('data-id'),this.getAttribute('data-name'))">
-                        Удалить
-                    </button>
-                </td>
+            <tr th:each="currencyTypesCapitalSource : ${forLeftJoin}">
+                <td th:text="${currencyTypesCapitalSource.currencyType.id}"></td>
+                <td th:text="${currencyTypesCapitalSource.currencyType.name}"></td>
+                <td th:text="${currencyTypesCapitalSource.capitalSource.sum != null ? currencyTypesCapitalSource.capitalSource.sum : 'Нет данных'}"></td>
+                <td th:text="${currencyTypesCapitalSource.capitalSource.donationDate != null ? currencyTypesCapitalSource.capitalSource.donationDate : 'Нет данных'}"></td>
+                <td th:if="${currencyTypesCapitalSource.capitalSource.user != null}"
+                    th:text="${currencyTypesCapitalSource.capitalSource.user.fio != null ? currencyTypesCapitalSource.capitalSource.user.fio : 'Нет данных'}"></td>
+                <td th:if="${currencyTypesCapitalSource.capitalSource.user == null}">Нет данных</td>
             </tr>
             </tbody>
         </table>
+
+
+        <div class="form-group col-xs-5 col-md-5" style="margin-top:30px; margin-bottom:30px">
+            <label>Типы пожертвования, которые не определены в источнике формирования капитала</label>
+        </div>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr align="center">
+                <th width="100px">ID</th>
+                <th>Тип пожертвования</th>
+                <th>Сумма</th>
+                <th>Дата пожертвования</th>
+                <th>Пользователь</th>
+            </tr>
+            </thead>
+            <tbody>
+
+
+            <tr th:each="donationTypesCapitalSource : ${forRightJoin}">
+                <td th:text="${donationTypesCapitalSource.donationType.id}"></td>
+                <td th:text="${donationTypesCapitalSource.donationType.name}"></td>
+                <td th:text="${donationTypesCapitalSource.capitalSource.sum != null ? donationTypesCapitalSource.capitalSource.sum : 'Нет данных'}"></td>
+                <td th:text="${donationTypesCapitalSource.capitalSource.donationDate != null ? donationTypesCapitalSource.capitalSource.donationDate : 'Нет данных'}"></td>
+                <td th:if="${donationTypesCapitalSource.capitalSource.user != null}"
+                    th:text="${donationTypesCapitalSource.capitalSource.user.fio != null ? donationTypesCapitalSource.capitalSource.user.fio : 'Нет данных'}"></td>
+                <td th:if="${donationTypesCapitalSource.capitalSource.user == null}">Нет данных</td>
+            </tr>
+            </tbody>
+        </table>
+
+
+        <!--        <label th:text="Количество уникальных типов валют:"></label>-->
+        <!--    <label th:text="${currencyTypesCount}"></label>-->
+
     </div>
 </div>
 
@@ -134,7 +156,7 @@
             </div>
             <div class="modal-footer">
 
-                <button id="delete-button" type="button" onclick="deleteRequest(this, '/cities/')"
+                <button id="delete-button" type="button" onclick="deleteRequest(this, '/capital_sources/')"
                         class="btn btn-danger">
                     Удалить
                 </button>

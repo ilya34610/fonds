@@ -31,6 +31,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.webjars:bootstrap:5.3.0'
 
+	implementation 'com.github.mikesafonov:spring-boot-starter-specification-builder:1.1.0'
+
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'

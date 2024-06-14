@@ -58,6 +58,8 @@ public class FondEndpoint {
         } else {
             mav.addObject("fonds", service.getAllElem());
         }
+
+
         return mav;
     }
 
@@ -71,6 +73,8 @@ public class FondEndpoint {
 
         mav.addObject("citizens", citizenService.getAllElem());
         mav.addObject("fonds", service.getAllElem());
+
+        mav.addObject("requestWithCase", service.getElemRequestWithCase());
 
         return mav;
     }

@@ -37,4 +37,5 @@ out/
 .vscode/
 
 ### ###
-*-dev.properties
+#*-dev.properties
+*.properties

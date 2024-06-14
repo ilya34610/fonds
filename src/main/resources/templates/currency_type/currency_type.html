@@ -24,6 +24,18 @@
 
 <div class="container">
 
+
+    <label for="countOfCurrencyType">Количество уникальных типов валют</label>
+
+    <input id="countOfCurrencyType" class="form-control" type="text" pattern=".*[^ ].*"
+           name="name"
+           minlength="3"
+           maxlength="100"
+           th:field="*{count}"
+           required
+           readonly>
+
+
     <div class="row">
         <div class="col-md-8 offset-md-2">
 

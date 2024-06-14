@@ -2,10 +2,7 @@ package ru.pssbd.fonds.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.pssbd.fonds.dto.output.FondCapitalSourceOutput;
-import ru.pssbd.fonds.dto.output.FondFondExpensesOutput;
-import ru.pssbd.fonds.dto.output.FondOutput;
-import ru.pssbd.fonds.dto.output.UserOutput;
+import ru.pssbd.fonds.dto.output.*;
 import ru.pssbd.fonds.entity.CapitalSourceEntity;
 import ru.pssbd.fonds.entity.FondEntity;
 import ru.pssbd.fonds.entity.FondExpenseEntity;
@@ -17,6 +14,7 @@ import ru.pssbd.fonds.repository.CitizensFondsRepository;
 import ru.pssbd.fonds.repository.FondRepository;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -31,13 +29,15 @@ public class FondService {
     private final FondRepository repository;
     private final FondMapper mapper;
 
+    private final CityService cityService;
     private final FondExpenseMapper fondExpenseMapper;
 
-    public FondService(UserService userService, CitizensFondsRepository citizensFondsRepository, UserMapper userMapper, FondRepository repository, FondMapper mapper, FondExpenseMapper fondExpenseMapper) {
+    public FondService(UserService userService, CitizensFondsRepository citizensFondsRepository, UserMapper userMapper, FondRepository repository, FondMapper mapper, CityService cityService, FondExpenseMapper fondExpenseMapper) {
         this.userService = userService;
         this.userMapper = userMapper;
         this.repository = repository;
         this.mapper = mapper;
+        this.cityService = cityService;
         this.fondExpenseMapper = fondExpenseMapper;
     }
 
@@ -138,6 +138,58 @@ public class FondService {
     }
 
 
+    public List<RequestWithCaseOutput> getElemRequestWithCase() {
+        List<RequestWithCaseOutput> result = new ArrayList<>();
 
+        List<Object[]> data = repository.getElemRequestWithCase();
+        if (!data.isEmpty()) {
+            for (Object[] row : data) {
+
+                FondOutput fond = new FondOutput();
+                fond.setName(row[1].toString());
+
+                BigInteger bigIntegerValue = (BigInteger) row[2];
+                Integer integerValue = bigIntegerValue.intValue();
+                fond.setCity(cityService.getElemById(integerValue));
+
+                fond.setPhone((String) row[4]);
+                fond.setSum((BigDecimal) row[6]);
+                result.add(new RequestWithCaseOutput(fond, (String) row[7]));
+            }
+            return result;
+        } else {
+            return result;
+        }
+
+    }
+
+
+    public List<FondOutput> getElemQueryNotIn() {
+        List<FondOutput> result = new ArrayList<>();
+
+        List<Object[]> data = repository.getElemQueryNotIn();
+        if (!data.isEmpty()) {
+            for (Object[] row : data) {
+
+                FondOutput fond = new FondOutput();
+                fond.setId((Integer) row[0]);
+
+                fond.setName(row[1].toString());
+
+                BigInteger bigIntegerValue = (BigInteger) row[2];
+                Integer integerValue = bigIntegerValue.intValue();
+                fond.setCity(cityService.getElemById(integerValue));
+                fond.setCreationDate(((java.sql.Date) row[3]).toLocalDate());
+                fond.setPhone((String) row[4]);
+                fond.setUser(userService.getElemById((Integer) row[5]));
+                fond.setSum((BigDecimal) row[6]);
+                result.add(fond);
+            }
+            return result;
+        } else {
+            return null;
+        }
+
+    }
 
 }

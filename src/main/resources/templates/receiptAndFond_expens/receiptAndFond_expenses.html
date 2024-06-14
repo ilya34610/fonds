@@ -44,13 +44,41 @@
 <div th:replace="fragments/navbar :: navbar"></div>
 <div class="container-fluid">
 
-    <div align="center" class="col-md-12">
 
-        <h2>Поступления</h2>
-
-    </div>
 
     <div class="col-xs-12 col-md-12">
+
+        <label>Фонды, которые ещё не оказали помощь</label>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr align="center">
+                <th width="100px">ID</th>
+                <th>Название</th>
+                <th>Город</th>
+                <th>Страна</th>
+                <th>Дата создания</th>
+                <th>Телефон</th>
+                <th>Персонал</th>
+                <th>Баланс</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="fond : ${fondExpensesFondsQuery}">
+                <td>
+                    <span th:text="${fond.id}"></span>
+                </td>
+                <td th:text="${fond.name}"></td>
+                <td th:text="${fond.city.name}"></td>
+                <td th:text="${fond.city.country.name}"></td>
+                <td th:text="${fond.creationDate}"></td>
+                <td th:text="${fond.phone}"></td>
+                <td th:text="${fond.user.fio}"></td>
+                <td th:text="${fond.sum}"></td>
+            </tr>
+            </tbody>
+        </table>
+
 
         <div class="row" style="margin-bottom: 10px">
             <div class="col-md-6"></div>
@@ -63,6 +91,11 @@
 
     </div>
 
+    <div align="center" class="col-md-12">
+
+        <h2>Поступления</h2>
+
+    </div>
     <div class="col-xs-12 col-md-12">
         <!--        <div class="row" style="margin-bottom: 10px">-->
         <!--            <div class="col-md-6"></div>-->
