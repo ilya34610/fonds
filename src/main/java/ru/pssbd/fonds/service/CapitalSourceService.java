@@ -517,7 +517,7 @@ public class CapitalSourceService {
             // тип пожертвования
 //            for (int j = 0; i < outputs.size(); ) {
 
-            List<DonationTypeOutput> donationTypeOutputs = outputs.get(i < 0 ? i++ : i).getDonationTypes();
+            List<DonationTypeOutput> donationTypeOutputs = outputs.get(i < 0 && !outputs.isEmpty() ? i++ : i).getDonationTypes();
 
             // Проверяем, есть ли пересечение списков
             boolean donationTypeCheck = donationTypeOutputs != null && !donationType.isEmpty() && donationTypeOutputs.stream()
