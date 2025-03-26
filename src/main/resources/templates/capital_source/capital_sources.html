@@ -44,6 +44,19 @@
 <div th:replace="fragments/navbar :: navbar"></div>
 <div class="container-fluid">
 
+    <div align="left" class="col-md-8">
+        <label>Справочная информация</label>
+    </div>
+    <div align="left" class="col-md-8">
+        <label>Сумма вех источников формирования капитала, где типом пожертвования является `Пожертвования частных лиц`
+            и сумма больше 60000</label>
+    </div>
+
+
+    <div align="left" class="col-md-6">
+        <label th:text="${sum_capitalSource_for_query}" class="col-md-6"></label>
+    </div>
+
     <div align="center" class="col-md-12">
 
         <h2>Источники формирования капитала</h2>
@@ -51,6 +64,16 @@
     </div>
 
     <div class="col-xs-12 col-md-12">
+
+        <div class="row" style="margin-bottom: 10px" sec:authorize="hasAuthority('ADMIN')">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+                <div class="text-md-end">
+                    <a role="button" class="btn btn-primary" th:href="@{/capital_sources/capital_source_for_requests}">Справочная
+                        информация</a>
+                </div>
+            </div>
+        </div>
 
         <div class="row" style="margin-bottom: 10px">
             <div class="col-md-6"></div>
@@ -67,9 +90,9 @@
             <!--            <form method="get">-->
 
             <div class="form-group col-xs-5 col-md-5">
-                <label for="idFond">Название</label>
+                <label for="idFond">Название фонда</label>
                 <input type="text" id="idFond" class="form-control"
-                       placeholder="Введите название фонда">
+                       placeholder="Введите название">
                 <!--                    th:field="${filter.name}"-->
             </div>
             <div class="col-xs-1 col-md-1 marginTopFilterButton">
@@ -87,60 +110,111 @@
                 <th>Дата пожертвования</th>
                 <th>Пользователь</th>
                 <th>Фонд</th>
-                <th width="400px" sec:authorize="hasAuthority('ADMIN')">Действия</th>
+                <th>Тип пожертвования</th>
             </tr>
             </thead>
-            <tbody>
+            <!--            <tbody>-->
 
-            <!--            <tr th:each="capital_source : ${capital_sources}" sec:authorize="hasAuthority('ADMIN')">-->
+            <!--            <tr th:each="capitalSource_fonds : ${capitalSource_fonds}">-->
+            <!--                <td th:text="${capitalSource_fonds.capitalSource.id}"></td>-->
+            <!--                <td th:text="${capitalSource_fonds.capitalSource.sum}"></td>-->
+            <!--                <td th:text="${capitalSource_fonds.capitalSource.currencyType.name}"></td>-->
+            <!--                <td th:text="${capitalSource_fonds.capitalSource.donationDate}"></td>-->
+            <!--                <td th:text="${capitalSource_fonds.capitalSource.user.fio}"></td>-->
             <!--                <td>-->
-            <!--                    <span th:text="${capital_source.id}"></span>-->
-            <!--                </td>-->
-            <!--                <td th:text="${capital_source.sum}"></td>-->
-
-            <!--                <td th:text="${capital_source.currencyType.name}"></td>-->
-
-            <!--                <td th:text="${capital_source.donationDate}"></td>-->
-
-            <!--                <td th:text="${capital_source.user.fio}"></td>-->
-
-            <!--                <td>-->
-            <!--                     <span th:each="fond, iterStat : ${fonds}">-->
-            <!--                         <span th:text="${fond.name}"></span>-->
-            <!--                         <span th:if="${!iterStat.last}">, </span>-->
-            <!--                     </span>-->
+            <!--                    <span th:text="${capitalSource_fonds.fond.name}"></span>-->
             <!--                </td>-->
 
-            <tr th:each="capitalSource_fonds : ${capitalSource_fonds}">
-                <td th:text="${capitalSource_fonds.capitalSource.id}"></td>
-                <td th:text="${capitalSource_fonds.capitalSource.sum}"></td>
-                <td th:text="${capitalSource_fonds.capitalSource.currencyType.name}"></td>
-                <td th:text="${capitalSource_fonds.capitalSource.donationDate}"></td>
-                <td th:text="${capitalSource_fonds.capitalSource.user.fio}"></td>
-                <td>
-                    <span th:text="${capitalSource_fonds.fond.name}"></span>
-                </td>
 
+            <!--                <td class="text-center" style="display: flex; align-items: center;"-->
+            <!--                    sec:authorize="hasAuthority('ADMIN')">-->
 
-                <td class="text-center" style="display: flex; align-items: center;"
-                    sec:authorize="hasAuthority('ADMIN')">
+            <!--                    <form th:action="@{'/capital_sources/'+${capitalSource_fonds.capitalSource.id}}" method="get">-->
+            <!--                        <button type="submit">Изменить</button>-->
+            <!--                    </form>-->
 
-                    <form th:action="@{'/capital_sources/'+${capitalSource_fonds.capitalSource.id}}" method="get">
-                        <button type="submit">Изменить</button>
-                    </form>
+            <!--                    <span style="margin: 0 5px;">|</span>-->
 
-                    <span style="margin: 0 5px;">|</span>
+            <!--                    <button-->
+            <!--                            th:data-id="${capitalSource_fonds.capitalSource.id}"-->
+            <!--                            th:data-name="${capitalSource_fonds.capitalSource.sum}"-->
+            <!--                            onclick="deleteItem(this.getAttribute('data-id'),this.getAttribute('data-sum'))">-->
+            <!--                        Удалить-->
+            <!--                    </button>-->
+            <!--                </td>-->
+            <!--            </tr>-->
+            <!--            </tbody>-->
 
-                    <button
-                            th:data-id="${capitalSource_fonds.capitalSource.id}"
-                            th:data-name="${capitalSource_fonds.capitalSource.sum}"
-                            onclick="deleteItem(this.getAttribute('data-id'),this.getAttribute('data-sum'))">
-                        Удалить
-                    </button>
-                </td>
-            </tr>
+            <tbody id="tableBody">
+            <!-- Rows will be inserted here dynamically -->
             </tbody>
+
+
         </table>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                // Вызов функции при загрузке страницы
+                loadData('');
+
+                // Вызов функции при нажатии на кнопку поиска
+                $('#searchButtonFond').on('click', function() {
+                    var fondName = $('#idFond').val();
+                    loadData(fondName);
+                });
+            });
+
+            function loadData(fondName) {
+                $.ajax({
+                    url: '/capital_sources/searchByFond',
+                    type: 'GET',
+                    data: { fondName: fondName },
+                    success: function(data) {
+                        var tableBody = $('#tableBody');
+                        tableBody.empty();
+                        data.forEach(function(item) {
+                            console.log(item);
+                            var fondName = item.fonds.length > 0 ? item.fonds[0].name : 'N/A';
+                            var userName = item.user ? item.user.fio : 'N/A';
+                            var currencyName = item.currencyType ? item.currencyType.name : 'N/A';
+                            var formattedDate = formatDate(item.donationDate);
+                            var donationTypesList = '<ul>';
+                            item.donationTypes.forEach(function(donationType) {
+                                donationTypesList += '<li>' + donationType.name + '</li>';
+                                console.log('Item ' + donationType.name);
+                            });
+                            donationTypesList += '</ul>';
+
+                            var row = '<tr>' +
+                                '<td>' + item.id + '</td>' +
+                                '<td>' + item.sum + '</td>' +
+                                '<td>' + currencyName + '</td>' +
+                                '<td>' + formattedDate + '</td>' +
+                                '<td>' + userName + '</td>' +
+                                '<td>' + fondName + '</td>' +
+                                '<td>' + donationTypesList  + '</td>' +
+<!--                                '<td><ul><li th:each="donationType : ${' + item.donationTypes + '}" th:text="${donationType.name}"</ul></td>' +-->
+
+
+
+                            '</tr>';
+                            tableBody.append(row);
+                        });
+                    }
+                });
+            }
+
+            function formatDate(dateString) {
+                var date = new Date(dateString);
+                var year = date.getFullYear();
+                var month = ('0' + (date.getMonth() + 1)).slice(-2);
+                var day = ('0' + date.getDate()).slice(-2);
+                return year + '-' + month + '-' + day;
+            }
+        </script>
+
+
     </div>
 </div>
 

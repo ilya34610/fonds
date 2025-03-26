@@ -4,12 +4,15 @@ import org.springframework.stereotype.Service;
 import ru.pssbd.fonds.dto.input.CityInput;
 import ru.pssbd.fonds.dto.output.CityOutput;
 import ru.pssbd.fonds.dto.output.CountryOutput;
+import ru.pssbd.fonds.dto.output.HavingRequestCountOutput;
+import ru.pssbd.fonds.dto.output.HavingRequestOutput;
 import ru.pssbd.fonds.entity.CityEntity;
 import ru.pssbd.fonds.mappers.CityMapper;
 import ru.pssbd.fonds.repository.CityRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -32,7 +35,7 @@ public class CityService {
                 .collect(Collectors.toList());
     }
 
-    public CityOutput getElemById(int id) {
+    public CityOutput getElemById(Integer id) {
         return repository.findById(BigInteger.valueOf(id))
                 .map(mapper::toOutput)
                 .orElseThrow(() -> new NoSuchElementException("Элемент с id " + id + " не найден"));
@@ -64,4 +67,44 @@ public class CityService {
     public CityEntity get(BigInteger id) {
         return repository.getById(id);
     }
+
+
+    public List<HavingRequestOutput> getElemForHaving() {
+        List<HavingRequestOutput> result = new ArrayList<>();
+
+        List<Object[]> data = repository.getElemForHaving();
+        if (!data.isEmpty()) {
+            for (Object[] row : data) {
+
+                CountryOutput country = new CountryOutput();
+                country.setName(row[0].toString());
+                result.add(new HavingRequestOutput(country, (BigInteger) row[1]));
+            }
+            return result;
+        } else {
+            return result;
+        }
+
+    }
+
+
+    public List<HavingRequestCountOutput> getElemForHavingCount() {
+        List<HavingRequestCountOutput> result = new ArrayList<>();
+
+
+        List<Object[]> data = repository.getElemForHavingCount();
+        if (!data.isEmpty()) {
+            for (Object[] row : data) {
+
+                CityOutput city = new CityOutput();
+                city.setName(row[0].toString());
+                result.add(new HavingRequestCountOutput(city, (BigInteger) row[1]));
+            }
+            return result;
+        } else {
+            return result;
+        }
+
+    }
+
 }

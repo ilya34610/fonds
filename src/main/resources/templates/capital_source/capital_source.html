@@ -53,9 +53,9 @@
 
                 <div class="form-group" style="margin-top: 20px;">
 
-                    <label>Тип тип пожертвования</label>
+                    <label>Тип пожертвования</label>
 
-                    <select id="donationTypeInput" th:field="*{donationTypes}">
+                    <select id="donationTypeInput" th:field="*{donationTypes}" multiple>
                         <option th:each="donationType : ${donationTypes}"
                                 th:value="${donationType.id}"
                                 th:text="${donationType.name}"

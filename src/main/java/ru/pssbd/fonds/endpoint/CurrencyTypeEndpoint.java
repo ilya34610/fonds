@@ -23,6 +23,9 @@ public class CurrencyTypeEndpoint {
     public ModelAndView donationTypes() {
         ModelAndView mav = new ModelAndView("currency_type/currency_types");
         mav.addObject("currency_types", service.getAllElem());
+
+
+//        mav.addObject("requestWithGroupBy", service.getElemForGroupBy());
         return mav;
     }
 
@@ -62,6 +65,13 @@ public class CurrencyTypeEndpoint {
     @ResponseBody
     public void edit(@PathVariable Short id, @Validated @RequestBody CurrencyTypeInput input) {
         service.putById(id, input);
+    }
+
+
+    @GetMapping("/count_of_currency_types")
+    @ResponseBody
+    public int countOfCurrencyType() {
+        return service.getAllElem().size();
     }
 
 }

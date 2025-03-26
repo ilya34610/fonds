@@ -29,8 +29,8 @@ public class DonationTypeService {
                 .collect(Collectors.toList());
     }
 
-    public DonationTypeOutput getElemById(int id) {
-        return repository.findById((short) id)
+    public DonationTypeOutput getElemById(Short id) {
+        return repository.findById(id)
                 .map(mapper::toOutput)
                 .orElseThrow(() -> new NoSuchElementException("Элемент с id " + id + " не найден"));
     }
