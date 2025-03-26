@@ -48,7 +48,6 @@ public class CapitalSourceEndpoint {
 
             mav.addObject("capitalSource_fonds", fondService.getAllFondsForCurrentDonater(currentRoleOutput));
         } else {
-//            mav.addObject("capitalSource_fonds", service.getAllCapitalSource());
             mav.addObject("capitalSource_fonds", service.searchCapitalSources(fondName));
         }
 
@@ -75,15 +74,8 @@ public class CapitalSourceEndpoint {
         String username = authentication.getName();
         UserOutput currentRoleOutput = userService.getRoleByLogin(username);
 
-//        if (currentRoleOutput.getRole().getName().equals("DONATER")) {
-            mav.addObject("currentUser", userService.getElemById(currentRoleOutput.getId()));
-//            newOutput.setUser(userService.getElemById(currentRoleOutput.getId()));
+        mav.addObject("currentUser", userService.getElemById(currentRoleOutput.getId()));
 
-
-//        }
-//        else {
-//            mav.addObject("users", userService.getAllElem());
-//        }
         mav.addObject("fonds", fondService.getAllElem());
 
         mav.addObject("capitalSource", newOutput);
