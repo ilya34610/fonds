@@ -5,13 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class FondOutput {
-    private Integer id;
+    private BigInteger id;
     private String name;
     private CityOutput city;
     private LocalDate creationDate;

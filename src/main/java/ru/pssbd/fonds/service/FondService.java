@@ -2,17 +2,17 @@ package ru.pssbd.fonds.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.pssbd.fonds.dto.input.DonationTypeInput;
+import ru.pssbd.fonds.dto.input.FondInput;
 import ru.pssbd.fonds.dto.output.*;
-import ru.pssbd.fonds.entity.CapitalSourceEntity;
-import ru.pssbd.fonds.entity.FondEntity;
-import ru.pssbd.fonds.entity.FondExpenseEntity;
-import ru.pssbd.fonds.entity.UserEntity;
+import ru.pssbd.fonds.entity.*;
 import ru.pssbd.fonds.mappers.FondExpenseMapper;
 import ru.pssbd.fonds.mappers.FondMapper;
 import ru.pssbd.fonds.mappers.UserMapper;
 import ru.pssbd.fonds.repository.CitizensFondsRepository;
 import ru.pssbd.fonds.repository.FondRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -47,34 +47,35 @@ public class FondService {
                 .collect(Collectors.toList());
     }
 
-    public FondOutput getElemById(int id) {
+    public FondOutput getElemById(BigInteger id) {
         return repository.findById(id)
                 .map(mapper::toOutput)
                 .orElseThrow(() -> new NoSuchElementException("Элемент с id " + id + " не найден"));
     }
 
-    public FondEntity get(int id) {
+    public FondEntity get(BigInteger id) {
         return repository.getById(id);
     }
 
-    public List<FondCapitalSourceOutput> getAllFondsForCurrentDonater(UserOutput donater) {
-        List<FondCapitalSourceOutput> result = new ArrayList<>();
-        UserEntity userEntity = userService.get(donater.getId());
-
-        List<Object[]> data = repository.findAllFondsByUser(userEntity);
-        if (!data.isEmpty()) {
-
-            for (Object[] row : data) {
-                FondEntity fond = (FondEntity) row[0];
-                CapitalSourceEntity capitalSource = (CapitalSourceEntity) row[1];
-                result.add(new FondCapitalSourceOutput(fond, capitalSource));
-            }
-            return result;
-        } else {
-            return result;
-        }
-
-    }
+//    public List<FondCapitalSourceOutput> getAllFondsForCurrentDonater(UserOutput donater) {
+//        List<FondCapitalSourceOutput> result = new ArrayList<>();
+//        UserEntity userEntity = userService.get(donater.getId());
+//
+//        List<FondOutput> data = repository.findAllFondsByUser(userEntity);
+//        if (!data.isEmpty()) {
+//
+////            for (Object[] row : data) {
+////                FondEntity fond = (FondEntity) row[0];
+////                CapitalSourceEntity capitalSource = (CapitalSourceEntity) row[1];
+////                result.add(new FondCapitalSourceOutput(fond, capitalSource));
+////            }
+//            result.add()
+//            return result;
+//        } else {
+//            return result;
+//        }
+//
+//    }
 
     public List<FondOutput> getAllElemForCurrentDonater(UserOutput donater) {
         UserEntity userEntity = userService.get(donater.getId());
@@ -91,7 +92,7 @@ public class FondService {
 
 
     @Transactional
-    public void minusBalance(BigDecimal sum, Integer id) {
+    public void minusBalance(BigDecimal sum, BigInteger id) {
         repository.minusBalance(sum, id);
 
     }
@@ -172,7 +173,7 @@ public class FondService {
             for (Object[] row : data) {
 
                 FondOutput fond = new FondOutput();
-                fond.setId((Integer) row[0]);
+                fond.setId((BigInteger) row[0]);
 
                 fond.setName(row[1].toString());
 
@@ -190,6 +191,17 @@ public class FondService {
             return null;
         }
 
+    }
+
+    public void putById(BigInteger id, FondInput input) {
+        FondEntity entity = repository.findById(id)
+                .map(existngEntity -> mapper.fromInput(input, existngEntity))
+                .orElseThrow(() -> new EntityNotFoundException("Entity not found with id: " + id));
+        repository.save(entity);
+    }
+
+    public void deleteById(BigInteger id) {
+        repository.deleteById(id);
     }
 
 }

@@ -1,5 +1,6 @@
 package ru.pssbd.fonds.service;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.pssbd.fonds.dto.input.CityInput;
 import ru.pssbd.fonds.dto.output.CityOutput;
@@ -30,7 +31,7 @@ public class CityService {
     }
 
     public List<CityOutput> getAllElem() {
-        return repository.findAll().stream()
+        return repository.findAll(Sort.by(Sort.Direction.ASC, "id")).stream()
                 .map(mapper::toOutput)
                 .collect(Collectors.toList());
     }

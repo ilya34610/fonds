@@ -52,26 +52,28 @@
                 </div>
 
                 <div class="form-group" style="margin-top: 20px;">
-
-                    <label>Тип пожертвования</label>
-
-                    <select id="donationTypeInput" th:field="*{donationTypes}" multiple>
-                        <option th:each="donationType : ${donationTypes}"
-                                th:value="${donationType.id}"
-                                th:text="${donationType.name}"
-                                th:selected="${selectedDonationType != null && donationType.id == selectedDonationType.id}"></option>
+                    <label for="donationTypeInput">Тип пожертвования</label>
+                    <select id="donationTypeInput"
+                            th:field="*{donationTypeIds}"
+                            multiple="multiple"
+                            class="form-control">
+                        <!-- Явно указываем, что donationTypes берется из модели, а не из объекта формы -->
+                        <option th:each="type : ${donationTypes}"
+                                th:value="${type.id}"
+                                th:text="${type.name}"
+                                th:selected="${#lists.contains(capitalSource.donationTypeIds, type.id)}">
+                            <!-- Опционально, для предвыбора -->
+                        </option>
                     </select>
                 </div>
 
                 <div class="form-group" style="margin-top: 20px;">
-
-                <label>Тип валюты</label>
-
+                    <label>Тип валюты</label>
                     <select id="currencyTypeInput" th:field="*{currencyType}">
                         <option th:each="currencyType : ${currencyTypes}"
                                 th:value="${currencyType.id}"
                                 th:text="${currencyType.name}"
-                                th:selected="${selectedCurrencyType != null && currencyType.id == selectedCurrencyType.id}"></option>
+                                th:selected="${capitalSource.currencyType.id != null && currencyType.id == capitalSource.currencyType.id}"></option>
                     </select>
                 </div>
 
@@ -83,22 +85,8 @@
                            maxlength="50"
                            th:value="${#temporals.format(capitalSource.donationDate, 'yyyy-MM-dd')}" required
                            readonly>
-                    <!--                    <input id="donationDateInput" class="form-control" type="text" name="donationDate"  minlength="1" maxlength="50" required readonly>-->
 
                 </div>
-
-                <!--                <div class="form-group" style="margin-top: 20px;" sec:authorize="hasAuthority('ADMIN')">-->
-
-                <!--                    <label>Пользователь</label>-->
-
-                <!--                    <select id="userInput" th:field="*{user}">-->
-                <!--                        <option th:each="user : ${users}"-->
-                <!--                                th:value="${user.id}"-->
-                <!--                                th:text="${user.fio}"-->
-                <!--                                th:selected="${selectedUser != null && user.id == selectedUser.id}"></option>-->
-                <!--                    </select>-->
-                <!--                </div>-->
-
 
                 <div class="form-group" style="margin-top: 20px;">
 
@@ -107,22 +95,25 @@
                            name="userInput"
                            minlength="1"
                            maxlength="50"
-                           th:value="${currentUser.fio}"
+                           th:value="${capitalSource.user.fio}"
                            required
                            readonly>
                 </div>
-                <input type="hidden" id="userInputId" name="user" th:value="${currentUser.id}">
+                <input type="hidden" id="userInputId" name="user" th:value="${capitalSource.user.id}">
 
 
                 <div class="form-group" style="margin-top: 20px;">
-                    <label for="fondInput">Фонды</label>
-                    <select id="fondInput" th:field="*{fonds}">
-                        <option th:each="fond : ${fonds}"
-                                th:value="${fond.id}"
-                                th:text="${fond.name}"
-                                th:selected="${selectedFond != null && fond.id == selectedFond.id}"></option>
+                    <label for="fondInput">Фонд</label>
+                    <select id="fondInput"
+                            class="form-control"
+                            th:field="*{fond.id}">
+                        <option th:each="f : ${fonds}"
+                                th:value="${f.id}"
+                                th:text="${f.name}">
+                        </option>
                     </select>
                 </div>
+
 
                 <div class="form-group text-center">
                     <button th:if="${capitalSource.id == null}" id="submit" class="btn btn-primary" type="submit">

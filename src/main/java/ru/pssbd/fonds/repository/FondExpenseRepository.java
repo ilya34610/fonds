@@ -16,7 +16,7 @@ public interface FondExpenseRepository extends JpaRepository<FondExpenseEntity, 
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO fonds_fond_expenses (id_fonds, id_fond_expenses) VALUES (:idFond, :idFondExpenses)", nativeQuery = true)
-    void saveTransaction(@Param("idFond") Integer idFond, @Param("idFondExpenses") Integer idFondExpenses);
+    void saveTransaction(@Param("idFond") BigInteger idFond, @Param("idFondExpenses") Integer idFondExpenses);
 
     @Query("SELECT fe AS fondExpense, f AS fond FROM FondEntity f JOIN f.fondExpenses fe")
     List<Object[]> getAll();
