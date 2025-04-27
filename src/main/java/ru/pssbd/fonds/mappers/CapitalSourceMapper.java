@@ -12,9 +12,11 @@ import ru.pssbd.fonds.entity.FondEntity;
 import ru.pssbd.fonds.repository.DonationTypeRepository;
 import ru.pssbd.fonds.repository.FondRepository;
 import ru.pssbd.fonds.service.CurrencyTypeService;
+import ru.pssbd.fonds.service.DonationTypeService;
 import ru.pssbd.fonds.service.FondService;
 import ru.pssbd.fonds.service.UserService;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,6 +38,7 @@ public class CapitalSourceMapper {
     @Autowired
     private final FondMapper fondMapper;
     private final DonationTypeRepository donationTypeRepository;
+    private final DonationTypeService donationTypeService;
 
     private final DonationTypeMapper donationTypeMapper;
     @Autowired
@@ -52,20 +55,19 @@ public class CapitalSourceMapper {
         entity.setDonationDate(input.getDonationDate());
         entity.setUser(userService.get(input.getUser()));
 
-        Integer fondsId = input.getFonds().get(0);
-        FondEntity fondTemp = fondRepository.getById(fondsId.intValue());
-        List<FondEntity> fondList = new ArrayList<>();
-        fondList.add(fondTemp);
-        entity.setFonds(fondList);
+        BigInteger fondsId = new BigInteger(input.getFonds().get(0).toString());
+        FondEntity fondTemp = fondRepository.getById(fondsId);
+//        List<FondEntity> fondList = new ArrayList<>();
+//        fondList.add(fondTemp);
+        entity.setFond(fondTemp);
 
 
-//        Integer donationTypeId = input.getDonationTypes().get(0);
 
+        List<DonationTypeEntity> donationTypeList = new ArrayList<>();
+        for (Short donationTypeId : input.getDonationTypes()) {
 
-        for (Integer donationTypeId : input.getDonationTypes()) {
+            DonationTypeEntity donationTypeTemp = donationTypeRepository.getById(donationTypeId);
 
-            DonationTypeEntity donationTypeTemp = donationTypeRepository.getById(donationTypeId.shortValue());
-            List<DonationTypeEntity> donationTypeList = new ArrayList<>();
             donationTypeList.add(donationTypeTemp);
             entity.setDonationTypes(donationTypeList);
 
@@ -77,13 +79,21 @@ public class CapitalSourceMapper {
     }
 
     public CapitalSourceOutput toOutput(@NotNull CapitalSourceEntity entity) {
+
         return new CapitalSourceOutput(entity.getId(),
                 entity.getSum(),
                 currencyTypeMapper.toOutput(entity.getCurrencyType()),
                 entity.getDonationDate(),
                 userMapper.toOutput(entity.getUser()),
-                entity.getFonds().stream().map(fondMapper::toOutput).collect(Collectors.toList()),
-                entity.getDonationTypes().stream().map(donationTypeMapper::toOutput).collect(Collectors.toList()));
+                fondMapper.toOutput(entity.getFond()),
+                entity.getDonationTypes().stream()
+                        .map(DonationTypeEntity::getId)
+                        .collect(Collectors.toList()));
     }
 
 }
+//(DonationTypeEntity id) -> donationTypeService.getElemById(id).getId()
+//entity.getDonationTypes()
+//                        .stream()
+//                        .map((DonationTypeEntity id) -> donationTypeService.getElemById(id).getId())
+//        .collect(Collectors.toList()));

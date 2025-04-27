@@ -1,6 +1,7 @@
 package ru.pssbd.fonds.repository;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,8 +18,13 @@ public interface CapitalSourceRepository extends JpaRepository<CapitalSourceEnti
     @Query("SELECT cs FROM CapitalSourceEntity cs WHERE cs.user = :user")
     List<CapitalSourceEntity> findAllElemByCurrentDonater(@Param("user") UserEntity user);
 
-    @Query("SELECT f AS fond, cs AS capitalSource FROM CapitalSourceEntity cs JOIN cs.fonds f")
-    List<Object[]> findAllElem();
+//    @Query("SELECT f AS fond, cs AS capitalSource FROM CapitalSourceEntity cs JOIN cs.fonds f")
+//    List<Object[]> findAllElem();
+
+
+    @EntityGraph(attributePaths = "fond")
+    @Query("SELECT c FROM CapitalSourceEntity c ORDER BY c.id ASC")
+    List<CapitalSourceEntity> findAllWithFond();
 
 
     @Query(value = "SELECT public.currency_type.id, " +

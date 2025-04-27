@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,6 +29,14 @@ public class ReceiptEntity {
 
     @ManyToMany(mappedBy = "receipts")
     private List<CapitalSourceEntity> capitalSources;
+
+//    @ManyToMany
+//    @JoinTable(
+//            name = "parent_child",
+//            joinColumns = @JoinColumn(name = "parent_id"),
+//            inverseJoinColumns = @JoinColumn(name = "child_id")
+//    )
+//    private List<CapitalSourceReceiptsEntity> capitalSourceReceipts = new ArrayList<>();
 
     public ReceiptEntity(BigDecimal sum, FondEntity fond) {
 

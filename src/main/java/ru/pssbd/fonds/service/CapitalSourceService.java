@@ -31,8 +31,8 @@ public class CapitalSourceService {
     private final CapitalSourceRepository repository;
     private final CapitalSourceMapper mapper;
 
-    private final FondRepository fondRepository;
-    private final ReceiptRepository receiptRepository;
+    private final FondRepository fondRepository; // переделать на сервис
+    private final ReceiptRepository receiptRepository; // переделать на сервис
 //    private final FondMapper fondMapper;
 
     private final UserService userService;
@@ -75,12 +75,12 @@ public class CapitalSourceService {
     @Transactional
     public CapitalSourceEntity save(CapitalSourceEntity entity) {
 
-        fondRepository.plusBalance(entity.getSum(), entity.getFonds().get(0).getId());
+        fondRepository.plusBalance(entity.getSum(), entity.getFond().getId());
 
 //        receiptRepository.plusNewReceipt(entity.getSum(), entity.getFonds().get(0).getId());
 
         List<ReceiptEntity> recieptList = new ArrayList<>();
-        ReceiptEntity receiptEntity = new ReceiptEntity(entity.getSum(), entity.getFonds().get(0));
+        ReceiptEntity receiptEntity = new ReceiptEntity(entity.getSum(), entity.getFond());
         receiptRepository.save(receiptEntity);
         recieptList.add(receiptEntity);
         entity.setReceipts(recieptList);
@@ -100,21 +100,33 @@ public class CapitalSourceService {
         repository.save(entity);
     }
 
-    public List<FondCapitalSourceOutput> getAllCapitalSource() {
+// старая версия
+//    public List<FondCapitalSourceOutput> getAllCapitalSource() {
+//
+//        List<FondCapitalSourceOutput> result = new ArrayList<>();
+//
+//        List<Object[]> data = repository.findAllElem();
+//        if (!data.isEmpty()) {
+//            for (Object[] row : data) {
+//                FondEntity fond = (FondEntity) row[0];
+//                CapitalSourceEntity capitalSource = (CapitalSourceEntity) row[1];
+//                result.add(new FondCapitalSourceOutput(fond, capitalSource));
+//            }
+//            return result;
+//        } else {
+//            return result;
+//        }
+//    }
 
-        List<FondCapitalSourceOutput> result = new ArrayList<>();
-
-        List<Object[]> data = repository.findAllElem();
-        if (!data.isEmpty()) {
-            for (Object[] row : data) {
-                FondEntity fond = (FondEntity) row[0];
-                CapitalSourceEntity capitalSource = (CapitalSourceEntity) row[1];
-                result.add(new FondCapitalSourceOutput(fond, capitalSource));
-            }
-            return result;
-        } else {
-            return result;
-        }
+    public List<CapitalSourceOutput> getAllCapitalSource() {
+//        return repository.findAll()
+//                .stream()
+//                .map(mapper::toOutput)
+//                .collect(Collectors.toList());
+        return repository.findAllWithFond()
+                .stream()
+                .map(mapper::toOutput)
+                .collect(Collectors.toList());
     }
 
     public List<CurrencyTypeCapitalSourcesOutput> getElemForLeftJoin() {
@@ -219,8 +231,8 @@ public class CapitalSourceService {
                 dto.setUser(userService.getElemById((Integer) current[4]));
 
                 List<FondOutput> fondOutputs = new ArrayList<>();
-                fondOutputs.add(fondService.getElemById((Integer) current[5]));
-                dto.setFonds(fondOutputs);
+                fondOutputs.add(fondService.getElemById((BigInteger) current[5]));
+                dto.setFond(fondOutputs.get(0));
 
                 List<DonationTypeOutput> donationTypeOutputs = new ArrayList<>();
 
@@ -237,7 +249,7 @@ public class CapitalSourceService {
                         donationTypeOutputs.add(donationTypeService.getElemById((Short) next[6]));
                         addedIds.add(id);
                     }
-                    dto.setDonationTypes(donationTypeOutputs);
+//                    dto.setDonationTypes(donationTypeOutputs);
                     outputs.add(dto);
 
 

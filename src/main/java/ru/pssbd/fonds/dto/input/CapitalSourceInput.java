@@ -30,6 +30,6 @@ public class CapitalSourceInput {
     private List<Integer> fonds;
 
     @NotNull
-    private List<Integer> donationTypes;
+    private List<Short> donationTypes;
 
 }

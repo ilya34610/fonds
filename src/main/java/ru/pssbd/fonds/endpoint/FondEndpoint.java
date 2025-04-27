@@ -8,11 +8,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import ru.pssbd.fonds.dto.input.CapitalSourceInput;
 import ru.pssbd.fonds.dto.input.FondCitizenInput;
 import ru.pssbd.fonds.dto.input.FondInput;
-import ru.pssbd.fonds.dto.output.CitizenOutput;
-import ru.pssbd.fonds.dto.output.FondOutput;
-import ru.pssbd.fonds.dto.output.UserOutput;
+import ru.pssbd.fonds.dto.output.*;
 import ru.pssbd.fonds.entity.FondExpenseEntity;
 import ru.pssbd.fonds.mappers.FondMapper;
 import ru.pssbd.fonds.repository.CitizensFondsRepository;
@@ -25,6 +24,7 @@ import ru.pssbd.fonds.service.UserService;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -91,46 +91,49 @@ public class FondEndpoint {
         return mav;
     }
 
-    //
-//    //переход на страницу редактирования
-//    @GetMapping("/{id}")
-//    public ModelAndView edit(@PathVariable short id) {
-//        ModelAndView mav = new ModelAndView("capital_source/capital_source");
-////        mav.addObject("capitalSource", service.getElemById(id));
-////        List<CountryOutput> countryList = service.getAllCountries();
-////        mav.addObject("countries", countryList);
-////
-////        mav.addObject("selectedCountry", service.getElemById(id).getCountry());
-//        return mav;
-//    }
-//
-//    //сохранение
+
+    //переход на страницу редактирования
+    @GetMapping("/{id}")
+    public ModelAndView edit(@PathVariable BigInteger id) {
+        ModelAndView mav = new ModelAndView("fond/fond");
+        mav.addObject("fond", service.getElemById(id));
+        List<CityOutput> cityList = cityService.getAllElem();
+        mav.addObject("cities", cityList);
+
+        List<UserOutput> userList = userService.getAllElem();
+        mav.addObject("users", userList);
+//        mav.addObject("selectedCity", service.getElemById(id));
+        return mav;
+    }
+
+    //сохранение
     @PostMapping
     public String add(@Validated @RequestBody FondInput input) {
         service.save(mapper.fromInput(input));
         return "redirect:/fonds";
     }
-//
-//    //удаление
-//    @DeleteMapping("{id}")
-//    @ResponseBody
-//    public String remove(@PathVariable BigInteger id) {
-////        service.deleteById(id);
-//        return "redirect:/capital_sources";
-//    }
-//
-//    //изменить
-//    @PutMapping("{id}")
-//    @ResponseBody
-//    public void edit(@PathVariable BigInteger id, @Validated @RequestBody CapitalSourceInput input) {
-////        service.putById(id, input);
-//    }
+
+
+    //удаление
+    @DeleteMapping("{id}")
+    @ResponseBody
+    public String remove(@PathVariable BigInteger id) {
+        service.deleteById(id);
+        return "redirect:/capital_sources";
+    }
+
+    //изменить
+    @PutMapping("{id}")
+    @ResponseBody
+    public void edit(@PathVariable BigInteger id, @Validated @RequestBody FondInput input) {
+        service.putById(id, input);
+    }
 
 
     @PostMapping("/fond_citizen")
     public ResponseEntity<?> distribution(@Validated @RequestBody FondCitizenInput input) {
 
-        FondOutput fondOutput = service.getElemById(input.getFondIds());
+        FondOutput fondOutput = service.getElemById(new BigInteger(input.getFondIds().toString()));
         CitizenOutput citizenOutput = citizenService.getElemById(input.getCitizenIds());
 
         BigDecimal fondSum = fondOutput.getSum();
@@ -155,7 +158,7 @@ public class FondEndpoint {
 
             citizenService.minusBalance(sumDonat, citizenOutput.getId());
 
-            citizensFondsRepository.saveTransaction(citizenOutput.getId(), BigInteger.valueOf(fondOutput.getId()));
+            citizensFondsRepository.saveTransaction(citizenOutput.getId(), fondOutput.getId());
 
             FondExpenseEntity newEntity = new FondExpenseEntity(sumDonat, citizenService.get(citizenOutput.getId()));
             fondExpenseRepository.save(newEntity);

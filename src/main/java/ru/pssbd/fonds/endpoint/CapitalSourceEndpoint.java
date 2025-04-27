@@ -6,10 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.pssbd.fonds.dto.input.CapitalSourceInput;
-import ru.pssbd.fonds.dto.output.CapitalSourceOutput;
-import ru.pssbd.fonds.dto.output.CurrencyTypeOutput;
-import ru.pssbd.fonds.dto.output.DonationTypeOutput;
-import ru.pssbd.fonds.dto.output.UserOutput;
+import ru.pssbd.fonds.dto.output.*;
 import ru.pssbd.fonds.mappers.CapitalSourceMapper;
 import ru.pssbd.fonds.mappers.UserMapper;
 import ru.pssbd.fonds.service.*;
@@ -46,9 +43,13 @@ public class CapitalSourceEndpoint {
         if (currentRoleOutput.getRole().getName().equals("DONATER")) {
             mav.addObject("capital_sources", service.getAllElemForCurrentDonater(currentRoleOutput));
 
-            mav.addObject("capitalSource_fonds", fondService.getAllFondsForCurrentDonater(currentRoleOutput));
+            // по идее это надо будет вернуть
+//            mav.addObject("capitalSource_fonds", fondService.getAllFondsForCurrentDonater(currentRoleOutput));
         } else {
-            mav.addObject("capitalSource_fonds", service.searchCapitalSources(fondName));
+//            mav.addObject("capitalSource_fonds", service.searchCapitalSources(fondName));
+            mav.addObject("capitalSources", service.getAllCapitalSource());
+            mav.addObject("donationTypes", donationTypeService.getAllElem());
+
         }
 
         mav.addObject("sum_capitalSource_for_query", service.sumOnDonationType());
@@ -86,7 +87,14 @@ public class CapitalSourceEndpoint {
     @GetMapping("/{id}")
     public ModelAndView edit(@PathVariable short id) {
         ModelAndView mav = new ModelAndView("capital_source/capital_source");
-//        mav.addObject("capitalSource", service.getElemById(id));
+        mav.addObject("capitalSource", service.getElemById(id));
+        mav.addObject("fonds", fondService.getAllElem());
+        mav.addObject("donationTypes", donationTypeService.getAllElem());
+        mav.addObject("currencyTypes", currencyTypeService.getAllElem());
+
+
+
+
 //        List<CountryOutput> countryList = service.getAllCountries();
 //        mav.addObject("countries", countryList);
 //
@@ -105,7 +113,7 @@ public class CapitalSourceEndpoint {
     @DeleteMapping("{id}")
     @ResponseBody
     public String remove(@PathVariable BigInteger id) {
-//        service.deleteById(id);
+        service.deleteById(id);
         return "redirect:/capital_sources";
     }
 
@@ -113,7 +121,7 @@ public class CapitalSourceEndpoint {
     @PutMapping("{id}")
     @ResponseBody
     public void edit(@PathVariable BigInteger id, @Validated @RequestBody CapitalSourceInput input) {
-//        service.putById(id, input);
+        service.putById(id, input);
     }
 
     //для запросов

@@ -20,7 +20,7 @@
         function deleteItem(id, name) {
             var confirmation = confirm('Вы уверены, что хотите удалить эту запись? ID: ' + id + ', Название: ' + name);
             if (confirmation) {
-                fetch('/cities/' + id, {
+                fetch('/users/' + id, {
                     method: 'DELETE',
                 })
                 .then(response => {
@@ -55,7 +55,7 @@
             <div class="col-md-6"></div>
             <div class="col-md-6">
                 <div class="text-md-end">
-                    <a role="button" class="btn btn-primary" th:href="@{/cities/add}">Добавить</a>
+                    <a role="button" class="btn btn-primary" th:href="@{/users/add}">Добавить</a>
                 </div>
             </div>
         </div>
@@ -74,25 +74,29 @@
             </thead>
             <tbody>
 
-            <tr th:each="city : ${cities}">
+            <tr th:each="user : ${users}">
                 <td>
-                    <span th:text="${city.id}"></span>
+                    <span th:text="${user.id}"></span>
                 </td>
-                <td th:text="${city.name}"></td>
+                <td th:text="${user.role.name}"></td>
 
-                <td th:text="${city.country.name}"></td>
+                <td th:text="${user.fio}"></td>
+
+                <td th:text="${user.login}"></td>
+
+                <td th:text="${user.phone}"></td>
 
                 <td class="text-center" style="display: flex; align-items: center;">
 
-                    <form th:action="@{'/cities/'+${city.id}}" method="get">
+                    <form th:action="@{'/users/'+${user.id}}" method="get">
                         <button type="submit">Изменить</button>
                     </form>
 
                     <span style="margin: 0 5px;">|</span>
 
                     <button
-                            th:data-id="${city.id}"
-                            th:data-name="${city.name}"
+                            th:data-id="${user.id}"
+                            th:data-name="${user.fio}"
                             onclick="deleteItem(this.getAttribute('data-id'),this.getAttribute('data-name'))">
                         Удалить
                     </button>
@@ -125,7 +129,7 @@
             </div>
             <div class="modal-footer">
 
-                <button id="delete-button" type="button" onclick="deleteRequest(this, '/cities/')"
+                <button id="delete-button" type="button" onclick="deleteRequest(this, '/users/')"
                         class="btn btn-danger">
                     Удалить
                 </button>

@@ -10,13 +10,14 @@ import ru.pssbd.fonds.entity.FondEntity;
 import ru.pssbd.fonds.entity.UserEntity;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 @Repository
-public interface FondRepository extends JpaRepository<FondEntity, Integer> {
+public interface FondRepository extends JpaRepository<FondEntity, BigInteger> {
 
-    @Query("SELECT f AS fond, cs AS capitalSource FROM FondEntity f JOIN f.capitalSources cs WHERE cs.user = :user")
-    List<Object[]> findAllFondsByUser(@Param("user") UserEntity user);
+    @Query("SELECT f FROM FondEntity f WHERE f.capitalSource.user = :user")
+    List<FondEntity> findAllFondByUser(@Param("user") UserEntity user);
 
 //    @Query("SELECT f AS fond, u AS users FROM FondEntity f JOIN f.users cs WHERE u.user = :user")
 //    FondOutput findAllElemByCurrentStaff(@Param("user") UserEntity user);
@@ -26,13 +27,13 @@ public interface FondRepository extends JpaRepository<FondEntity, Integer> {
 
     @Modifying
     @Query("UPDATE FondEntity f SET f.sum = f.sum+ :sum WHERE f.id = :id ")
-    void plusBalance(@Param("sum") BigDecimal sum, @Param("id") Integer id);
+    void plusBalance(@Param("sum") BigDecimal sum, @Param("id") BigInteger id);
 
 
     @Transactional
     @Modifying
     @Query("UPDATE FondEntity f SET f.sum = f.sum - :sum WHERE f.id = :id ")
-    void minusBalance(@Param("sum") BigDecimal sum, @Param("id") Integer id);
+    void minusBalance(@Param("sum") BigDecimal sum, @Param("id") BigInteger id);
 
 
 //    List<FondEntity> findAllElemByCurrentCitizen(@Param("idUser") Integer idUser);

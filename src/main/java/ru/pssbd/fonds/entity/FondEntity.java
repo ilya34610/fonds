@@ -5,7 +5,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,7 +19,7 @@ public class FondEntity {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private BigInteger id;
 
     @Column(name = "name")
     private String name;
@@ -39,8 +41,8 @@ public class FondEntity {
     @Column(name = "sum")
     private BigDecimal sum;
 
-    @ManyToMany(mappedBy = "fonds")
-    private List<CapitalSourceEntity> capitalSources;
+    @OneToOne(mappedBy = "fond")
+    private CapitalSourceEntity capitalSource;
 
     @ManyToMany
     @JoinTable(name = "citizens_fonds",
@@ -54,6 +56,24 @@ public class FondEntity {
             inverseJoinColumns = @JoinColumn(name = "id_fond_expenses"))
     private List<FondExpenseEntity> fondExpenses;
 
+    @OneToMany(mappedBy="fond",
+            cascade=CascadeType.REMOVE,
+            orphanRemoval=true)
+    private List<ReceiptEntity> receipts;
+
+//    @ManyToMany(mappedBy = "fonds")
+//    private List<CapitalSourceEntity> capitalSources;
+
+//    @OneToMany(mappedBy = "fond",
+//            cascade = CascadeType.REMOVE,
+//            orphanRemoval = true)
+//    private List<CapitalSourceReceiptsEntity> capitalSourceReceiptsEntities = new ArrayList<>();
+
+//    @ManyToMany
+//    @JoinTable(name = "capital_sources_fonds",
+//            joinColumns = @JoinColumn(name = "id_fond"),
+//            inverseJoinColumns = @JoinColumn(name = "id_capital_source"))
+//    private List<FondEntity> fonds;
 
 
     public FondEntity(String name, CityEntity city, LocalDate creationDate, String phone) {

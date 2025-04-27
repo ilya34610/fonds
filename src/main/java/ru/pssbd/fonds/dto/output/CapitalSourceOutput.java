@@ -18,6 +18,6 @@ public class CapitalSourceOutput {
     private CurrencyTypeOutput currencyType;
     private LocalDate donationDate;
     private UserOutput user;
-    private List<FondOutput> fonds;
-    private List<DonationTypeOutput> donationTypes;
+    private FondOutput fond;
+    private List<Short> donationTypeIds;
 }

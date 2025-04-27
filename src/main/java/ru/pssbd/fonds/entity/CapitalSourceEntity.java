@@ -46,11 +46,13 @@ public class CapitalSourceEntity {
             inverseJoinColumns = @JoinColumn(name = "id_receipt"))
     private List<ReceiptEntity> receipts;
 
-    @ManyToMany
-    @JoinTable(name = "capital_sources_fonds",
+    @OneToOne
+    @JoinTable(
+            name = "capital_sources_fonds",
             joinColumns = @JoinColumn(name = "id_capital_source"),
-            inverseJoinColumns = @JoinColumn(name = "id_fond"))
-    private List<FondEntity> fonds;
+            inverseJoinColumns = @JoinColumn(name = "id_fond")
+    )
+    private FondEntity fond;
 
 
 }

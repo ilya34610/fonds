@@ -84,23 +84,19 @@
             </div>
         </div>
 
+        <div class="form-group col-xs-5 col-md-5">
+            <label for="idFond">Название фонда</label>
+            <input type="text" id="idFond" class="form-control"
+                   placeholder="Введите название">
+        </div>
+        <div class="col-xs-1 col-md-1 marginTopFilterButton">
+            <div class="form-group">
+                <button id="searchButtonFond" class="btn btn-light button-width" type="submit">Поиск</button>
+            </div>
+        </div>
+
 
         <table class="table table-bordered table-hover">
-
-            <!--            <form method="get">-->
-
-            <div class="form-group col-xs-5 col-md-5">
-                <label for="idFond">Название фонда</label>
-                <input type="text" id="idFond" class="form-control"
-                       placeholder="Введите название">
-                <!--                    th:field="${filter.name}"-->
-            </div>
-            <div class="col-xs-1 col-md-1 marginTopFilterButton">
-                <div class="form-group">
-                    <button id="searchButtonFond" class="btn btn-light button-width" type="submit">Поиск</button>
-                </div>
-            </div>
-            <!--            </form>-->
 
             <thead>
             <tr align="center">
@@ -113,43 +109,45 @@
                 <th>Тип пожертвования</th>
             </tr>
             </thead>
-            <!--            <tbody>-->
+            <tbody>
 
-            <!--            <tr th:each="capitalSource_fonds : ${capitalSource_fonds}">-->
-            <!--                <td th:text="${capitalSource_fonds.capitalSource.id}"></td>-->
-            <!--                <td th:text="${capitalSource_fonds.capitalSource.sum}"></td>-->
-            <!--                <td th:text="${capitalSource_fonds.capitalSource.currencyType.name}"></td>-->
-            <!--                <td th:text="${capitalSource_fonds.capitalSource.donationDate}"></td>-->
-            <!--                <td th:text="${capitalSource_fonds.capitalSource.user.fio}"></td>-->
-            <!--                <td>-->
-            <!--                    <span th:text="${capitalSource_fonds.fond.name}"></span>-->
-            <!--                </td>-->
+            <tr th:each="capitalSource : ${capitalSources}">
 
+                <td th:text="${capitalSource.id}"></td>
+                <td th:text="${capitalSource.sum}"></td>
+                <td th:text="${capitalSource.currencyType.name}"></td>
+                <td th:text="${capitalSource.donationDate}"></td>
+                <td th:text="${capitalSource.user.fio}"></td>
+                <td>
+                    <span th:text="${capitalSource.fond.name}"></span>
+                </td>
+                <td>
+                    <ul>
+                        <li th:each="type : ${donationTypes}"
+                            th:if="${#lists.contains(capitalSource.donationTypeIds, type.id)}"
+                            th:text="${type.name}">
+                        </li>
+                    </ul>
+                </td>
 
-            <!--                <td class="text-center" style="display: flex; align-items: center;"-->
-            <!--                    sec:authorize="hasAuthority('ADMIN')">-->
+                <td class="text-center" style="display: flex; align-items: center;"
+                    sec:authorize="hasAuthority('ADMIN')">
 
-            <!--                    <form th:action="@{'/capital_sources/'+${capitalSource_fonds.capitalSource.id}}" method="get">-->
-            <!--                        <button type="submit">Изменить</button>-->
-            <!--                    </form>-->
+                    <form th:action="@{'/capital_sources/'+${capitalSource.id}}" method="get">
+                        <button type="submit">Изменить</button>
+                    </form>
 
-            <!--                    <span style="margin: 0 5px;">|</span>-->
+                    <span style="margin: 0 5px;">|</span>
 
-            <!--                    <button-->
-            <!--                            th:data-id="${capitalSource_fonds.capitalSource.id}"-->
-            <!--                            th:data-name="${capitalSource_fonds.capitalSource.sum}"-->
-            <!--                            onclick="deleteItem(this.getAttribute('data-id'),this.getAttribute('data-sum'))">-->
-            <!--                        Удалить-->
-            <!--                    </button>-->
-            <!--                </td>-->
-            <!--            </tr>-->
-            <!--            </tbody>-->
-
-            <tbody id="tableBody">
-            <!-- Rows will be inserted here dynamically -->
+                    <button
+                            th:data-id="${capitalSource.id}"
+                            th:data-name="${capitalSource.sum}"
+                            onclick="deleteItem(this.getAttribute('data-id'),this.getAttribute('data-sum'))">
+                        Удалить
+                    </button>
+                </td>
+            </tr>
             </tbody>
-
-
         </table>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

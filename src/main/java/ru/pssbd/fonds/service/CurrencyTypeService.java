@@ -1,5 +1,6 @@
 package ru.pssbd.fonds.service;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.pssbd.fonds.dto.input.CurrencyTypeInput;
 import ru.pssbd.fonds.dto.output.CurrencyTypeOutput;
@@ -24,7 +25,7 @@ public class CurrencyTypeService {
     }
 
     public List<CurrencyTypeOutput> getAllElem() {
-        return repository.findAll().stream()
+        return repository.findAll(Sort.by(Sort.Direction.ASC, "id")).stream()
                 .map(mapper::toOutput)
                 .collect(Collectors.toList());
     }
