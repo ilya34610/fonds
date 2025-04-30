@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -44,20 +43,22 @@ public class FondEndpoint {
     //Открытие справочника
     @GetMapping
     @ResponseBody
-    public ModelAndView capitalSources(Authentication authentication) {
+    public ModelAndView capitalSources() {
         ModelAndView mav = new ModelAndView("fond/fonds");
-        String username = authentication.getName();
-        UserOutput currentRoleOutput = userService.getRoleByLogin(username);
-        mav.addObject("currentUser", userService.getElemById(currentRoleOutput.getId()));
+
+        //убрал
+//        String username = authentication.getName();
+//        UserOutput currentRoleOutput = userService.getRoleByLogin(username);
+//        mav.addObject("currentUser", userService.getElemById(currentRoleOutput.getId()));
 
 
-        if (currentRoleOutput.getRole().getName().equals("STAFF")) {
-            mav.addObject("fonds", service.getAllElemForCurrentDonater(currentRoleOutput));
-
-//            mav.addObject("capitalSource_fonds", fondService.getAllFondsForCurrentDonater(currentRoleOutput));
-        } else {
-            mav.addObject("fonds", service.getAllElem());
-        }
+//        if (currentRoleOutput.getRole().getName().equals("STAFF")) {
+//            mav.addObject("fonds", service.getAllElemForCurrentDonater(currentRoleOutput));
+//
+////            mav.addObject("capitalSource_fonds", fondService.getAllFondsForCurrentDonater(currentRoleOutput));
+//        } else {
+//        }
+        mav.addObject("fonds", service.getAllElem());
 
 
         return mav;
@@ -65,11 +66,12 @@ public class FondEndpoint {
 
     @GetMapping("/distribution")
     @ResponseBody
-    public ModelAndView distribution(Authentication authentication) {
+    public ModelAndView distribution() {
         ModelAndView mav = new ModelAndView("fond/fonds_citizens");
-        String username = authentication.getName();
-        UserOutput currentRoleOutput = userService.getRoleByLogin(username);
-        mav.addObject("currentUser", userService.getElemById(currentRoleOutput.getId()));
+        // убрал
+//        String username = authentication.getName();
+//        UserOutput currentRoleOutput = userService.getRoleByLogin(username);
+//        mav.addObject("currentUser", userService.getElemById(currentRoleOutput.getId()));
 
         mav.addObject("citizens", citizenService.getAllElem());
         mav.addObject("fonds", service.getAllElem());
@@ -81,7 +83,7 @@ public class FondEndpoint {
 
     //    переход на страницу добавление
     @GetMapping("/add")
-    public ModelAndView add(Authentication authentication) {
+    public ModelAndView add() {
         ModelAndView mav = new ModelAndView("fond/fond");
         mav.addObject("users", userService.getAllElemByRoleStaff());
         mav.addObject("cities", cityService.getAllElem());

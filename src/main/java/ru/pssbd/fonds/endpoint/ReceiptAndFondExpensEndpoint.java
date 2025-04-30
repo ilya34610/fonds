@@ -1,7 +1,6 @@
 package ru.pssbd.fonds.endpoint;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,7 +28,7 @@ public class ReceiptAndFondExpensEndpoint {
     //Открытие справочника
     @GetMapping
     @ResponseBody
-    public ModelAndView capitalSources(Authentication authentication) {
+    public ModelAndView capitalSources() {
         ModelAndView mav = new ModelAndView("receiptAndFond_expens/receiptAndFond_expenses");
 //передаем данные из двух таблиц СОЕДИНЯЯ ИХ по таблицам пересечения
         mav.addObject("receiptsCapitalSources", receiptService.getAllElem());
