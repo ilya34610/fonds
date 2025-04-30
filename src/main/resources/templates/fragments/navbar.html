@@ -121,10 +121,9 @@
 
                 <div>
                     <form id="logoutForm" th:action="@{/logout}" method="post" style="display: none;">
-                        <!--                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
                         <input type="hidden"/>
                     </form>
-                    <a href="/login" class="nav-link"
+                    <a href="#" class="nav-link"
                        onclick="document.getElementById('logoutForm').submit(); return false;">Выйти</a>
                 </div>
 

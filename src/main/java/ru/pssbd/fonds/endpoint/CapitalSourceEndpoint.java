@@ -1,12 +1,13 @@
 package ru.pssbd.fonds.endpoint;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.pssbd.fonds.dto.input.CapitalSourceInput;
-import ru.pssbd.fonds.dto.output.*;
+import ru.pssbd.fonds.dto.output.CapitalSourceOutput;
+import ru.pssbd.fonds.dto.output.CurrencyTypeOutput;
+import ru.pssbd.fonds.dto.output.DonationTypeOutput;
 import ru.pssbd.fonds.mappers.CapitalSourceMapper;
 import ru.pssbd.fonds.mappers.UserMapper;
 import ru.pssbd.fonds.service.*;
@@ -35,23 +36,27 @@ public class CapitalSourceEndpoint {
     //Открытие справочника
     @GetMapping
     @ResponseBody
-    public ModelAndView capitalSources(Authentication authentication, @RequestParam(value = "fondName", required = false) String fondName) {
+    public ModelAndView capitalSources( @RequestParam(value = "fondName", required = false) String fondName) {
         ModelAndView mav = new ModelAndView("capital_source/capital_sources");
-        String username = authentication.getName();
-        UserOutput currentRoleOutput = userService.getRoleByLogin(username);
 
-        if (currentRoleOutput.getRole().getName().equals("DONATER")) {
-            mav.addObject("capital_sources", service.getAllElemForCurrentDonater(currentRoleOutput));
+        //функицонал при котором под определенной ролью подгружаются разные данные
+//        String username = authentication.getName();
+//        UserOutput currentRoleOutput = userService.getRoleByLogin(username);
 
-            // по идее это надо будет вернуть
-//            mav.addObject("capitalSource_fonds", fondService.getAllFondsForCurrentDonater(currentRoleOutput));
-        } else {
-//            mav.addObject("capitalSource_fonds", service.searchCapitalSources(fondName));
-            mav.addObject("capitalSources", service.getAllCapitalSource());
-            mav.addObject("donationTypes", donationTypeService.getAllElem());
+//        if (currentRoleOutput.getRole().getName().equals("DONATER")) {
+//            mav.addObject("capital_sources", service.getAllElemForCurrentDonater(currentRoleOutput));
+//
+//            // по идее это надо будет вернуть
+////            mav.addObject("capitalSource_fonds", fondService.getAllFondsForCurrentDonater(currentRoleOutput));
+//        } else {
+////            mav.addObject("capitalSource_fonds", service.searchCapitalSources(fondName));
+//            mav.addObject("capitalSources", service.getAllCapitalSource());
+//            mav.addObject("donationTypes", donationTypeService.getAllElem());
+//
+//        }
 
-        }
-
+        mav.addObject("capitalSources", service.getAllCapitalSource());
+        mav.addObject("donationTypes", donationTypeService.getAllElem());
         mav.addObject("sum_capitalSource_for_query", service.sumOnDonationType());
 
 
@@ -60,7 +65,7 @@ public class CapitalSourceEndpoint {
 
     //переход на страницу добавление
     @GetMapping("/add")
-    public ModelAndView add(Authentication authentication) {
+    public ModelAndView add() {
         ModelAndView mav = new ModelAndView("capital_source/capital_source");
         CapitalSourceOutput newOutput = new CapitalSourceOutput();
         newOutput.setDonationDate(LocalDate.now());
@@ -72,10 +77,11 @@ public class CapitalSourceEndpoint {
         List<DonationTypeOutput> donationTypeOutputList = donationTypeService.getAllElem();
         mav.addObject("donationTypes", donationTypeOutputList);
 
-        String username = authentication.getName();
-        UserOutput currentRoleOutput = userService.getRoleByLogin(username);
+        // убрал
+//        String username = authentication.getName();
+//        UserOutput currentRoleOutput = userService.getRoleByLogin(username);
 
-        mav.addObject("currentUser", userService.getElemById(currentRoleOutput.getId()));
+//        mav.addObject("currentUser", userService.getElemById(currentRoleOutput.getId()));
 
         mav.addObject("fonds", fondService.getAllElem());
 

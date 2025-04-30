@@ -9,7 +9,7 @@ CREATE TABLE public.users (
 	id_roles int2 NOT NULL,
 	fio varchar(100) NOT NULL,
 	login varchar(20) NOT NULL,
-    password varchar(255) NOT NULL,
+    password varchar(60) NOT NULL,
 	phone varchar(20) NOT NULL,
     CONSTRAINT users_pk PRIMARY KEY (id),
 	CONSTRAINT users_roles_fk FOREIGN KEY (id_roles) REFERENCES public.roles(id) ON DELETE CASCADE

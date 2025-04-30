@@ -1,7 +1,6 @@
 package ru.pssbd.fonds.endpoint;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,7 +21,6 @@ public class DonationTypeEndpoint {
     //Открытие справочника
     @GetMapping
     @ResponseBody
-    @PreAuthorize("hasAuthority('ADMIN')")
     public ModelAndView donationTypes() {
         ModelAndView mav = new ModelAndView("donation_type/donation_types");
         mav.addObject("donation_types", service.getAllElem());

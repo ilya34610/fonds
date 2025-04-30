@@ -1,7 +1,6 @@
 package ru.pssbd.fonds.endpoint;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.pssbd.fonds.dto.output.CitizenOutput;
@@ -35,15 +34,16 @@ public class CitizenEndpoint {
 
     @GetMapping("/citizen_user")
     @ResponseBody
-    public ModelAndView distribution(Authentication authentication) {
+    public ModelAndView distribution() {
         ModelAndView mav = new ModelAndView("citizen/citizen_user");
-        String username = authentication.getName();
-        UserOutput currentRoleOutput = userService.getRoleByLogin(username);
-        mav.addObject("currentUser", userService.getElemById(currentRoleOutput.getId()));
+        //убрал
+//        String username = authentication.getName();
+//        UserOutput currentRoleOutput = userService.getRoleByLogin(username);
+//        mav.addObject("currentUser", userService.getElemById(currentRoleOutput.getId()));
 
-        mav.addObject("currentCitizen", citizenService.getCitizenByUser(currentRoleOutput.getId()));
-
-        mav.addObject("currentFonds", fondService.getFondsByUser(currentRoleOutput.getId()));
+//        mav.addObject("currentCitizen", citizenService.getCitizenByUser(currentRoleOutput.getId()));
+//
+//        mav.addObject("currentFonds", fondService.getFondsByUser(currentRoleOutput.getId()));
 
 
         return mav;
