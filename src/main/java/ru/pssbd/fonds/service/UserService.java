@@ -59,14 +59,20 @@ public class UserService {
         repository.save(entity);
     }
 
-    public UserOutput getRoleByLogin(String login) {
-        return repository.findByLogin(login).stream().findFirst().map(mapper::toOutput)
-                .orElseThrow(() -> new NoSuchElementException("Элемент с login " + login + " не найден"));
+    //проверить надо
+    public UserEntity getUserByLogin(String login) {
+        return repository.findByLogin(login).orElseThrow(() -> new NoSuchElementException("Элемент с login " + login + " не найден"));
     }
 
     public List<UserOutput> getAllElemByRoleStaff() {
         return repository.getStaffs().stream().map(mapper::toOutput).collect(Collectors.toList());
 
+    }
+
+    public void updateCode(UserInput userInput, String code ){
+        UserEntity user = repository.findByLogin(userInput.getLogin()).orElseThrow(() -> new NoSuchElementException("Элемент с login " + userInput.getLogin() + " не найден"));
+        user.setMailCode(code);
+        repository.save(user);
     }
 
 }

@@ -35,6 +35,9 @@ public class UserEntity {
     @Column(name = "can_login")
     private Boolean canLogin;
 
+    @Column(name = "mail_code")
+    private String mailCode;
+
     public UserEntity(Integer id) {
 
         this.id = id;

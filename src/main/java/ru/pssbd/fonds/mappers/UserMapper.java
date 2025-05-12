@@ -21,6 +21,7 @@ public class UserMapper {
         entity.setPassword(input.getPassword());
         entity.setPhone(input.getPhone());
         entity.setCanLogin(input.getCanLogin());
+        entity.setMailCode(input.getMailCode());
         return entity;
     }
 
@@ -31,7 +32,8 @@ public class UserMapper {
                 entity.getLogin(),
                 entity.getPassword(),
                 entity.getPhone(),
-                entity.getCanLogin());
+                entity.getCanLogin(),
+                entity.getMailCode());
     }
 
     public UserEntity fromInput(UserInput input) {

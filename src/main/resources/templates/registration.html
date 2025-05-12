@@ -19,19 +19,20 @@
                 <p th:if="${registrationError}" class="text-danger text-center" th:text="${registrationError}"></p>
 
                 <div class="form-group mt-3">
-                    <label for="username">Логин</label>
-                    <input id="username" type="text" th:field="*{username}" class="form-control"
-                           required minlength="4" maxlength="20"
+                    <label for="login">Логин (Почтовый адрес)</label>
+                    <input id="login" type="text" th:field="*{login}" class="form-control"
+                           required minlength="4" maxlength="50"
                            pattern="^[a-zA-Z0-9_,!?-]+$"
                            title="Латиница, цифры и -_,!?"/>
-                    <div th:if="${#fields.hasErrors('username')}" class="text-danger"
-                         th:errors="*{username}"></div>
+                    <div th:if="${#fields.hasErrors('login')}" class="text-danger"
+                         th:errors="*{login}"></div>
                 </div>
+
 
                 <div class="form-group mt-3">
                     <label for="password">Пароль</label>
                     <input id="password" type="password" th:field="*{password}" class="form-control"
-                           required minlength="4" maxlength="30"/>
+                           required minlength="4" maxlength="70"/>
                     <div th:if="${#fields.hasErrors('password')}" class="text-danger"
                          th:errors="*{password}"></div>
                 </div>
@@ -39,16 +40,59 @@
                 <div class="form-group mt-3">
                     <label for="confirmPassword">Повтор пароля</label>
                     <input id="confirmPassword" type="password" th:field="*{confirmPassword}"
-                           class="form-control" required minlength="4" maxlength="30"/>
+                           class="form-control" required minlength="4" maxlength="70"/>
                     <div th:if="${#fields.hasErrors('confirmPassword')}" class="text-danger"
                          th:errors="*{confirmPassword}"></div>
                 </div>
 
-                <div class="form-group text-center mt-4">
-                    <button type="submit" class="btn btn-primary w-100">Зарегистрироваться</button>
+                <div class="form-group mt-3">
+                    <label for="role">Роль</label>
+                    <select id="role" th:field="*{role}" class="form-control">
+                        <option value="" disabled selected>– Выберите роль –</option>
+                        <option th:each="r : ${roles}"
+                                th:value="${r.id}"
+                                th:text="${r.name == 'FOUNDER'  ? 'Основатель'      :
+                                           r.name == 'ADMIN'    ? 'Администратор'   :
+                                           r.name == 'STAFF'    ? 'Сотрудник'       :
+                                           r.name == 'USER'     ? 'Пользователь'    :
+                                           r.name == 'DONATER'  ? 'Донатер'    :
+                                           r.name}">
+                        </option>
+                    </select>
+
+
+                    <div th:if="${#fields.hasErrors('role')}" class="text-danger"
+                         th:errors="*{role}"></div>
                 </div>
 
-                <div class="text-center mt-2">
+
+                <div class="form-group mt-3">
+                    <label for="fio">ФИО</label>
+                    <input id="fio" type="text" th:field="*{fio}" class="form-control"
+                           required minlength="4" maxlength="70"
+                           pattern="^[а-яА-Я\s-]+$"/>
+                    <div th:if="${#fields.hasErrors('fio')}" class="text-danger"
+                         th:errors="*{fio}"></div>
+                </div>
+
+
+                <div class="form-group mt-3">
+                    <label for="phone">Телефонный номер</label>
+                    <input id="phone" type="text" th:field="*{phone}" class="form-control"
+                           required minlength="4" maxlength="20"
+                           pattern="[0-9]+"
+                           title="Только цифры"
+                           inputmode="numeric"/>
+                    <div th:if="${#fields.hasErrors('phone')}" class="text-danger"
+                         th:errors="*{phone}"></div>
+                </div>
+
+
+                <div class="form-group text-center mt-4" >
+                    <button type="submit" class="btn btn-success w-100">Зарегистрироваться</button>
+                </div>
+
+                <div class="text-center mt-2" style="margin-bottom:20px">
                     <a th:href="@{/login}">Уже есть аккаунт? Войти</a>
                 </div>
             </form>
