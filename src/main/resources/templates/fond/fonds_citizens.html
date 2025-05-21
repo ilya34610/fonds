@@ -214,7 +214,7 @@
                     <th>Телефон</th>
                     <th>Персонал</th>
                     <th>Баланс</th>
-                    <th width="400px" sec:authorize="hasAuthority('ADMIN')">Действия</th>
+                    <th width="400px" th:if="${role == 'ADMIN'}">Действия</th>
                 </tr>
                 </thead>
 
@@ -287,7 +287,7 @@
                     <th>Дата рождения</th>
                     <th>Телефон</th>
                     <th>Требующаяся сумма</th>
-                    <th width="400px" sec:authorize="hasAuthority('ADMIN')">Действия</th>
+                    <th width="400px" th:if="${role == 'ADMIN'}">Действия</th>
                 </tr>
                 </thead>
 

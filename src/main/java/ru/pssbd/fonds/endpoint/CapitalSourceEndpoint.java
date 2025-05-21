@@ -8,10 +8,12 @@ import ru.pssbd.fonds.dto.input.CapitalSourceInput;
 import ru.pssbd.fonds.dto.output.CapitalSourceOutput;
 import ru.pssbd.fonds.dto.output.CurrencyTypeOutput;
 import ru.pssbd.fonds.dto.output.DonationTypeOutput;
+import ru.pssbd.fonds.entity.UserEntity;
 import ru.pssbd.fonds.mappers.CapitalSourceMapper;
 import ru.pssbd.fonds.mappers.UserMapper;
 import ru.pssbd.fonds.service.*;
 
+import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
@@ -36,7 +38,7 @@ public class CapitalSourceEndpoint {
     //Открытие справочника
     @GetMapping
     @ResponseBody
-    public ModelAndView capitalSources( @RequestParam(value = "fondName", required = false) String fondName) {
+    public ModelAndView capitalSources( @RequestParam(value = "fondName", required = false) String fondName, HttpSession session) {
         ModelAndView mav = new ModelAndView("capital_source/capital_sources");
 
         //функицонал при котором под определенной ролью подгружаются разные данные
@@ -58,6 +60,14 @@ public class CapitalSourceEndpoint {
         mav.addObject("capitalSources", service.getAllCapitalSource());
         mav.addObject("donationTypes", donationTypeService.getAllElem());
         mav.addObject("sum_capitalSource_for_query", service.sumOnDonationType());
+
+
+        UserEntity user = (UserEntity) session.getAttribute("currentUser");
+        String role = userService.getUserByLogin(user.getLogin())
+                .orElseThrow()
+                .getRole()
+                .getName();
+        mav.addObject("role", role);
 
 
         return mav;

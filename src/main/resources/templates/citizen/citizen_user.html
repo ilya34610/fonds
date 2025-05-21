@@ -82,7 +82,7 @@
                         <th>Дата создания</th>
                         <th>Телефон</th>
                         <th>Сумма</th>
-                        <th width="400px" sec:authorize="hasAuthority('ADMIN')">Действия</th>
+                        <th width="400px" th:if="${role == 'ADMIN'}">Действия</th>
                     </tr>
                     </thead>
 

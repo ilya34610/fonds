@@ -54,15 +54,15 @@
     <div class="col-xs-12 col-md-12">
 
         <div class="row" style="margin-bottom: 10px">
-            <div class="col-md-6" sec:authorize="hasAuthority('ADMIN')"></div>
-            <div class="col-md-6" sec:authorize="hasAuthority('ADMIN')">
+            <div class="col-md-6" th:if="${role == 'ADMIN'}"></div>
+            <div class="col-md-6" th:if="${role == 'ADMIN'}">
                 <div class="text-md-end">
                     <a role="button" class="btn btn-primary" th:href="@{/fonds/add}">Добавить</a>
                 </div>
             </div>
 
-            <div class="col-md-6" sec:authorize="hasAuthority('STAFF')"></div>
-            <div class="col-md-6" sec:authorize="hasAuthority('STAFF')">
+            <div class="col-md-6" th:if="${role == 'STAFF'}"></div>
+            <div class="col-md-6" th:if="${role == 'STAFF'}">
                 <div class="text-md-end">
                     <a role="button" class="btn btn-primary" th:href="@{/fonds/distribution}">Распределение средств</a>
                 </div>
@@ -97,7 +97,7 @@
                 <th>Телефон</th>
                 <th>Персонал</th>
                 <th>Баланс</th>
-                <th width="400px" sec:authorize="hasAuthority('ADMIN')">Действия</th>
+                <th width="400px" th:if="${role == 'ADMIN'}">Действия</th>
             </tr>
             </thead>
 
@@ -119,7 +119,7 @@
 
 
                 <td class="text-center" style="display: flex; align-items: center;"
-                    sec:authorize="hasAuthority('ADMIN')">
+                    th:if="${role == 'ADMIN'}">
 
                     <form th:action="@{'/fonds/'+${fond.id}}" method="get">
                         <button type="submit">Изменить</button>

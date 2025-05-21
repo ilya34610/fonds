@@ -65,7 +65,7 @@
 
     <div class="col-xs-12 col-md-12">
 
-        <div class="row" style="margin-bottom: 10px" sec:authorize="hasAuthority('ADMIN')">
+        <div class="row" style="margin-bottom: 10px" th:if="${role == 'ADMIN'}">
             <div class="col-md-6"></div>
             <div class="col-md-6">
                 <div class="text-md-end">
@@ -131,7 +131,7 @@
                 </td>
 
                 <td class="text-center" style="display: flex; align-items: center;"
-                    sec:authorize="hasAuthority('ADMIN')">
+                    th:if="${role == 'ADMIN'}">
 
                     <form th:action="@{'/capital_sources/'+${capitalSource.id}}" method="get">
                         <button type="submit">Изменить</button>
