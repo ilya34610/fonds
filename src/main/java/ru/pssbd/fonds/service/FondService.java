@@ -2,7 +2,6 @@ package ru.pssbd.fonds.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.pssbd.fonds.dto.input.DonationTypeInput;
 import ru.pssbd.fonds.dto.input.FondInput;
 import ru.pssbd.fonds.dto.output.*;
 import ru.pssbd.fonds.entity.*;
@@ -97,7 +96,7 @@ public class FondService {
 
     }
 
-    public List<FondFondExpensesOutput> getFondsByUser(Integer idCitizen) {
+    public List<FondFondExpensesOutput> getFondsByUserId(Integer idCitizen) {
         List<FondFondExpensesOutput> result = new ArrayList<>();
         List<Object[]> data = repository.findAllElemByCurrentCitizen(idCitizen);
         if (!data.isEmpty()) {

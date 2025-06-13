@@ -104,6 +104,56 @@
             </tr>
             </tbody>
         </table>
+
+
+        <div align="center" class="col-md-12">
+
+            <h2>Запросы на регистрацию</h2>
+
+        </div>
+
+        <table class="table table-bordered table-hover text-center align-middle">
+            <thead>
+            <tr align="center">
+                <th width="100px">ID</th>
+                <th>Роль</th>
+                <th>ФИО</th>
+                <th>Логин</th>
+                <th>Телефон</th>
+                <th width="400px">Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="user : ${registrationRequestUsers}">
+                <td>
+                    <span th:text="${user.id}"></span>
+                </td>
+                <td th:text="${user.role.name}"></td>
+
+                <td th:text="${user.fio}"></td>
+
+                <td th:text="${user.login}"></td>
+
+                <td th:text="${user.phone}"></td>
+
+                <td class="text-center" style="display: flex; align-items: center;">
+
+                    <form th:action="@{'/users/acceptReg/'+${user.id}}" method="post">
+                        <button type="submit">Принять</button>
+                    </form>
+
+                    <span style="margin: 0 5px;">|</span>
+
+                    <form th:action="@{'/users/rejectReg/'+${user.id}}" method="post">
+                        <button type="submit">Отклонить</button>
+                    </form>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
     </div>
 </div>
 
@@ -140,6 +190,7 @@
     </div>
 </div>
 
+<script th:src="@{/static/js/controller/current-user-in-navbar.js}" defer></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

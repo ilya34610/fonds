@@ -12,6 +12,7 @@ import ru.pssbd.fonds.dto.input.FondCitizenInput;
 import ru.pssbd.fonds.dto.input.FondInput;
 import ru.pssbd.fonds.dto.output.*;
 import ru.pssbd.fonds.entity.FondExpenseEntity;
+import ru.pssbd.fonds.entity.UserEntity;
 import ru.pssbd.fonds.mappers.FondMapper;
 import ru.pssbd.fonds.repository.CitizensFondsRepository;
 import ru.pssbd.fonds.repository.FondExpenseRepository;
@@ -20,6 +21,7 @@ import ru.pssbd.fonds.service.CityService;
 import ru.pssbd.fonds.service.FondService;
 import ru.pssbd.fonds.service.UserService;
 
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -37,17 +39,18 @@ public class FondEndpoint {
     private final CityService cityService;
     private final UserService userService;
 
+
     private final CitizensFondsRepository citizensFondsRepository;
     private final FondExpenseRepository fondExpenseRepository;
 
     //Открытие справочника
     @GetMapping
     @ResponseBody
-    public ModelAndView capitalSources() {
+    public ModelAndView capitalSources(HttpSession session) {
         ModelAndView mav = new ModelAndView("fond/fonds");
 
         //убрал
-//        String username = authentication.getName();
+//        String username = authentication.();
 //        UserOutput currentRoleOutput = userService.getRoleByLogin(username);
 //        mav.addObject("currentUser", userService.getElemById(currentRoleOutput.getId()));
 
@@ -58,6 +61,14 @@ public class FondEndpoint {
 ////            mav.addObject("capitalSource_fonds", fondService.getAllFondsForCurrentDonater(currentRoleOutput));
 //        } else {
 //        }
+
+        UserEntity user = (UserEntity) session.getAttribute("currentUser");
+        String role = userService.getUserByLogin(user.getLogin())
+                .orElseThrow()
+                .getRole()
+                .getName();
+        mav.addObject("role", role);
+
         mav.addObject("fonds", service.getAllElem());
 
 
@@ -66,12 +77,21 @@ public class FondEndpoint {
 
     @GetMapping("/distribution")
     @ResponseBody
-    public ModelAndView distribution() {
+    public ModelAndView distribution(HttpSession session) {
         ModelAndView mav = new ModelAndView("fond/fonds_citizens");
         // убрал
 //        String username = authentication.getName();
 //        UserOutput currentRoleOutput = userService.getRoleByLogin(username);
 //        mav.addObject("currentUser", userService.getElemById(currentRoleOutput.getId()));
+
+        UserEntity user = (UserEntity) session.getAttribute("currentUser");
+        String role = userService.getUserByLogin(user.getLogin())
+                .orElseThrow()
+                .getRole()
+                .getName();
+        mav.addObject("role", role);
+
+        mav.addObject("fonds", service.getAllElem());
 
         mav.addObject("citizens", citizenService.getAllElem());
         mav.addObject("fonds", service.getAllElem());

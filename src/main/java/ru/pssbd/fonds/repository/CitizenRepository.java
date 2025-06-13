@@ -9,13 +9,14 @@ import ru.pssbd.fonds.entity.CitizenEntity;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Optional;
 
 @Repository
 public interface CitizenRepository extends JpaRepository<CitizenEntity, BigInteger> {
 
 
     @Query("SELECT c FROM CitizenEntity c JOIN c.user cu WHERE cu.id = :id")
-    CitizenEntity getByIdUser(@Param("id") Integer id);
+    Optional<CitizenEntity> getByIdUser(@Param("id") Integer id);
 
 
     @Modifying

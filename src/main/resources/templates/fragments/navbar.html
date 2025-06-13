@@ -5,20 +5,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-
 </head>
 
 <body>
-<!--
-<nav class="navbar navbar-dark navbar-sticky-top container-fluid" >
-    <div class="container-fluid">
-        <div class="navbar-header">-->
-
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary" th:fragment="navbar">
     <div class="container-fluid">
@@ -29,90 +20,57 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <span class="navbar-text mx-2"
+                      th:if="${role == 'ADMIN' or role == 'STAFF'}">&#124;</span>
 
-                <span class="navbar-text mx-2" sec:authorize="hasAnyAuthority('ADMIN', 'STAFF')">&#124;</span>
+                <a th:if="${role == 'ADMIN' or role == 'STAFF'}"
+                   class="nav-link" href="/fonds">Фонды</a>
 
-                <a class="nav-link" href="/fonds" role="button" aria-expanded="false"
-                   sec:authorize="hasAnyAuthority('ADMIN', 'STAFF')">
-                    Фонды
-                </a>
-
-                <span class="navbar-text mx-2" sec:authorize="hasAuthority('ADMIN')">&#124;</span>
+                <span class="navbar-text mx-2" th:if="${role == 'ADMIN'}">&#124;</span>
 
                 <a class="nav-link" href="/users" role="button" aria-expanded="false"
-                   sec:authorize="hasAuthority('ADMIN')">
+                   th:if="${role == 'ADMIN'}">
                     Пользователи
                 </a>
 
-                <span class="navbar-text mx-2" sec:authorize="hasAuthority('FOUNDER')">&#124;</span>
+                <span class="navbar-text mx-2" th:if="${role == 'FOUNDER' }">&#124;</span>
 
                 <a class="nav-link" href="/receiptAndFond_expenses" role="button" aria-expanded="false"
-                   sec:authorize="hasAuthority('FOUNDER')">
+                   th:if="${role == 'FOUNDER' }">
                     Поступления/траты фондов
                 </a>
 
-                <span class="navbar-text mx-2" sec:authorize="hasAuthority('USER')">&#124;</span>
+                <span class="navbar-text mx-2" th:if="${role == 'USER' }">&#124;</span>
 
                 <a class="nav-link" href="/citizens/citizen_user" role="button" aria-expanded="false"
-                   sec:authorize="hasAuthority('USER')">
+                   th:if="${role == 'USER' }">
                     Личный кабинет
                 </a>
 
-
-                <!--                <li class="nav-item dropdown">-->
-                <!--                    <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown"-->
-                <!--                       aria-expanded="false">-->
-                <!--                        Пользователи/роли-->
-                <!--                    </a>-->
-                <!--                    <ul class="dropdown-menu">-->
-
-                <!--                        <li><a class="dropdown-item" href="/users">Пользователи</a></li>-->
-                <!--                        <li>-->
-                <!--                            <hr class="dropdown-divider">-->
-                <!--                        </li>-->
-                <!--                        <li><a class="dropdown-item" href="#">Роли</a></li>-->
-
-                <!--                    </ul>-->
-                <!--                </li>-->
-
-
-                <span class="navbar-text mx-2" sec:authorize="hasAnyAuthority('DONATER', 'ADMIN')">&#124;</span>
+                <span class="navbar-text mx-2" th:if="${role == 'ADMIN' or role == 'DONATER'}">&#124;</span>
 
                 <a class="nav-link" href="/capital_sources" role="button" aria-expanded="false"
-                   sec:authorize="hasAnyAuthority('DONATER', 'ADMIN')">
+                   th:if="${role == 'ADMIN' or role == 'DONATER'}">
                     Источник формирования капитала
                 </a>
 
-                <span class="navbar-text mx-2" sec:authorize="hasAuthority('ADMIN')">&#124;</span>
+                <span class="navbar-text mx-2" th:if="${role == 'ADMIN'}">&#124;</span>
 
                 <li class="nav-item dropdown">
-
-
                     <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown"
-                       aria-expanded="false" sec:authorize="hasAuthority('ADMIN')">
+                       aria-expanded="false" th:if="${role == 'ADMIN'}">
                         Справочники
                     </a>
                     <ul class="dropdown-menu">
-
-                        <li><a class="dropdown-item" href="/donation_types">Тип
-                            пожертвования</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
+                        <li><a class="dropdown-item" href="/donation_types">Тип пожертвования</a></li>
+                        <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/currency_types">Тип валюты</a></li>
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
+                        <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/countries">Cтрана</a></li>
-
                         <li><a class="dropdown-item" href="/cities">Город</a></li>
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
+                        <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/categories">Категория</a></li>
                     </ul>
                 </li>
@@ -126,26 +84,21 @@
                     <a href="#" class="nav-link"
                        onclick="document.getElementById('logoutForm').submit(); return false;">Выйти</a>
                 </div>
-
             </ul>
+
+            <!-- Правая часть с информацией о пользователе -->
+            <div class="d-flex align-items-center">
+                <span class="me-2 navbar-text">Учётная запись:</span>
+                <span id="navbar-username" class="navbar-text"></span>
+            </div>
         </div>
     </div>
 </nav>
-<!--</nav>
- </div>
-</div>
-</nav>-->
 
+<script th:src="@{/static/js/controller/current-user-in-navbar.js}" defer></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-        crossorigin="anonymous"></script>
 </body>
-
 </html>

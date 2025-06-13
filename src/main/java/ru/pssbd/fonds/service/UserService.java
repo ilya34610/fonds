@@ -12,6 +12,7 @@ import ru.pssbd.fonds.repository.UserRepository;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +29,18 @@ public class UserService {
 
     public List<UserOutput> getAllElem() {
         return repository.findAll(Sort.by(Sort.Direction.ASC, "id")).stream()
+                .map(mapper::toOutput)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserOutput> getAllElemWithCanLogin() {
+        return repository.findByCanLoginTrueOrderByIdAsc().stream()
+                .map(mapper::toOutput)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserOutput> getAllElemWithCanNotLogin() {
+        return repository.findByCanLoginFalseOrderByIdAsc().stream()
                 .map(mapper::toOutput)
                 .collect(Collectors.toList());
     }
@@ -59,14 +72,20 @@ public class UserService {
         repository.save(entity);
     }
 
-    public UserOutput getRoleByLogin(String login) {
-        return repository.findByLogin(login).stream().findFirst().map(mapper::toOutput)
-                .orElseThrow(() -> new NoSuchElementException("Элемент с login " + login + " не найден"));
+    //проверить надо
+    public Optional<UserEntity> getUserByLogin(String login) {
+        return repository.findByLogin(login);
     }
 
     public List<UserOutput> getAllElemByRoleStaff() {
         return repository.getStaffs().stream().map(mapper::toOutput).collect(Collectors.toList());
 
+    }
+
+    public void updateCode(UserInput userInput, String code ){
+        UserEntity user = repository.findByLogin(userInput.getLogin()).orElseThrow(() -> new NoSuchElementException("Элемент с login " + userInput.getLogin() + " не найден"));
+        user.setMailCode(code);
+        repository.save(user);
     }
 
 }

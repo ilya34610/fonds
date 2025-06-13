@@ -36,6 +36,18 @@
     <div class="row justify-content-center align-items-center" style="height: 50vh;">
         <div class="table-form col-md-4">
             <form th:action="@{/login}" method="post" autocomplete="off">
+
+
+                <div th:if="${infoMessage}" class="container mt-3">
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        <span th:text="${infoMessage}">Уведомление</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+                    </div>
+                </div>
+
+
+
+
                 <h2 class="text-center" style="margin-top:20px">Вход</h2>
                 <h5 class="text-center" style="margin-top:20px">Учет деятельности благотворительных фондов</h5>
                 <p th:if="${param.error}" align="center" class="error text-danger" style="margin-top:20px">Неправильный
@@ -44,17 +56,17 @@
                 <div class="form-group">
                     <label for="login">Логин</label>
                     <input id="login" type="text" name="username" class="form-control" autofocus="autofocus"
-                           required minlength="4" maxlength="20"
-                           title="Не состоящая из одних пробелов строка, от 4 до 20 символов, включающие в себя латиницу всех регистров, цифры 0-9 и символы -_,!?"
+                           required minlength="4" maxlength="60"
+                           title="Не состоящая из одних пробелов строка, от 4 до 60 символов, включающие в себя латиницу всех регистров, цифры 0-9 и символы -_,!?"
                            pattern="^[a-zA-Z0-9_,!?-]+$">
                 </div>
 
                 <div class="form-group" style="margin-top:20px">
                     <label for="password">Пароль</label>
                     <input id="password" type="password" name="password" class="form-control"
-                           title="Не состоящая из одних пробелов строка, минимум 4 символа, максимум - 30"
+                           title="Не состоящая из одних пробелов строка, минимум 4 символа, максимум - 60"
                            autocomplete="new-password"
-                           required minlength="4" maxlength="30" pattern=".*[^ ].*">
+                           required minlength="4" maxlength="60" pattern=".*[^ ].*">
                 </div>
 
                 <div class="form-group text-center" style="margin-top: 20px;">
@@ -72,6 +84,7 @@
 
 
 </div>
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
