@@ -7,6 +7,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import javax.annotation.PostConstruct;
 import java.io.*;
 import java.nio.file.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import com.jcraft.jsch.JSchException;
@@ -111,6 +114,10 @@ public class BackupService {
      * Можно вызывать вручную из другого бина или контроллера.
      */
     public void performBackupAndRestore() throws Exception {
+        // Шаг 0: проверка доступности локальной базы данных
+        if (!isLocalDbAvailable()) {
+            return;
+        }
         // Шаг 1: сделать дамп
         String dumpFileName = createDump();
         // Шаг 2: переслать дамп на remote
@@ -232,8 +239,9 @@ public class BackupService {
         String outCreate = sshUtils.execRemoteCommand(dockerExecCreate, 300_000);
         System.out.println("[BackupService] CREATE output: " + outCreate);
 
-        // 5. pg_restore внутри контейнера
-        String dockerExecRestore = String.format("%s exec -e PGPASSWORD=%s %s pg_restore -U %s -d %s -v %s",
+        // 5. pg_restore внутри контейнера с пропуском восстановления владельцев
+        String dockerExecRestore = String.format(
+                "%s exec -e PGPASSWORD=%s %s pg_restore -U %s -d %s -v -O --no-privileges %s",
                 dockerCmdPrefix,
                 quoteShell(remoteDbPassword),
                 containerId,
@@ -283,6 +291,20 @@ public class BackupService {
             System.out.println("[BackupService] Удалён remote дамп: " + remoteDumpPath);
         } catch (Exception e) {
             System.err.println("[BackupService] Не удалось удалить remote дамп: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Проверяет доступность локальной БД.
+     * Возвращает true, если удалось подключиться, иначе false.
+     */
+    private boolean isLocalDbAvailable() {
+        String url = String.format("jdbc:postgresql://%s:%d/%s", primaryHost, primaryPort, primaryDbName);
+        try (Connection conn = DriverManager.getConnection(url, primaryUser, primaryPassword)) {
+            return conn.isValid(2);
+        } catch (SQLException e) {
+            System.err.println("[BackupService] Локальная БД недоступна: " + e.getMessage());
+            return false;
         }
     }
 }

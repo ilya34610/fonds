@@ -15,10 +15,7 @@ import ru.pssbd.fonds.dto.UserRegistrationDto;
 import ru.pssbd.fonds.dto.input.PasswordConfirmDto;
 import ru.pssbd.fonds.dto.input.UserInput;
 import ru.pssbd.fonds.entity.UserEntity;
-import ru.pssbd.fonds.service.AuthenticationService;
-import ru.pssbd.fonds.service.BackupService;
-import ru.pssbd.fonds.service.RoleService;
-import ru.pssbd.fonds.service.UserService;
+import ru.pssbd.fonds.service.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -37,6 +34,7 @@ public class AuthenticationEndpoint {
 
     private final UserService userService;
     private final BackupService backupService;
+
 
     //вызывается при переходе на страницу авторизации пользователя
     @GetMapping("/login")
@@ -73,9 +71,6 @@ public class AuthenticationEndpoint {
         try {
             UserEntity user = authenticationService.authenticate(username, password);
             session.setAttribute("currentUser", user);
-
-            // для теста:
-//            backupService.performBackupAndRestore();
 
             return "redirect:/index";
         } catch (Exception ex) {
