@@ -58,10 +58,10 @@ public class DumpService {
     @Value("${app.remote.db.password}")
     private String remoteDbPassword;
 
-    @Scheduled(cron = "0 0 2 * * *") // каждый день в 2:00
-    public void scheduledSync() throws Exception {
-        backupAndRestore();
-    }
+//    @Scheduled(cron = "0 0 2 * * *") // каждый день в 2:00
+//    public void scheduledSync() throws Exception {
+//        backupAndRestore();
+//    }
 
     /**
      * Основной метод: создаёт дамп локальной базы, заливает его на удалённый сервер и выполняет восстановление там.
