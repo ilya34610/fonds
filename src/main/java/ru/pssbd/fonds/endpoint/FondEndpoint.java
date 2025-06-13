@@ -39,6 +39,7 @@ public class FondEndpoint {
     private final CityService cityService;
     private final UserService userService;
 
+
     private final CitizensFondsRepository citizensFondsRepository;
     private final FondExpenseRepository fondExpenseRepository;
 
@@ -89,6 +90,9 @@ public class FondEndpoint {
                 .getRole()
                 .getName();
         mav.addObject("role", role);
+
+        mav.addObject("fonds", service.getAllElem());
+
         mav.addObject("citizens", citizenService.getAllElem());
         mav.addObject("fonds", service.getAllElem());
 

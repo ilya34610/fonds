@@ -16,7 +16,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         String uri = req.getRequestURI();
 
         if (uri.startsWith("/login")
-                || uri.startsWith("/registration")) {
+                || uri.startsWith("/registration") || uri.startsWith("/passwordConfirm")) {
             return true;
         }
 

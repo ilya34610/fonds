@@ -6,6 +6,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ru.pssbd.fonds.dto.output.CitizenOutput;
 import ru.pssbd.fonds.dto.output.UserOutput;
 import ru.pssbd.fonds.entity.UserEntity;
+import ru.pssbd.fonds.mappers.UserMapper;
 import ru.pssbd.fonds.service.CitizenService;
 import ru.pssbd.fonds.service.FondService;
 import ru.pssbd.fonds.service.UserService;
@@ -13,6 +14,7 @@ import ru.pssbd.fonds.service.UserService;
 import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/citizens")
@@ -21,6 +23,7 @@ public class CitizenEndpoint {
 
     private final CitizenService service;
     private final UserService userService;
+    private final UserMapper userMapper;
     private final CitizenService citizenService;
     private final FondService fondService;
 
@@ -49,12 +52,14 @@ public class CitizenEndpoint {
 
         //убрал
 //        String username = authentication.getName();
-//        UserOutput currentRoleOutput = userService.getRoleByLogin(username);
-//        mav.addObject("currentUser", userService.getElemById(currentRoleOutput.getId()));
+        UserOutput currentUserOutput = userMapper.toOutput(Objects.requireNonNull(userService.getUserByLogin(user.getLogin()).orElse(null)));
+        mav.addObject("currentUser", currentUserOutput);
 
-//        mav.addObject("currentCitizen", citizenService.getCitizenByUser(currentRoleOutput.getId()));
-//
-//        mav.addObject("currentFonds", fondService.getFondsByUser(currentRoleOutput.getId()));
+        mav.addObject("currentCitizen", citizenService.getCitizenByUserId(currentUserOutput.getId()));
+
+        mav.addObject("currentFonds", fondService.getFondsByUserId(currentUserOutput.getId()));
+
+
 
 
         return mav;

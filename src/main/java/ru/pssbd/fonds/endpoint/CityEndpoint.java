@@ -7,8 +7,11 @@ import org.springframework.web.servlet.ModelAndView;
 import ru.pssbd.fonds.dto.input.CityInput;
 import ru.pssbd.fonds.dto.output.CityOutput;
 import ru.pssbd.fonds.dto.output.CountryOutput;
+import ru.pssbd.fonds.dto.output.RoleOutput;
+import ru.pssbd.fonds.entity.RoleEntity;
 import ru.pssbd.fonds.entity.UserEntity;
 import ru.pssbd.fonds.mappers.CityMapper;
+import ru.pssbd.fonds.mappers.RoleMapper;
 import ru.pssbd.fonds.service.CityService;
 import ru.pssbd.fonds.service.UserService;
 

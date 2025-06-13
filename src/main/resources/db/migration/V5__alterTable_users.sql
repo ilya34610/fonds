@@ -1,0 +1,2 @@
+ALTER TABLE users
+ADD COLUMN mail_code VARCHAR(10) DEFAULT '';

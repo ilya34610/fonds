@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,8 +42,10 @@ public class CitizenService {
     }
 
 
-    public CitizenOutput getCitizenByUser(Integer id) {
-        return mapper.toOutput(repository.getByIdUser(id));
+    public CitizenOutput getCitizenByUserId(Integer id){
+        return repository.getByIdUser(id)
+                .map(mapper::toOutput)
+                .orElse(new CitizenOutput());
     }
 
     @Transactional
