@@ -202,5 +202,27 @@ public class AuthenticationService {
 
     }
 
+    public int evaluateDifficultPassword(String password){
+        int length = password.length();
+        boolean hasLower = password.chars().anyMatch(Character::isLowerCase);
+        boolean hasUpper = password.chars().anyMatch(Character::isUpperCase);
+        boolean hasDigit = password.chars().anyMatch(Character::isDigit);
+        boolean hasSpecial = password.chars().anyMatch(ch -> "!@#$%^&*()_+[]{}|;:'\",.<>/?".indexOf(ch) >= 0);
+
+        int categories = 0;
+        if (hasLower) categories++;
+        if (hasUpper) categories++;
+        if (hasDigit) categories++;
+        if (hasSpecial) categories++;
+
+        if (length >= 12 && categories >= 3) {
+            return 3;
+        } else if (length >= 8 && categories >= 2) {
+            return 2;
+        } else {
+            return 1;
+        }
+    }
+
 }
 

@@ -1,17 +1,16 @@
 package ru.pssbd.fonds.endpoint;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.pssbd.fonds.constant.Role;
 import ru.pssbd.fonds.dto.UserRegistrationDto;
+import ru.pssbd.fonds.dto.input.PasswordCheckInput;
 import ru.pssbd.fonds.dto.input.PasswordConfirmDto;
 import ru.pssbd.fonds.dto.input.UserInput;
 import ru.pssbd.fonds.entity.UserEntity;
@@ -160,7 +159,6 @@ public class AuthenticationEndpoint {
     }
 
     // Обработчик страницы подтверждения пароля
-
     @GetMapping("/passwordConfirm")
     public String passwordConfirm(@RequestParam("login") String login, Model model) {
         model.addAttribute("passwordConfirm", new PasswordConfirmDto(login));
@@ -223,6 +221,17 @@ public class AuthenticationEndpoint {
         return mav;
     }
 
+
+    // Обработчик запроса проверки сложности пароля
+    @PostMapping("/checkingPasswordComplexity")
+    public ResponseEntity<Integer> checkingPasswordComplexity(@RequestBody PasswordCheckInput password) {
+        if (password == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        int code = authenticationService.evaluateDifficultPassword(password.getPassword());
+        // Возвращаем код 1, 2 или 3
+        return ResponseEntity.ok(code);
+    }
 
 
 }
