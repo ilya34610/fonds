@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import ru.pssbd.fonds.constant.Role;
 import ru.pssbd.fonds.dto.UserRegistrationDto;
@@ -88,8 +90,29 @@ public class AuthenticationEndpoint {
     }
 
     @PostMapping("/registration")
-    public String registerUser(@ModelAttribute("user") @Validated UserInput userDto,
-                               BindingResult result, Model model) {
+    public String registerUser(
+            @ModelAttribute("user") @Validated UserInput userDto,
+            BindingResult result,
+            Model model){
+
+        model.addAttribute("roles", roleService.getAllElem());
+
+        //капча
+        String userCaptcha = userDto.getCaptcha();
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                .getRequest().getSession(false);
+        String expected = (session != null) ? (String) session.getAttribute("CAPTCHA") : null;
+        if (expected == null || !expected.equalsIgnoreCase(userCaptcha)) {
+            result.rejectValue("captcha", "captcha.invalid", "Неправильный код с картинки");
+        }
+        if (result.hasErrors()) {
+            return "registration";
+        }
+        // После успешной проверки можно удалить из сессии:
+        session.removeAttribute("CAPTCHA");
+
+
+
         model.addAttribute("roles", roleService.getAllElem());
 
         Optional<UserEntity> userEntityOpt = userService.getUserByLogin(userDto.getLogin());

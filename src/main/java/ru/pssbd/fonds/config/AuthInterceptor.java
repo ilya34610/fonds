@@ -27,7 +27,8 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (uri.startsWith("/login")
                 || uri.startsWith("/registration")
                 || uri.startsWith("/passwordConfirm")
-                || uri.startsWith("/api/qr-login/confirm")) {
+                || uri.startsWith("/api/qr-login/confirm")
+                || uri.startsWith("/captcha")) {
             return true;
         }
 

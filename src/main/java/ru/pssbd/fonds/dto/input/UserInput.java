@@ -34,6 +34,8 @@ public class UserInput {
     private String confirmPassword;
     @NotBlank
     private String phone;
+    @NotBlank(message = "Введите код с картинки")
+    private String captcha;
 
     private Boolean canLogin;
 
