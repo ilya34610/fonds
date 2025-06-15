@@ -1,11 +1,18 @@
 package ru.pssbd.fonds.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 @Configuration
 public class MvcConfig implements org.springframework.web.servlet.config.annotation.WebMvcConfigurer {
+
+    @Value("${server.address}")
+    private String appBaseUrl;
+
+    @Value("${server.port}")
+    private String appPort;
 
     private final AuthInterceptor authInterceptor;
 
@@ -19,10 +26,11 @@ public class MvcConfig implements org.springframework.web.servlet.config.annotat
                 .excludePathPatterns(
                         "/css/**",
                         "/js/**",
-                        "/photo/**",       // если есть картинки
+                        "/photo/**",
                         "/favicon.ico",
                         "/checkingPasswordComplexity",
-                        "/login", "/registration", "/passwordConfirm"
+                        "/login", "/registration", "/passwordConfirm",
+                        "/api/qr-login/confirm"
                 );
     }
 
