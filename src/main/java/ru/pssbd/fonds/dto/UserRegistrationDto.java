@@ -29,5 +29,7 @@ public class UserRegistrationDto {
     private String confirmPassword;
     @NotBlank
     private String phone;
+    @NotBlank(message = "Введите код с картинки")
+    private String captcha;
 
 }

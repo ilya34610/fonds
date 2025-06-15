@@ -1,20 +1,22 @@
 package ru.pssbd.fonds.endpoint;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import ru.pssbd.fonds.constant.Role;
 import ru.pssbd.fonds.dto.UserRegistrationDto;
+import ru.pssbd.fonds.dto.input.PasswordCheckInput;
 import ru.pssbd.fonds.dto.input.PasswordConfirmDto;
 import ru.pssbd.fonds.dto.input.UserInput;
 import ru.pssbd.fonds.entity.UserEntity;
+import ru.pssbd.fonds.mappers.UserMapper;
 import ru.pssbd.fonds.service.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +35,7 @@ public class AuthenticationEndpoint {
     private final RoleService roleService;
 
     private final UserService userService;
+    private final UserMapper userMapper;
     private final BackupService backupService;
 
 
@@ -89,16 +92,37 @@ public class AuthenticationEndpoint {
     }
 
     @PostMapping("/registration")
-    public String registerUser(@ModelAttribute("user") @Validated UserInput userDto,
-                               BindingResult result, Model model) {
+    public String registerUser(
+            @ModelAttribute("user") @Validated UserInput userInput,
+            BindingResult result,
+            Model model){
+
         model.addAttribute("roles", roleService.getAllElem());
 
-        Optional<UserEntity> userEntityOpt = userService.getUserByLogin(userDto.getLogin());
+        //капча
+        String userCaptcha = userInput.getCaptcha();
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                .getRequest().getSession(false);
+        String expected = (session != null) ? (String) session.getAttribute("CAPTCHA") : null;
+        if (expected == null || !expected.equalsIgnoreCase(userCaptcha)) {
+            result.rejectValue("captcha", "captcha.invalid", "Неправильный код с картинки");
+        }
+        if (result.hasErrors()) {
+            return "registration";
+        }
+        // После успешной проверки можно удалить из сессии:
+        session.removeAttribute("CAPTCHA");
+
+
+
+        model.addAttribute("roles", roleService.getAllElem());
+
+        Optional<UserEntity> userEntityOpt = userService.getUserByLogin(userInput.getLogin());
 
         if (userEntityOpt.isPresent()) {
             UserEntity userEntity = userEntityOpt.get();
             // обработка ситуации, если пользователь до этого уже пытался регистрироваться
-            if (userEntity.getLogin().equals(userDto.getLogin())) {
+            if (userEntity.getLogin().equals(userInput.getLogin())) {
                 result.rejectValue(
                         "login",              // поле
                         "password.mismatch",       // код ошибки (можно использовать в messages.properties)
@@ -113,7 +137,7 @@ public class AuthenticationEndpoint {
 
 
         // 1) Проверяем совпадение паролей
-        if (!userDto.getPassword().equals(userDto.getConfirmPassword())) {
+        if (!userInput.getPassword().equals(userInput.getConfirmPassword())) {
             result.rejectValue(
                     "confirmPassword",        // поле
                     "password.mismatch",       // код ошибки (можно использовать в messages.properties)
@@ -127,7 +151,7 @@ public class AuthenticationEndpoint {
         }
         // Вызываем сервисную логику и ловим слабый пароль
         try {
-            authenticationService.passwordValidation(userDto);
+            authenticationService.passwordValidation(userInput);
         } catch (IllegalArgumentException ex) {
             // Сообщение из исключения попадёт под поле password
             result.rejectValue(
@@ -141,10 +165,15 @@ public class AuthenticationEndpoint {
             return "registration";
         }
         try {
-            // отправка сообщения с кодом на почту, добавление пользователя и фиксация кода в БД
-            authenticationService.sendEmailAndSaveCode(userDto);
+            //В любом случае фиксируем регистрацию пользователя в базе данных
+            userInput.setCanLogin(false);
+            userInput.setPassword(AuthenticationService.hash(userInput.getPassword()));
+            userService.save(userMapper.fromInput(userInput));
 
-            return "redirect:/passwordConfirm?login=" + URLEncoder.encode(userDto.getLogin(), StandardCharsets.UTF_8);
+            // отправка сообщения с кодом на почту, добавление пользователя и фиксация кода в БД
+            authenticationService.sendEmailAndSaveCode(userMapper.toOutput(userMapper.fromInput(userInput)));
+
+            return "redirect:/passwordConfirm?login=" + URLEncoder.encode(userInput.getLogin(), StandardCharsets.UTF_8);
 
         } catch (IllegalArgumentException ex) {
             result.rejectValue(
@@ -160,7 +189,6 @@ public class AuthenticationEndpoint {
     }
 
     // Обработчик страницы подтверждения пароля
-
     @GetMapping("/passwordConfirm")
     public String passwordConfirm(@RequestParam("login") String login, Model model) {
         model.addAttribute("passwordConfirm", new PasswordConfirmDto(login));
@@ -223,6 +251,33 @@ public class AuthenticationEndpoint {
         return mav;
     }
 
+
+    // Обработчик запроса проверки сложности пароля
+    @PostMapping("/checkingPasswordComplexity")
+    public ResponseEntity<Integer> checkingPasswordComplexity(@RequestBody PasswordCheckInput password) {
+        if (password == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        int code = authenticationService.evaluateDifficultPassword(password.getPassword());
+        // Возвращаем код 1, 2 или 3
+        return ResponseEntity.ok(code);
+    }
+
+
+    @PostMapping("/passwordConfirm/resend")
+    public ModelAndView registerUser(@RequestParam("login") String login, Model model){
+
+        ModelAndView mav = new ModelAndView();
+
+        model.addAttribute("passwordConfirm", new PasswordConfirmDto(login));
+        mav.setViewName("passwordConfirm");
+        mav.addObject("infoMessage",
+                "Сообщение отправлено. Пожалуйста, проверьте почту.");
+
+        authenticationService.resendVerificationCode(login);
+
+        return mav;
+    }
 
 
 }

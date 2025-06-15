@@ -82,8 +82,8 @@ public class UserService {
 
     }
 
-    public void updateCode(UserInput userInput, String code ){
-        UserEntity user = repository.findByLogin(userInput.getLogin()).orElseThrow(() -> new NoSuchElementException("Элемент с login " + userInput.getLogin() + " не найден"));
+    public void updateCode(UserOutput userOutput, String code ){
+        UserEntity user = repository.findByLogin(userOutput.getLogin()).orElseThrow(() -> new NoSuchElementException("Элемент с login " + userOutput.getLogin() + " не найден"));
         user.setMailCode(code);
         repository.save(user);
     }

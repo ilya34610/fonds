@@ -71,11 +71,8 @@ public class AuthenticationService {
         return password != null && password.matches(pattern);
     }
 
-    public void sendEmailAndSaveCode(UserInput userInput) {
-        //В любом случае фиксируем регистрацию пользователя в базе данных
-        userInput.setCanLogin(false);
-        userInput.setPassword(hash(userInput.getPassword()));
-        userService.save(userMapper.fromInput(userInput));
+    public void sendEmailAndSaveCode(UserOutput userOutput) {
+
 
 
         // 1. SMTP‑параметры
@@ -83,8 +80,7 @@ public class AuthenticationService {
         props.put("mail.smtp.host", mailConfig.getHost());
         props.put("mail.smtp.port", mailConfig.getPort());
         props.put("mail.smtp.auth", mailConfig.getAuth());
-        props.put("mail.smtp.starttls.enable", mailConfig.getStarttls());  // TLS :contentReference[oaicite:3]{index=3}
-//         props.put("mail.smtp.ssl.enable", "true");    // SSL (порт 465)
+        props.put("mail.smtp.starttls.enable", mailConfig.getStarttls());
 
         // 2. Создание сессии с авторизацией
         Session codeSession = Session.getInstance(props, new Authenticator() {
@@ -100,11 +96,11 @@ public class AuthenticationService {
             codeMessage.setFrom(new InternetAddress(mailConfig.getLogin()));
             codeMessage.setRecipients(
                     Message.RecipientType.TO,
-                    InternetAddress.parse(userInput.getLogin())
+                    InternetAddress.parse(userOutput.getLogin())
             );
             codeMessage.setSubject("Код подтверждения вашей почты");
             String code = generateVerificationCode();
-            codeMessage.setText("Здравствуйте, " + userInput.getFio() + "!\n\nВаш код подтверждения: " + code + "\n\nС уважением.");
+            codeMessage.setText("Здравствуйте, " + userOutput.getFio() + "!\n\nВаш код подтверждения: " + code + "\n\nС уважением.");
 
             // 4. Отправка
             //На всякий случай убираем, чтобы не спамить
@@ -112,7 +108,7 @@ public class AuthenticationService {
             System.out.println("Письмо успешно отправлено. Код: " + code);
 
 
-            userService.updateCode(userInput, code);
+            userService.updateCode(userOutput, code);
 
         } catch (MessagingException e) {
             e.printStackTrace();
@@ -200,6 +196,36 @@ public class AuthenticationService {
         }
 
 
+    }
+
+    public int evaluateDifficultPassword(String password) {
+        int length = password.length();
+        boolean hasLower = password.chars().anyMatch(Character::isLowerCase);
+        boolean hasUpper = password.chars().anyMatch(Character::isUpperCase);
+        boolean hasDigit = password.chars().anyMatch(Character::isDigit);
+        boolean hasSpecial = password.chars().anyMatch(ch -> "!@#$%^&*()_+[]{}|;:'\",.<>/?".indexOf(ch) >= 0);
+
+        int categories = 0;
+        if (hasLower) categories++;
+        if (hasUpper) categories++;
+        if (hasDigit) categories++;
+        if (hasSpecial) categories++;
+
+        if (length >= 12 && categories >= 3) {
+            return 3;
+        } else if (length >= 8 && categories >= 2) {
+            return 2;
+        } else {
+            return 1;
+        }
+    }
+
+
+    public void resendVerificationCode(String login) {
+
+        UserOutput userOutput = userMapper.toOutput(userService.getUserByLogin(login).orElseThrow());
+
+        sendEmailAndSaveCode(userOutput);
     }
 
 }

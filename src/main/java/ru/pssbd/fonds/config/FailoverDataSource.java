@@ -99,6 +99,8 @@ public class FailoverDataSource implements DataSource {
                             .build();
                     ds.setPoolName("StandbyHikariPool");
                     log.info("Standby pool initialized");
+                    printDataSourceInfo("standby",ds);
+
                     standbyDataSource = ds;
                 }
             }
@@ -166,4 +168,13 @@ public class FailoverDataSource implements DataSource {
         if (standbyDataSource != null && iface.isInstance(standbyDataSource)) return true;
         return false;
     }
+
+    private void printDataSourceInfo(String name, HikariDataSource ds) {
+        System.out.println("\n=== " + name.toUpperCase() + " DATASOURCE ===");
+        System.out.println("JDBC URL: " + ds.getJdbcUrl());
+        System.out.println("Username: " + ds.getUsername());
+        System.out.println("Driver Class: " + ds.getDriverClassName());
+        System.out.println("================================\n");
+    }
+
 }
