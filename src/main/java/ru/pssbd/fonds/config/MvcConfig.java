@@ -30,7 +30,8 @@ public class MvcConfig implements org.springframework.web.servlet.config.annotat
                         "/favicon.ico",
                         "/checkingPasswordComplexity",
                         "/login", "/registration", "/passwordConfirm",
-                        "/api/qr-login/confirm"
+                        "/api/qr-login/confirm",
+                        "/passwordConfirm/resend"
                 );
     }
 
