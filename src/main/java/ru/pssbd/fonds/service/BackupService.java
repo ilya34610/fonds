@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
-import ru.pssbd.fonds.config.SSHUtils;
+import ru.pssbd.fonds.utils.SSHUtils;
 
 @Component
 public class BackupService {

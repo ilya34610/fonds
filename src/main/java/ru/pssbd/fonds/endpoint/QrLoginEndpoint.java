@@ -94,13 +94,10 @@ public class QrLoginEndpoint {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid or expired token"));
         UserEntity user = qrLoginTokenService.findUserByToken(tokenEntity.getToken());
 
-//        UserEntity user = tokenEntity.getUser();
-//        UserEntity user = userService.getUserByLogin(tokenEntity.)
         qrLoginTokenService.markTokenUsed(tokenEntity);
 
         // Устанавливаем пользователя в сессию
         session.setAttribute("currentUser", user);
-//        request.getSession().setAttribute("currentUserId", user.getId());
 
         // Перенаправляем на главную или другую защищённую страницу
         response.sendRedirect("/index");

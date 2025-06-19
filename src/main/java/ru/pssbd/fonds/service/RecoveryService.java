@@ -2,7 +2,7 @@ package ru.pssbd.fonds.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ru.pssbd.fonds.config.SSHUtils;
+import ru.pssbd.fonds.utils.SSHUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;

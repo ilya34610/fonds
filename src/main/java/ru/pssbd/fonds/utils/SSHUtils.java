@@ -1,4 +1,4 @@
-package ru.pssbd.fonds.config;
+package ru.pssbd.fonds.utils;
 
 import com.jcraft.jsch.*;
 import java.io.*;
