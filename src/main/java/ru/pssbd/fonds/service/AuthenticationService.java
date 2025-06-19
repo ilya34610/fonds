@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import ru.pssbd.fonds.config.MailConfig;
-import ru.pssbd.fonds.constant.Role;
+import ru.pssbd.fonds.enums.Role;
 import ru.pssbd.fonds.dto.input.PasswordConfirmDto;
 import ru.pssbd.fonds.dto.input.UserInput;
 import ru.pssbd.fonds.dto.output.UserOutput;

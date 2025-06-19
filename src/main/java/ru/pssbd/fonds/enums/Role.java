@@ -1,4 +1,4 @@
-package ru.pssbd.fonds.constant;
+package ru.pssbd.fonds.enums;
 
 
 public enum Role {

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import ru.pssbd.fonds.constant.Role;
+import ru.pssbd.fonds.enums.Role;
 import ru.pssbd.fonds.dto.UserRegistrationDto;
 import ru.pssbd.fonds.dto.input.PasswordCheckInput;
 import ru.pssbd.fonds.dto.input.PasswordConfirmDto;
