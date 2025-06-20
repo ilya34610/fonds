@@ -108,9 +108,6 @@ public class RecoveryService {
 
         // 5. SCP: копируем с remote-host на локальную Windows машину
         Path localPath = Paths.get(localDumpDir, fileName);
-        // Для scp из remote на локал, можно использовать обратный SSH: но SSHUtils умеет scpToRemote только в одну сторону.
-        // Решение: выполнить на local команду scp: requires SSH доступ из local->remote.
-        // Предполагаем, SSHUtils выполняется из local, так он может scp local->remote.
         // Для обратной стороны: используем JSch SFTP для получения файла:
         downloadFileViaSftp(remoteDumpPath, localPath.toString());
 

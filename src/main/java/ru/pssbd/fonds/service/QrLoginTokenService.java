@@ -19,14 +19,11 @@ import java.util.UUID;
 
 public class QrLoginTokenService {
     private final QrLoginTokenRepository repository;
-    private final UserService userService;
     private final long tokenTtlSeconds;
 
     public QrLoginTokenService(QrLoginTokenRepository repository,
-                               UserService userService,
                                @Value("${security.qr.token-ttl-seconds:300}") long tokenTtlSeconds) {
         this.repository = repository;
-        this.userService = userService;
         this.tokenTtlSeconds = tokenTtlSeconds;
     }
 

@@ -98,7 +98,6 @@ public class BackupService {
 
     /**
      * Запуск по расписанию. cron-выражение из свойств.
-     * в начале каждого 6-го часа
     */
     @Scheduled(cron = "${app.backup.schedule-cron}")
     public void scheduledBackupAndRestore() {
@@ -110,9 +109,6 @@ public class BackupService {
         }
     }
 
-    /**
-     * Можно вызывать вручную из другого бина или контроллера.
-     */
     public void performBackupAndRestore() throws Exception {
         // Шаг 0: проверка доступности локальной базы данных
         if (!isLocalDbAvailable()) {

@@ -9,13 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.pssbd.fonds.entity.QrLoginTokenEntity;
 import ru.pssbd.fonds.entity.UserEntity;
-import ru.pssbd.fonds.service.JwtService;
 import ru.pssbd.fonds.service.QrLoginTokenService;
-import ru.pssbd.fonds.service.UserService;
 import ru.pssbd.fonds.utils.QrCodeGenerator;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
@@ -31,8 +28,7 @@ public class QrLoginEndpoint {
 
     private final QrLoginTokenService qrLoginTokenService;
     private final QrCodeGenerator qrCodeGenerator;
-    private final JwtService jwtService;
-    private final UserService userService;
+
 
 
     @Value("${server.address}")
