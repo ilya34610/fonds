@@ -6,11 +6,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import ru.pssbd.fonds.config.MailConfig;
-import ru.pssbd.fonds.enums.Role;
 import ru.pssbd.fonds.dto.input.PasswordConfirmDto;
 import ru.pssbd.fonds.dto.input.UserInput;
 import ru.pssbd.fonds.dto.output.UserOutput;
 import ru.pssbd.fonds.entity.UserEntity;
+import ru.pssbd.fonds.enums.Role;
 import ru.pssbd.fonds.mappers.UserMapper;
 
 import javax.mail.*;
@@ -74,7 +74,6 @@ public class AuthenticationService {
     public void sendEmailAndSaveCode(UserOutput userOutput) {
 
 
-
         // 1. SMTP‑параметры
         Properties props = new Properties();
         props.put("mail.smtp.host", mailConfig.getHost());
@@ -103,10 +102,8 @@ public class AuthenticationService {
             codeMessage.setText("Здравствуйте, " + userOutput.getFio() + "!\n\nВаш код подтверждения: " + code + "\n\nС уважением.");
 
             // 4. Отправка
-            //На всякий случай убираем, чтобы не спамить
 //            Transport.send(codeMessage);
             System.out.println("Письмо успешно отправлено. Код: " + code);
-
 
             userService.updateCode(userOutput, code);
 
@@ -122,8 +119,7 @@ public class AuthenticationService {
         props.put("mail.smtp.host", mailConfig.getHost());
         props.put("mail.smtp.port", mailConfig.getPort());
         props.put("mail.smtp.auth", mailConfig.getAuth());
-        props.put("mail.smtp.starttls.enable", mailConfig.getStarttls());  // TLS :contentReference[oaicite:3]{index=3}
-//         props.put("mail.smtp.ssl.enable", "true");    // SSL (порт 465)
+        props.put("mail.smtp.starttls.enable", mailConfig.getStarttls());
 
         // 2. Создание сессии с авторизацией
         Session session = Session.getInstance(props, new Authenticator() {
@@ -145,7 +141,6 @@ public class AuthenticationService {
             message.setText("Здравствуйте, " + userOutput.getFio() + "!\n\n" + textMessage + " " + "\n\nС уважением.");
 
             // 4. Отправка
-            //На всякий случай убираем, чтобы не спамить
 //            Transport.send(message);
 
 
@@ -161,7 +156,7 @@ public class AuthenticationService {
     }
 
     public static String hash(String plainPassword) {
-        // gensalt аргумент — логарифм числа раундов (рекомендуется 10–12)
+        // gensalt аргумент — логарифм числа раундов
         String salt = BCrypt.gensalt(12);
         return BCrypt.hashpw(plainPassword, salt);
     }
@@ -177,24 +172,18 @@ public class AuthenticationService {
         Optional<UserEntity> userOpt = userService.getUserByLogin(passwordConfirmDto.getLogin());
 
         if (userOpt.isPresent()) {
-//            UserEntity userEntity = userOpt.get();
             // для этих ролей подтвержение в интерфейсе через админа
-            if (Objects.equals(userEntity.getRole().getName(), Role.ADMIN.name()) ||
+            if (!(Objects.equals(userEntity.getRole().getName(), Role.ADMIN.name()) ||
                     Objects.equals(userEntity.getRole().getName(), Role.FOUNDER.name()) ||
-                    Objects.equals(userEntity.getRole().getName(), Role.STAFF.name())) {
-
-            } else {
+                    Objects.equals(userEntity.getRole().getName(), Role.STAFF.name()))) {
                 userEntity.setCanLogin(true);
-
             }
-
 
             userService.save(userEntity);
             return userEntity;
         } else {
             return null;
         }
-
 
     }
 

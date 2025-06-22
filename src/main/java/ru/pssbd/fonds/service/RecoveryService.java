@@ -20,27 +20,44 @@ import java.time.format.DateTimeFormatter;
 @Component
 public class RecoveryService {
 
-    @Value("${app.ssh.remote.host}") private String sshHost;
-    @Value("${app.ssh.remote.port}") private int sshPort;
-    @Value("${app.ssh.remote.user}") private String sshUser;
-    @Value("${app.ssh.remote.password:}") private String sshPassword;
-    @Value("${app.ssh.remote.private-key-path:}") private String sshKeyPath;
+    @Value("${app.ssh.remote.host}")
+    private String sshHost;
+    @Value("${app.ssh.remote.port}")
+    private int sshPort;
+    @Value("${app.ssh.remote.user}")
+    private String sshUser;
+    @Value("${app.ssh.remote.password:}")
+    private String sshPassword;
+    @Value("${app.ssh.remote.private-key-path:}")
+    private String sshKeyPath;
 
-    @Value("${app.db.remote.container-id}") private String containerId;
-    @Value("${app.db.remote.use-sudo-docker:false}") private boolean useSudoDocker;
+    @Value("${app.db.remote.container-id}")
+    private String containerId;
+    @Value("${app.db.remote.use-sudo-docker:false}")
+    private boolean useSudoDocker;
 
-    @Value("${app.backup.local-dump-dir}") private String localDumpDir;
-    @Value("${app.backup.remote-dump-dir}") private String remoteDumpDir; // временная папка на remote-host
+    @Value("${app.backup.local-dump-dir}")
+    private String localDumpDir;
+    @Value("${app.backup.remote-dump-dir}")
+    private String remoteDumpDir; // временная папка на remote-host
 
-    @Value("${app.db.remote.user}") private String standbyUser;
-    @Value("${app.db.remote.password}") private String standbyPassword;
-    @Value("${app.db.remote.name}") private String standbyDbName;
+    @Value("${app.db.remote.user}")
+    private String standbyUser;
+    @Value("${app.db.remote.password}")
+    private String standbyPassword;
+    @Value("${app.db.remote.name}")
+    private String standbyDbName;
 
-    @Value("${app.db.primary.user}") private String primaryUser;
-    @Value("${app.db.primary.password}") private String primaryPassword;
-    @Value("${app.db.primary.host}") private String primaryHost;
-    @Value("${app.db.primary.port}") private int primaryPort;
-    @Value("${app.db.primary.name}") private String primaryDbName;
+    @Value("${app.db.primary.user}")
+    private String primaryUser;
+    @Value("${app.db.primary.password}")
+    private String primaryPassword;
+    @Value("${app.db.primary.host}")
+    private String primaryHost;
+    @Value("${app.db.primary.port}")
+    private int primaryPort;
+    @Value("${app.db.primary.name}")
+    private String primaryDbName;
     @Value("${app.backup.pg-psql-path}")
     private String psqlPath;
 
@@ -140,7 +157,6 @@ public class RecoveryService {
         com.jcraft.jsch.ChannelSftp sftp = (com.jcraft.jsch.ChannelSftp) session.openChannel("sftp");
         sftp.connect(5_000);
 
-        // Ensure local dir exists
         Path lp = Paths.get(localFilePath).getParent();
         if (lp != null && !Files.exists(lp)) Files.createDirectories(lp);
 

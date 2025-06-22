@@ -1,20 +1,24 @@
 package ru.pssbd.fonds.service;
 
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.SftpException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+import ru.pssbd.fonds.utils.SSHUtils;
 
 import javax.annotation.PostConstruct;
-import java.io.*;
-import java.nio.file.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.SftpException;
-import ru.pssbd.fonds.utils.SSHUtils;
 
 @Component
 public class BackupService {
@@ -98,7 +102,7 @@ public class BackupService {
 
     /**
      * Запуск по расписанию. cron-выражение из свойств.
-    */
+     */
     @Scheduled(cron = "${app.backup.schedule-cron}")
     public void scheduledBackupAndRestore() {
         try {
@@ -267,7 +271,6 @@ public class BackupService {
         if (s == null) return "";
         return "'" + s.replace("'", "'\"'\"'") + "'";
     }
-
 
 
     private void cleanupLocalDump(String dumpFileName) {

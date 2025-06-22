@@ -3,9 +3,7 @@ package ru.pssbd.fonds.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.time.Instant;
-import java.time.LocalDate;
 
 @Entity
 @Data
@@ -24,7 +22,7 @@ public class QrLoginTokenEntity {
     private UserEntity user;
 
     @Column(name = "created_at", nullable = false)
-    private Instant  createdAt;
+    private Instant createdAt;
 
     @Column(name = "expires_at", nullable = false)
     private Instant expiresAt;

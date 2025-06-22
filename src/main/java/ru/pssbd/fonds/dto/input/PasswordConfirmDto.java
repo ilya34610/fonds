@@ -2,7 +2,6 @@ package ru.pssbd.fonds.dto.input;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Data
 @NoArgsConstructor

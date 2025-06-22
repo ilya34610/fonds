@@ -10,14 +10,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import ru.pssbd.fonds.enums.Role;
 import ru.pssbd.fonds.dto.UserRegistrationDto;
 import ru.pssbd.fonds.dto.input.PasswordCheckInput;
 import ru.pssbd.fonds.dto.input.PasswordConfirmDto;
 import ru.pssbd.fonds.dto.input.UserInput;
 import ru.pssbd.fonds.entity.UserEntity;
+import ru.pssbd.fonds.enums.Role;
 import ru.pssbd.fonds.mappers.UserMapper;
-import ru.pssbd.fonds.service.*;
+import ru.pssbd.fonds.service.AuthenticationService;
+import ru.pssbd.fonds.service.RoleService;
+import ru.pssbd.fonds.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -36,22 +38,11 @@ public class AuthenticationEndpoint {
 
     private final UserService userService;
     private final UserMapper userMapper;
-    private final BackupService backupService;
 
 
     //вызывается при переходе на страницу авторизации пользователя
     @GetMapping("/login")
     public String login() {
-//        String salt = BCrypt.gensalt(12);
-//        String admin = BCrypt.hashpw("admin", salt);
-//        String staff = BCrypt.hashpw("staff", salt);
-//        String founder = BCrypt.hashpw("founder", salt);
-//        String client = BCrypt.hashpw("client", salt);
-//        String client1 = BCrypt.hashpw("client1", salt);
-//        String client2 = BCrypt.hashpw("client2", salt);
-//        String donater = BCrypt.hashpw("donater", salt);
-
-
         return "login";
     }
 
@@ -95,7 +86,7 @@ public class AuthenticationEndpoint {
     public String registerUser(
             @ModelAttribute("user") @Validated UserInput userInput,
             BindingResult result,
-            Model model){
+            Model model) {
 
         model.addAttribute("roles", roleService.getAllElem());
 
@@ -110,9 +101,8 @@ public class AuthenticationEndpoint {
         if (result.hasErrors()) {
             return "registration";
         }
-        // После успешной проверки можно удалить из сессии:
+        // После успешной проверки удаляем из сессии
         session.removeAttribute("CAPTCHA");
-
 
 
         model.addAttribute("roles", roleService.getAllElem());
@@ -265,7 +255,7 @@ public class AuthenticationEndpoint {
 
 
     @PostMapping("/passwordConfirm/resend")
-    public ModelAndView registerUser(@RequestParam("login") String login, Model model){
+    public ModelAndView registerUser(@RequestParam("login") String login, Model model) {
 
         ModelAndView mav = new ModelAndView();
 

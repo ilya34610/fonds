@@ -57,8 +57,6 @@ public class FailoverDataSource implements DataSource {
                     log.info("syncStandbyToPrimary() completed");
                 } catch (Exception e) {
                     log.error("Ошибка при syncStandbyToPrimary: ", e);
-                    // В случае ошибки можно оставить флаг: primaryWasDown остается false,
-                    // но можно предусмотреть повторную попытку позже из другого механизма.
                 }
             }
             // Закрываем пул standby, если существовал
@@ -99,7 +97,7 @@ public class FailoverDataSource implements DataSource {
                             .build();
                     ds.setPoolName("StandbyHikariPool");
                     log.info("Standby pool initialized");
-                    printDataSourceInfo("standby",ds);
+                    printDataSourceInfo("standby", ds);
 
                     standbyDataSource = ds;
                 }
@@ -159,7 +157,7 @@ public class FailoverDataSource implements DataSource {
         if (standbyDataSource != null && iface.isInstance(standbyDataSource)) {
             return iface.cast(standbyDataSource);
         }
-        throw new SQLException("Не могу разобернуться в " + iface);
+        throw new SQLException("ERROR" + iface);
     }
 
     @Override

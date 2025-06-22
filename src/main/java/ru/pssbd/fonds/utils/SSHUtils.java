@@ -1,7 +1,9 @@
 package ru.pssbd.fonds.utils;
 
 import com.jcraft.jsch.*;
-import java.io.*;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Properties;
 
 public class SSHUtils {

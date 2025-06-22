@@ -30,20 +30,11 @@ public class QrLoginEndpoint {
     private final QrCodeGenerator qrCodeGenerator;
 
 
-
     @Value("${server.address}")
     private String appBaseUrl;
 
     @Value("${server.port}")
     private String appPort;
-
-//    public QrLoginEndpoint(QrLoginTokenService qrLoginTokenService,
-//                           QrCodeGenerator qrCodeGenerator,
-//                           JwtService jwtService) {
-//        this.qrLoginTokenService = qrLoginTokenService;
-//        this.qrCodeGenerator = qrCodeGenerator;
-//        this.jwtService = jwtService;
-//    }
 
     /**
      * Генерация QR: клиент (уже аутентифицированный) вызывает этот endpoint
